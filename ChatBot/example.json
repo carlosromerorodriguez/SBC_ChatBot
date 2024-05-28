@@ -12,6 +12,7 @@
     "month": "July",
     "reason": "The weather is warm and pleasant, perfect for exploring the city's outdoor attractions and enjoying outdoor activities such as swimming in Lake Zurich."
   },
+  "similar_destinations": ["Geneva", "Lucerne", "Bern"],
   "rating": 64.83,
   "transport": {
     "public_transport": "Zurich has an extensive public transportation system including trams, buses, and trains, providing easy access to various parts of the city.",
