@@ -1,3 +1,4 @@
+import json
 class KnowledgeDAO:
     def __init__(self):
         with open('knowledge/knowledge.json', 'r') as file:

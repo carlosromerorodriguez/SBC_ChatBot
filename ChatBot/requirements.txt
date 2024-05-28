@@ -4,3 +4,4 @@ scikit-learn
 gensim
 seaborn
 scipy
+openai

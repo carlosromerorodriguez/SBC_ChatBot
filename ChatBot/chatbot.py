@@ -155,27 +155,7 @@ frase_seleccionada_por_tipo = [random.choice(grupo) for grupo in frases_por_tipo
 
 """# **Respostes**"""
 
-frases = [
-    "If you're seeking a(n) {climate} climate and {cost} cost of living, {city} in {country} offers {culture} culture and delicious {cuisine} cuisine.",
-    "Discover the {culture} cultural treasures of {city}, a city known for its {cuisine} specialties, all while enjoying the {climate} weather.",
-    "Experience {tourism_type} tourism in {city}, where the {climate} climate complements the {culture} culture, and {cuisine} delights await at every corner.",
-    "Explore {city}, a gem in {country} with a {climate} climate, renowned for its {culture} culture and {cuisine} cuisine, making it a perfect {cost} cost destination.",
-    "{city} is the place to be for {cuisine} lovers and those fascinated by {culture} culture, all set in a {climate} climate with {cost} living expenses.",
-    "Immerse yourself in the {culture} culture of {city}, {country}, where the {climate} climate is always {climate} and the {cuisine} food is unforgettable.",
-    "For a(n) {tourism_type} escape with {cost} costs, {city} in {country} offers a unique blend of {culture} culture and {climate} weather.",
-    "With its {climate} climate and {culture} cultural richness, {city} is a top choice for travelers interested in {cuisine} cuisine and {language} language experiences.",
-    "Enjoy the {culture} vibes and {cuisine} flavors of {city}, a city that stands out in {country} for its {cost} affordability and {climate} climate.",
-    "Visit {city} for an authentic {tourism_type} experience, where the {culture} culture is {culture} and the {cuisine} cuisine reflects the {climate} climate.",
-    "{city}: Where {cost} cost meets {culture} culture under the {climate} climate, offering diverse {cuisine} culinary delights and speaking {language}.",
-    "From its {culture} cultural heritage to its {climate} climate, {city} in {country} is a haven for {cuisine} foodies and adventure seekers alike.",
-    "Embrace the {climate} weather and {cost} cost living in {city}, where every street corner tells a story of {culture} culture and {cuisine} cuisine.",
-    "In {city}, the {climate} climate enriches the {culture} culture, and the {cuisine} dishes are as diverse as the city's {tourism_type} tourism offerings.",
-    "{city} invites you to explore its {culture} cultural depths, {climate} climate, and {cuisine} culinary scenes, all within a {cost} budget in {country}."
-    "Experience {culture} culture and {climate} weather in {city}, {country}, offering {cuisine} delights at a {cost} cost, perfect for {tourism_type} lovers.",
-    "Immerse yourself in the {culture} heritage and {cuisine} flavors of {city}, a {cost} treasure in {country} with a welcoming {climate} climate for {tourism_type} enthusiasts.",
-    "{city}, a {climate} haven in {country}, boasts {culture} richness, {cuisine} cuisine, and {cost} affordability, making it an ideal {tourism_type} destination.",
-    "Discover the {culture} essence and {cuisine} tastes of {city}, {country}, where the {climate} climate complements a {cost} lifestyle, inviting {tourism_type} tourists.",
-]
+
 
 """# **'What' types of questions**"""
 

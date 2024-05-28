@@ -60,10 +60,6 @@ class NLPProcessor:
             else:
                 print("Can you specify what kind of places or experiences you're interested in?")
 
-        elif 'suggest' in verbs:
-            # Bucle de preguntes i suggriment
-            suggest_city(suggest(verbs_lemm, nouns_lemm, adjectives_lemm, adverbs_lemm))
-
         elif 'when' in adverbs: # En base al climate
             if 'visit' in words or 'go' in words:
                 show_best_times_to_visit(nouns)  # Los mejores momentos para visitar ciudades basadas en clima
@@ -76,7 +72,7 @@ class NLPProcessor:
             else:
                 print(random.choice(not_understood_responses))
 
-        elif 'which' in adverbs:
+        elif 'which' in adverbs or 'suggest' in verbs:
             # Bucle de preguntes i suggriment
             suggest_city(suggest(verbs_lemm, nouns_lemm, adjectives_lemm, adverbs_lemm))
 
