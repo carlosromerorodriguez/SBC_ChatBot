@@ -31,6 +31,9 @@ source env/bin/activate
 Un cop l'entorn virtual estigui activat, pots instal·lar les dependències requerides amb:
 
 ```bash
+cd Chatbot
+```
+```bash
 pip install -r requirements.txt
 ```
 
