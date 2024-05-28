@@ -1,5 +1,5 @@
 class GPTAPI:
-    def transform_input(self, user_input):
+    def transform_input(self, user_input, verbs, nouns, adjectives):
         # Lógica para llamar a la API de GPT y transformar el input
         pass
 
