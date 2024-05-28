@@ -28,7 +28,7 @@
         "name": "Enjoy the view from Lindenhof Hill"
       }
     ],
-    "medium": [
+    "moderate": [
       {
         "name": "Visit Kunsthaus Zurich"
       },
@@ -36,7 +36,7 @@
         "name": "Take a cruise on Lake Zurich"
       }
     ],
-    "high": [
+    "expensive": [
       {
         "name": "Dine at a Michelin-starred restaurant"
       },

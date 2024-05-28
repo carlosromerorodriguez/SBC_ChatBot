@@ -1,3 +1,7 @@
+import openai
+import random
+
+
 class GPTAPI:
     API_KEY = "sk-proj-HpMoLYRWcDGxR48zvvGiT3BlbkFJIaC5flIDtLiuIAEjcuhe"
     openai.api_key = API_KEY

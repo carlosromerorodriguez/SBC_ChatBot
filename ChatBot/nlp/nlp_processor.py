@@ -7,10 +7,10 @@ nltk.download('averaged_perceptron_tagger')
 nltk.download('wordnet')
 import random
 lemmatizer = WordNetLemmatizer()
+from api.gpt_api import GPTAPI
 
 class NLPProcessor:
     city_context = None
-
 
     def process(self, user_question):
         words = nltk.word_tokenize(user_question.lower())
@@ -34,11 +34,10 @@ class NLPProcessor:
                 show_cuisine_information(nouns + adjectives)
             elif 'see' in verbs_lemm or 'visit' in verbs_lemm or 'attractions' in nouns: #TODO WITH API
                 # show_tourist_attractions(nouns)   Atracciones turísticas recomendadas
-                print("Tourist")
             elif 'language' in nouns:
                 show_language_information(nouns)
             else:
-                print(random.choice(not_understood_responses))
+                print(GPTAPI.not_understood_response())
 
         elif 'where' in adverbs:
             # Ens guardem el primer atribut
@@ -64,13 +63,13 @@ class NLPProcessor:
             if 'visit' in words or 'go' in words:
                 show_best_times_to_visit(nouns)  # Los mejores momentos para visitar ciudades basadas en clima
             else:
-                print(random.choice(not_understood_responses))
+                print(GPTAPI.not_understood_response())
 
         elif 'why' in adverbs:
             if 'visit' in words or 'go' in words:
                 show_reasons_to_visit_certain_places(nouns)  # Razones para visitar lugares específicos
             else:
-                print(random.choice(not_understood_responses))
+                print(GPTAPI.not_understood_response())
 
         elif 'which' in adverbs or 'suggest' in verbs:
             # Bucle de preguntes i suggriment
@@ -83,7 +82,6 @@ class NLPProcessor:
                 # show_transport_options(nouns)
                 print("Transport")
             else:
-                print(random.choice(not_understood_responses))
-
+                print(GPTAPI.not_understood_response())
         else:
-            print(random.choice(not_understood_responses))
+            print(GPTAPI.not_understood_response())
