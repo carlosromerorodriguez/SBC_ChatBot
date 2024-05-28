@@ -1,0 +1,1490 @@
+[
+  {
+    "city": "Zurich",
+    "country": "Switzerland",
+    "currency": "Swiss Franc (CHF)",
+    "cost": "high",
+    "climate": "cold",
+    "culture": "modern", 
+    "tourism_type": "city",
+    "language": "German",
+    "other_languages_spoken": ["English", "French", "Italian"],
+    "best_time_to_visit": {
+      "month": "July",
+      "reason": "The weather is warm and pleasant, perfect for exploring the city's outdoor attractions and enjoying outdoor activities such as swimming in Lake Zurich."
+    },
+    "similar_destinations": ["Geneva", "Lucerne", "Bern"],
+    "rating": 64.83,
+    "transport": {
+      "public_transport": "Zurich has an extensive public transportation system including trams, buses, and trains, providing easy access to various parts of the city.",
+      "car_rental": "Car rental services are available in Zurich from major companies like Hertz, Avis, and Europcar, offering flexibility for exploring the city and its surroundings.",
+      "taxi": "Taxis are readily available throughout Zurich, providing convenient transportation options for travelers."
+    },
+    "activities": {
+      "free": [
+        {
+          "name": "Explore Old Town (Altstadt)"
+        },
+        {
+          "name": "Enjoy the view from Lindenhof Hill"
+        }
+      ],
+      "moderate": [
+        {
+          "name": "Visit Kunsthaus Zurich"
+        },
+        {
+          "name": "Take a cruise on Lake Zurich"
+        }
+      ],
+      "expensive": [
+        {
+          "name": "Dine at a Michelin-starred restaurant"
+        },
+        {
+          "name": "Helicopter tour over the Alps"
+        }
+      ]
+    }
+  },
+  {
+    "city": "Paris",
+    "country": "France",
+    "currency": "Euro (EUR)",
+    "cost": "high",
+    "climate": "mild",
+    "culture": "artistic",
+    "tourism_type": "city",
+    "language": "French",
+    "other_languages_spoken": ["English"],
+    "best_time_to_visit": {
+      "month": "April",
+      "reason": "Springtime in Paris is beautiful, with blooming flowers and mild temperatures ideal for sightseeing."
+    },
+    "similar_destinations": ["Lyon", "Marseille", "Nice"],
+    "rating": 79.91,
+    "transport": {
+      "public_transport": "Paris has an extensive public transportation system including metro, buses, and trams.",
+      "car_rental": "Car rental services are available throughout Paris from major companies.",
+      "taxi": "Taxis are readily available throughout the city."
+    },
+    "activities": {
+      "free": [
+        {
+          "name": "Visit Notre-Dame Cathedral"
+        },
+        {
+          "name": "Stroll along the Seine River"
+        }
+      ],
+      "moderate": [
+        {
+          "name": "Tour the Louvre Museum"
+        },
+        {
+          "name": "Visit the Eiffel Tower"
+        }
+      ],
+      "expensive": [
+        {
+          "name": "Dinner at Le Jules Verne"
+        },
+        {
+          "name": "Private Seine River Cruise"
+        }
+      ]
+    }
+  },
+  {
+    "city": "Tokyo",
+    "country": "Japan",
+    "currency": "Japanese Yen (JPY)",
+    "cost": "high",
+    "climate": "humid subtropical",
+    "culture": "modern",
+    "tourism_type": "city",
+    "language": "Japanese",
+    "other_languages_spoken": ["English"],
+    "best_time_to_visit": {
+      "month": "April",
+      "reason": "Cherry blossom season in Tokyo is a sight to behold, with beautiful blooms and pleasant weather."
+    },
+    "similar_destinations": ["Kyoto", "Osaka", "Nagoya"],
+    "rating": 85.36,
+    "transport": {
+      "public_transport": "Tokyo has an extensive and efficient public transportation system including subways, buses, and trains.",
+      "car_rental": "Car rental services are available but not commonly used by tourists due to the efficiency of public transport.",
+      "taxi": "Taxis are available but can be expensive."
+    },
+    "activities": {
+      "free": [
+        {
+          "name": "Visit Sensoji Temple"
+        },
+        {
+          "name": "Explore Meiji Shrine"
+        }
+      ],
+      "moderate": [
+        {
+          "name": "Tour the Tokyo Skytree"
+        },
+        {
+          "name": "Visit Ueno Zoo"
+        }
+      ],
+      "expensive": [
+        {
+          "name": "Dinner at Sukiyabashi Jiro"
+        },
+        {
+          "name": "Private tour of the Imperial Palace"
+        }
+      ]
+    }
+  },
+  {
+    "city": "New York",
+    "country": "USA",
+    "currency": "US Dollar (USD)",
+    "cost": "high",
+    "climate": "humid subtropical",
+    "culture": "cosmopolitan",
+    "tourism_type": "city",
+    "language": "English",
+    "other_languages_spoken": ["Spanish", "Chinese", "Italian"],
+    "best_time_to_visit": {
+      "month": "September",
+      "reason": "Fall in New York offers cooler temperatures and beautiful fall foliage, making it perfect for exploring."
+    },
+    "similar_destinations": ["Chicago", "Los Angeles", "Boston"],
+    "rating": 88.34,
+    "transport": {
+      "public_transport": "New York has an extensive public transportation system including subways, buses, and ferries.",
+      "car_rental": "Car rental services are available, though parking can be challenging.",
+      "taxi": "Taxis and ride-sharing services are readily available."
+    },
+    "activities": {
+      "free": [
+        {
+          "name": "Walk through Central Park"
+        },
+        {
+          "name": "Visit the New York Public Library"
+        }
+      ],
+      "moderate": [
+        {
+          "name": "Tour the Metropolitan Museum of Art"
+        },
+        {
+          "name": "Visit the Statue of Liberty"
+        }
+      ],
+      "expensive": [
+        {
+          "name": "Broadway Show"
+        },
+        {
+          "name": "Dinner at Eleven Madison Park"
+        }
+      ]
+    }
+  },
+  {
+    "city": "London",
+    "country": "United Kingdom",
+    "currency": "Pound Sterling (GBP)",
+    "cost": "high",
+    "climate": "temperate maritime",
+    "culture": "historic",
+    "tourism_type": "city",
+    "language": "English",
+    "other_languages_spoken": ["French", "Spanish", "German"],
+    "best_time_to_visit": {
+      "month": "May",
+      "reason": "Spring in London offers mild weather and blooming flowers, making it ideal for sightseeing."
+    },
+    "similar_destinations": ["Edinburgh", "Dublin", "Manchester"],
+    "rating": 82.75,
+    "transport": {
+      "public_transport": "London has an extensive public transportation system including the Underground, buses, and trams.",
+      "car_rental": "Car rental services are available but driving in London can be challenging.",
+      "taxi": "Taxis and ride-sharing services are readily available."
+    },
+    "activities": {
+      "free": [
+        {
+          "name": "Visit the British Museum"
+        },
+        {
+          "name": "Walk around Hyde Park"
+        }
+      ],
+      "moderate": [
+        {
+          "name": "Tour the Tower of London"
+        },
+        {
+          "name": "Visit the London Eye"
+        }
+      ],
+      "expensive": [
+        {
+          "name": "Dinner at The Ledbury"
+        },
+        {
+          "name": "Private Thames River Cruise"
+        }
+      ]
+    }
+  },
+  {
+    "city": "Sydney",
+    "country": "Australia",
+    "currency": "Australian Dollar (AUD)",
+    "cost": "high",
+    "climate": "temperate",
+    "culture": "contemporary",
+    "tourism_type": "city",
+    "language": "English",
+    "other_languages_spoken": ["Mandarin", "Arabic", "Greek"],
+    "best_time_to_visit": {
+      "month": "October",
+      "reason": "Spring in Sydney offers pleasant weather, perfect for exploring the city's beaches and outdoor attractions."
+    },
+    "similar_destinations": ["Melbourne", "Brisbane", "Perth"],
+    "rating": 80.42,
+    "transport": {
+      "public_transport": "Sydney has a comprehensive public transportation system including trains, buses, and ferries.",
+      "car_rental": "Car rental services are available and convenient for exploring the surroundings.",
+      "taxi": "Taxis and ride-sharing services are readily available."
+    },
+    "activities": {
+      "free": [
+        {
+          "name": "Visit the Royal Botanic Garden"
+        },
+        {
+          "name": "Walk along Bondi Beach"
+        }
+      ],
+      "moderate": [
+        {
+          "name": "Tour the Sydney Opera House"
+        },
+        {
+          "name": "Visit Taronga Zoo"
+        }
+      ],
+      "expensive": [
+        {
+          "name": "Harbour Bridge Climb"
+        },
+        {
+          "name": "Dinner at Quay Restaurant"
+        }
+      ]
+    }
+  },
+  {
+    "city": "Dubai",
+    "country": "United Arab Emirates",
+    "currency": "UAE Dirham (AED)",
+    "cost": "high",
+    "climate": "hot desert",
+    "culture": "modern",
+    "tourism_type": "city",
+    "language": "Arabic",
+    "other_languages_spoken": ["English", "Hindi", "Urdu"],
+    "best_time_to_visit": {
+      "month": "November",
+      "reason": "The weather is cooler and more comfortable for outdoor activities and sightseeing."
+    },
+    "similar_destinations": ["Abu Dhabi", "Doha", "Manama"],
+    "rating": 77.22,
+    "transport": {
+      "public_transport": "Dubai has a modern public transportation system including the metro, buses, and trams.",
+      "car_rental": "Car rental services are available and commonly used.",
+      "taxi": "Taxis and ride-sharing services are readily available."
+    },
+    "activities": {
+      "free": [
+        {
+          "name": "Visit the Dubai Fountain"
+        },
+        {
+          "name": "Explore the Dubai Mall"
+        }
+      ],
+      "moderate": [
+        {
+          "name": "Tour the Burj Khalifa"
+        },
+        {
+          "name": "Visit the Dubai Aquarium"
+        }
+      ],
+      "expensive": [
+        {
+          "name": "Desert Safari"
+        },
+        {
+          "name": "Dinner at At.mosphere"
+        }
+      ]
+    }
+  },
+  {
+    "city": "Rome",
+    "country": "Italy",
+    "currency": "Euro (EUR)",
+    "cost": "medium",
+    "climate": "Mediterranean",
+    "culture": "historic",
+    "tourism_type": "city",
+    "language": "Italian",
+    "other_languages_spoken": ["English", "Spanish", "French"],
+    "best_time_to_visit": {
+      "month": "October",
+      "reason": "Fall offers cooler temperatures and fewer tourists, making it ideal for sightseeing."
+    },
+    "similar_destinations": ["Florence", "Venice", "Naples"],
+    "rating": 81.43,
+    "transport": {
+      "public_transport": "Rome has a comprehensive public transportation system including buses, trams, and metro.",
+      "car_rental": "Car rental services are available but driving in Rome can be challenging.",
+      "taxi": "Taxis and ride-sharing services are readily available."
+    },
+    "activities": {
+      "free": [
+        {
+          "name": "Visit the Pantheon"
+        },
+        {
+          "name": "Explore Piazza Navona"
+        }
+      ],
+      "moderate": [
+        {
+          "name": "Tour the Colosseum"
+        },
+        {
+          "name": "Visit the Vatican Museums"
+        }
+      ],
+      "expensive": [
+        {
+          "name": "Dinner at La Pergola"
+        },
+        {
+          "name": "Private tour of the Sistine Chapel"
+        }
+      ]
+    }
+  },
+  {
+    "city": "Bangkok",
+    "country": "Thailand",
+    "currency": "Thai Baht (THB)",
+    "cost": "low",
+    "climate": "tropical",
+    "culture": "traditional",
+    "tourism_type": "city",
+    "language": "Thai",
+    "other_languages_spoken": ["English"],
+    "best_time_to_visit": {
+      "month": "December",
+      "reason": "The weather is cooler and drier, making it ideal for sightseeing and outdoor activities."
+    },
+    "similar_destinations": ["Chiang Mai", "Phuket", "Pattaya"],
+    "rating": 79.45,
+    "transport": {
+      "public_transport": "Bangkok has an extensive public transportation system including the BTS Skytrain, MRT subway, buses, and boats.",
+      "car_rental": "Car rental services are available but traffic can be heavy.",
+      "taxi": "Taxis and ride-sharing services are readily available."
+    },
+    "activities": {
+      "free": [
+        {
+          "name": "Visit Wat Arun"
+        },
+        {
+          "name": "Explore Lumpini Park"
+        }
+      ],
+      "moderate": [
+        {
+          "name": "Tour the Grand Palace"
+        },
+        {
+          "name": "Visit Chatuchak Weekend Market"
+        }
+      ],
+      "expensive": [
+        {
+          "name": "Dinner at Sirocco"
+        },
+        {
+          "name": "Private tour of the Floating Markets"
+        }
+      ]
+    }
+  },
+  {
+    "city": "Barcelona",
+    "country": "Spain",
+    "currency": "Euro (EUR)",
+    "cost": "medium",
+    "climate": "Mediterranean",
+    "culture": "cosmopolitan",
+    "tourism_type": "city",
+    "language": "Spanish",
+    "other_languages_spoken": ["Catalan", "English", "French"],
+    "best_time_to_visit": {
+      "month": "May",
+      "reason": "Spring offers mild weather and fewer tourists, making it ideal for sightseeing."
+    },
+    "similar_destinations": ["Madrid", "Valencia", "Seville"],
+    "rating": 82.01,
+    "transport": {
+      "public_transport": "Barcelona has a comprehensive public transportation system including metro, buses, and trams.",
+      "car_rental": "Car rental services are available but driving in Barcelona can be challenging.",
+      "taxi": "Taxis and ride-sharing services are readily available."
+    },
+    "activities": {
+      "free": [
+        {
+          "name": "Visit Park Güell"
+        },
+        {
+          "name": "Stroll along La Rambla"
+        }
+      ],
+      "moderate": [
+        {
+          "name": "Tour La Sagrada Familia"
+        },
+        {
+          "name": "Visit Casa Batlló"
+        }
+      ],
+      "expensive": [
+        {
+          "name": "Dinner at ABaC Restaurant"
+        },
+        {
+          "name": "Private tour of Montserrat"
+        }
+      ]
+    }
+  },
+  {
+    "city": "Istanbul",
+    "country": "Turkey",
+    "currency": "Turkish Lira (TRY)",
+    "cost": "medium",
+    "climate": "Mediterranean",
+    "culture": "traditional",
+    "tourism_type": "city",
+    "language": "Turkish",
+    "other_languages_spoken": ["English", "German", "French"],
+    "best_time_to_visit": {
+      "month": "April",
+      "reason": "Spring offers mild weather and blooming tulips, making it perfect for sightseeing."
+    },
+    "similar_destinations": ["Ankara", "Izmir", "Antalya"],
+    "rating": 84.48,
+    "transport": {
+      "public_transport": "Istanbul has an extensive public transportation system including trams, buses, ferries, and metro.",
+      "car_rental": "Car rental services are available but traffic can be heavy.",
+      "taxi": "Taxis and ride-sharing services are readily available."
+    },
+    "activities": {
+      "free": [
+        {
+          "name": "Visit the Blue Mosque"
+        },
+        {
+          "name": "Walk through the Grand Bazaar"
+        }
+      ],
+      "moderate": [
+        {
+          "name": "Tour the Hagia Sophia"
+        },
+        {
+          "name": "Visit Topkapi Palace"
+        }
+      ],
+      "expensive": [
+        {
+          "name": "Dinner at Mikla Restaurant"
+        },
+        {
+          "name": "Private Bosphorus Cruise"
+        }
+      ]
+    }
+  },
+  {
+    "city": "San Francisco",
+    "country": "USA",
+    "currency": "US Dollar (USD)",
+    "cost": "high",
+    "climate": "Mediterranean",
+    "culture": "cosmopolitan",
+    "tourism_type": "city",
+    "language": "English",
+    "other_languages_spoken": ["Spanish", "Chinese", "Tagalog"],
+    "best_time_to_visit": {
+      "month": "September",
+      "reason": "Fall offers warm weather and fewer tourists, making it ideal for sightseeing."
+    },
+    "similar_destinations": ["Los Angeles", "Seattle", "San Diego"],
+    "rating": 81.92,
+    "transport": {
+      "public_transport": "San Francisco has an extensive public transportation system including buses, cable cars, and BART trains.",
+      "car_rental": "Car rental services are available but parking can be challenging.",
+      "taxi": "Taxis and ride-sharing services are readily available."
+    },
+    "activities": {
+      "free": [
+        {
+          "name": "Visit Golden Gate Park"
+        },
+        {
+          "name": "Walk along Fisherman's Wharf"
+        }
+      ],
+      "moderate": [
+        {
+          "name": "Tour Alcatraz Island"
+        },
+        {
+          "name": "Visit the California Academy of Sciences"
+        }
+      ],
+      "expensive": [
+        {
+          "name": "Dinner at Gary Danko"
+        },
+        {
+          "name": "Private tour of Napa Valley"
+        }
+      ]
+    }
+  },
+  {
+    "city": "Berlin",
+    "country": "Germany",
+    "currency": "Euro (EUR)",
+    "cost": "medium",
+    "climate": "temperate",
+    "culture": "historical",
+    "tourism_type": "city",
+    "language": "German",
+    "other_languages_spoken": ["English", "Turkish"],
+    "best_time_to_visit": {
+      "month": "May",
+      "reason": "Spring offers mild weather and blooming flowers, making it ideal for sightseeing."
+    },
+    "similar_destinations": ["Munich", "Hamburg", "Frankfurt"],
+    "rating": 83.25,
+    "transport": {
+      "public_transport": "Berlin has an extensive public transportation system including U-Bahn, S-Bahn, buses, and trams.",
+      "car_rental": "Car rental services are available and convenient for exploring the surroundings.",
+      "taxi": "Taxis and ride-sharing services are readily available."
+    },
+    "activities": {
+      "free": [
+        {
+          "name": "Visit the Berlin Wall Memorial"
+        },
+        {
+          "name": "Explore Tiergarten Park"
+        }
+      ],
+      "moderate": [
+        {
+          "name": "Tour the Brandenburg Gate"
+        },
+        {
+          "name": "Visit the Museum Island"
+        }
+      ],
+      "expensive": [
+        {
+          "name": "Dinner at Restaurant Tim Raue"
+        },
+        {
+          "name": "Private tour of the Reichstag"
+        }
+      ]
+    }
+  },
+  {
+    "city": "Hong Kong",
+    "country": "Hong Kong SAR",
+    "currency": "Hong Kong Dollar (HKD)",
+    "cost": "high",
+    "climate": "subtropical",
+    "culture": "cosmopolitan",
+    "tourism_type": "city",
+    "language": "Cantonese",
+    "other_languages_spoken": ["English", "Mandarin"],
+    "best_time_to_visit": {
+      "month": "October",
+      "reason": "Fall offers mild temperatures and lower humidity, making it ideal for sightseeing."
+    },
+    "similar_destinations": ["Shanghai", "Macau", "Taipei"],
+    "rating": 80.11,
+    "transport": {
+      "public_transport": "Hong Kong has an extensive public transportation system including MTR, buses, ferries, and trams.",
+      "car_rental": "Car rental services are available but not commonly used by tourists due to the efficiency of public transport.",
+      "taxi": "Taxis and ride-sharing services are readily available."
+    },
+    "activities": {
+      "free": [
+        {
+          "name": "Visit Victoria Peak"
+        },
+        {
+          "name": "Explore the Star Ferry"
+        }
+      ],
+      "moderate": [
+        {
+          "name": "Tour Hong Kong Disneyland"
+        },
+        {
+          "name": "Visit Ocean Park"
+        }
+      ],
+      "expensive": [
+        {
+          "name": "Dinner at Lung King Heen"
+        },
+        {
+          "name": "Private tour of Lantau Island"
+        }
+      ]
+    }
+  },
+  {
+    "city": "Vienna",
+    "country": "Austria",
+    "currency": "Euro (EUR)",
+    "cost": "high",
+    "climate": "oceanic",
+    "culture": "historical",
+    "tourism_type": "city",
+    "language": "German",
+    "other_languages_spoken": ["English", "Turkish"],
+    "best_time_to_visit": {
+      "month": "June",
+      "reason": "Summer offers warm weather and numerous outdoor events and festivals."
+    },
+    "similar_destinations": ["Salzburg", "Graz", "Innsbruck"],
+    "rating": 78.44,
+    "transport": {
+      "public_transport": "Vienna has an extensive public transportation system including U-Bahn, S-Bahn, buses, and trams.",
+      "car_rental": "Car rental services are available and convenient for exploring the surroundings.",
+      "taxi": "Taxis and ride-sharing services are readily available."
+    },
+    "activities": {
+      "free": [
+        {
+          "name": "Visit Schönbrunn Palace Gardens"
+        },
+        {
+          "name": "Walk around St. Stephen's Cathedral"
+        }
+      ],
+      "moderate": [
+        {
+          "name": "Tour the Hofburg Palace"
+        },
+        {
+          "name": "Visit the Belvedere Museum"
+        }
+      ],
+      "expensive": [
+        {
+          "name": "Dinner at Steirereck"
+        },
+        {
+          "name": "Private tour of the Vienna State Opera"
+        }
+      ]
+    }
+  },
+  {
+    "city": "Amsterdam",
+    "country": "Netherlands",
+    "currency": "Euro (EUR)",
+    "cost": "high",
+    "climate": "oceanic",
+    "culture": "liberal",
+    "tourism_type": "city",
+    "language": "Dutch",
+    "other_languages_spoken": ["English", "German", "French"],
+    "best_time_to_visit": {
+      "month": "April",
+      "reason": "Spring offers blooming tulips and mild weather, perfect for exploring the city."
+    },
+    "similar_destinations": ["Rotterdam", "Utrecht", "Brussels"],
+    "rating": 78.37,
+    "transport": {
+      "public_transport": "Amsterdam has a comprehensive public transportation system including trams, buses, and metro.",
+      "car_rental": "Car rental services are available but cycling is a popular mode of transport.",
+      "taxi": "Taxis and ride-sharing services are readily available."
+    },
+    "activities": {
+      "free": [
+        {
+          "name": "Visit Vondelpark"
+        },
+        {
+          "name": "Explore the Jordaan District"
+        }
+      ],
+      "moderate": [
+        {
+          "name": "Tour the Anne Frank House"
+        },
+        {
+          "name": "Visit the Van Gogh Museum"
+        }
+      ],
+      "expensive": [
+        {
+          "name": "Dinner at De Kas"
+        },
+        {
+          "name": "Private canal cruise"
+        }
+      ]
+    }
+  },
+  {
+    "city": "Singapore",
+    "country": "Singapore",
+    "currency": "Singapore Dollar (SGD)",
+    "cost": "high",
+    "climate": "tropical rainforest",
+    "culture": "multicultural",
+    "tourism_type": "city",
+    "language": "English",
+    "other_languages_spoken": ["Mandarin", "Malay", "Tamil"],
+    "best_time_to_visit": {
+      "month": "February",
+      "reason": "February offers warm temperatures and less rainfall, making it ideal for sightseeing."
+    },
+    "similar_destinations": ["Kuala Lumpur", "Bangkok", "Hong Kong"],
+    "rating": 85.67,
+    "transport": {
+      "public_transport": "Singapore has an extensive and efficient public transportation system including MRT, buses, and taxis.",
+      "car_rental": "Car rental services are available but not commonly used by tourists due to the efficiency of public transport.",
+      "taxi": "Taxis and ride-sharing services are readily available."
+    },
+    "activities": {
+      "free": [
+        {
+          "name": "Visit Gardens by the Bay"
+        },
+        {
+          "name": "Explore Marina Bay Sands"
+        }
+      ],
+      "moderate": [
+        {
+          "name": "Tour Sentosa Island"
+        },
+        {
+          "name": "Visit the Singapore Zoo"
+        }
+      ],
+      "expensive": [
+        {
+          "name": "Dinner at Restaurant André"
+        },
+        {
+          "name": "Private tour of Universal Studios Singapore"
+        }
+      ]
+    }
+  },
+  {
+    "city": "Buenos Aires",
+    "country": "Argentina",
+    "currency": "Argentine Peso (ARS)",
+    "cost": "low",
+    "climate": "humid subtropical",
+    "culture": "cosmopolitan",
+    "tourism_type": "city",
+    "language": "Spanish",
+    "other_languages_spoken": ["English", "Italian"],
+    "best_time_to_visit": {
+      "month": "April",
+      "reason": "Fall offers mild temperatures and vibrant cultural events, making it ideal for sightseeing."
+    },
+    "similar_destinations": ["Montevideo", "Santiago", "Rio de Janeiro"],
+    "rating": 68.27,
+    "transport": {
+      "public_transport": "Buenos Aires has a comprehensive public transportation system including buses, subways, and trains.",
+      "car_rental": "Car rental services are available and convenient for exploring the surroundings.",
+      "taxi": "Taxis and ride-sharing services are readily available."
+    },
+    "activities": {
+      "free": [
+        {
+          "name": "Visit Plaza de Mayo"
+        },
+        {
+          "name": "Explore La Boca"
+        }
+      ],
+      "moderate": [
+        {
+          "name": "Tour the Teatro Colón"
+        },
+        {
+          "name": "Visit the MALBA"
+        }
+      ],
+      "expensive": [
+        {
+          "name": "Dinner at Don Julio"
+        },
+        {
+          "name": "Private tango show"
+        }
+      ]
+    }
+  },
+  {
+    "city": "Cape Town",
+    "country": "South Africa",
+    "currency": "South African Rand (ZAR)",
+    "cost": "medium",
+    "climate": "Mediterranean",
+    "culture": "diverse",
+    "tourism_type": "city",
+    "language": "English",
+    "other_languages_spoken": ["Afrikaans", "Xhosa"],
+    "best_time_to_visit": {
+      "month": "November",
+      "reason": "Spring offers mild weather and blooming flowers, making it ideal for sightseeing."
+    },
+    "similar_destinations": ["Johannesburg", "Durban", "Port Elizabeth"],
+    "rating": 68.91,
+    "transport": {
+      "public_transport": "Cape Town has a public transportation system including buses and minibuses.",
+      "car_rental": "Car rental services are available and commonly used for exploring the surroundings.",
+      "taxi": "Taxis and ride-sharing services are available but not as prevalent as in other major cities."
+    },
+    "activities": {
+      "free": [
+        {
+          "name": "Visit Table Mountain"
+        },
+        {
+          "name": "Explore the V&A Waterfront"
+        }
+      ],
+      "moderate": [
+        {
+          "name": "Tour Robben Island"
+        },
+        {
+          "name": "Visit Kirstenbosch Botanical Gardens"
+        }
+      ],
+      "expensive": [
+        {
+          "name": "Dinner at The Test Kitchen"
+        },
+        {
+          "name": "Private tour of the Cape Winelands"
+        }
+      ]
+    }
+  },
+  {
+    "city": "Prague",
+    "country": "Czech Republic",
+    "currency": "Czech Koruna (CZK)",
+    "cost": "medium",
+    "climate": "oceanic",
+    "culture": "historical",
+    "tourism_type": "city",
+    "language": "Czech",
+    "other_languages_spoken": ["English", "German"],
+    "best_time_to_visit": {
+      "month": "May",
+      "reason": "Spring offers mild weather and fewer tourists, making it ideal for sightseeing."
+    },
+    "similar_destinations": ["Vienna", "Budapest", "Krakow"],
+    "rating": 79.12,
+    "transport": {
+      "public_transport": "Prague has an extensive public transportation system including trams, buses, and metro.",
+      "car_rental": "Car rental services are available and convenient for exploring the surroundings.",
+      "taxi": "Taxis and ride-sharing services are readily available."
+    },
+    "activities": {
+      "free": [
+        {
+          "name": "Visit Charles Bridge"
+        },
+        {
+          "name": "Explore Old Town Square"
+        }
+      ],
+      "moderate": [
+        {
+          "name": "Tour Prague Castle"
+        },
+        {
+          "name": "Visit the Jewish Quarter"
+        }
+      ],
+      "expensive": [
+        {
+          "name": "Dinner at La Degustation Bohême Bourgeoise"
+        },
+        {
+          "name": "Private tour of the Strahov Monastery"
+        }
+      ]
+    }
+  },
+  {
+    "city": "Lisbon",
+    "country": "Portugal",
+    "currency": "Euro (EUR)",
+    "cost": "medium",
+    "climate": "Mediterranean",
+    "culture": "traditional",
+    "tourism_type": "city",
+    "language": "Portuguese",
+    "other_languages_spoken": ["English", "French", "Spanish"],
+    "best_time_to_visit": {
+      "month": "May",
+      "reason": "Spring offers mild weather and fewer tourists, making it ideal for sightseeing."
+    },
+    "similar_destinations": ["Porto", "Madrid", "Barcelona"],
+    "rating": 76.44,
+    "transport": {
+      "public_transport": "Lisbon has a comprehensive public transportation system including trams, buses, and metro.",
+      "car_rental": "Car rental services are available but driving in Lisbon can be challenging.",
+      "taxi": "Taxis and ride-sharing services are readily available."
+    },
+    "activities": {
+      "free": [
+        {
+          "name": "Visit Belem Tower"
+        },
+        {
+          "name": "Explore Alfama District"
+        }
+      ],
+      "moderate": [
+        {
+          "name": "Tour the Jeronimos Monastery"
+        },
+        {
+          "name": "Visit the Oceanarium"
+        }
+      ],
+      "expensive": [
+        {
+          "name": "Dinner at Belcanto"
+        },
+        {
+          "name": "Private tour of Sintra"
+        }
+      ]
+    }
+  },
+  {
+    "city": "Mexico City",
+    "country": "Mexico",
+    "currency": "Mexican Peso (MXN)",
+    "cost": "low",
+    "climate": "subtropical highland",
+    "culture": "cosmopolitan",
+    "tourism_type": "city",
+    "language": "Spanish",
+    "other_languages_spoken": ["English", "Nahuatl"],
+    "best_time_to_visit": {
+      "month": "November",
+      "reason": "Fall offers mild weather and fewer tourists, making it ideal for sightseeing."
+    },
+    "similar_destinations": ["Guadalajara", "Monterrey", "Puebla"],
+    "rating": 77.89,
+    "transport": {
+      "public_transport": "Mexico City has an extensive public transportation system including metro, buses, and light rail.",
+      "car_rental": "Car rental services are available but traffic can be heavy.",
+      "taxi": "Taxis and ride-sharing services are readily available."
+    },
+    "activities": {
+      "free": [
+        {
+          "name": "Visit Chapultepec Park"
+        },
+        {
+          "name": "Explore Zocalo Square"
+        }
+      ],
+      "moderate": [
+        {
+          "name": "Tour the National Museum of Anthropology"
+        },
+        {
+          "name": "Visit Frida Kahlo Museum"
+        }
+      ],
+      "expensive": [
+        {
+          "name": "Dinner at Pujol"
+        },
+        {
+          "name": "Private tour of Teotihuacan"
+        }
+      ]
+    }
+  },
+  {
+    "city": "Seoul",
+    "country": "South Korea",
+    "currency": "South Korean Won (KRW)",
+    "cost": "medium",
+    "climate": "humid continental",
+    "culture": "modern",
+    "tourism_type": "city",
+    "language": "Korean",
+    "other_languages_spoken": ["English", "Japanese"],
+    "best_time_to_visit": {
+      "month": "October",
+      "reason": "Fall offers mild weather and beautiful fall foliage, making it ideal for sightseeing."
+    },
+    "similar_destinations": ["Busan", "Incheon", "Daegu"],
+    "rating": 80.56,
+    "transport": {
+      "public_transport": "Seoul has an extensive public transportation system including subways, buses, and trains.",
+      "car_rental": "Car rental services are available but not commonly used by tourists due to the efficiency of public transport.",
+      "taxi": "Taxis and ride-sharing services are readily available."
+    },
+    "activities": {
+      "free": [
+        {
+          "name": "Visit Gyeongbokgung Palace"
+        },
+        {
+          "name": "Explore Namsan Park"
+        }
+      ],
+      "moderate": [
+        {
+          "name": "Tour the DMZ"
+        },
+        {
+          "name": "Visit Lotte World"
+        }
+      ],
+      "expensive": [
+        {
+          "name": "Dinner at La Yeon"
+        },
+        {
+          "name": "Private tour of Bukchon Hanok Village"
+        }
+      ]
+    }
+  },
+  {
+    "city": "Rio de Janeiro",
+    "country": "Brazil",
+    "currency": "Brazilian Real (BRL)",
+    "cost": "medium",
+    "climate": "tropical",
+    "culture": "festive",
+    "tourism_type": "city",
+    "language": "Portuguese",
+    "other_languages_spoken": ["English", "Spanish"],
+    "best_time_to_visit": {
+      "month": "February",
+      "reason": "February is carnival season, offering a vibrant atmosphere and numerous festivities."
+    },
+    "similar_destinations": ["Sao Paulo", "Salvador", "Brasilia"],
+    "rating": 79.41,
+    "transport": {
+      "public_transport": "Rio has an extensive public transportation system including buses, metro, and trams.",
+      "car_rental": "Car rental services are available but traffic can be heavy.",
+      "taxi": "Taxis and ride-sharing services are readily available."
+    },
+    "activities": {
+      "free": [
+        {
+          "name": "Visit Copacabana Beach"
+        },
+        {
+          "name": "Explore the Selarón Steps"
+        }
+      ],
+      "moderate": [
+        {
+          "name": "Tour Sugarloaf Mountain"
+        },
+        {
+          "name": "Visit the Botanical Garden"
+        }
+      ],
+      "expensive": [
+        {
+          "name": "Dinner at Oro Restaurant"
+        },
+        {
+          "name": "Helicopter tour over Rio"
+        }
+      ]
+    }
+  },
+  {
+    "city": "Madrid",
+    "country": "Spain",
+    "currency": "Euro (EUR)",
+    "cost": "medium",
+    "climate": "Mediterranean",
+    "culture": "cosmopolitan",
+    "tourism_type": "city",
+    "language": "Spanish",
+    "other_languages_spoken": ["English", "French"],
+    "best_time_to_visit": {
+      "month": "May",
+      "reason": "Spring offers mild weather and fewer tourists, making it ideal for sightseeing."
+    },
+    "similar_destinations": ["Barcelona", "Seville", "Valencia"],
+    "rating": 82.00,
+    "transport": {
+      "public_transport": "Madrid has a comprehensive public transportation system including metro, buses, and trams.",
+      "car_rental": "Car rental services are available but driving in Madrid can be challenging.",
+      "taxi": "Taxis and ride-sharing services are readily available."
+    },
+    "activities": {
+      "free": [
+        {
+          "name": "Visit Retiro Park"
+        },
+        {
+          "name": "Explore Plaza Mayor"
+        }
+      ],
+      "moderate": [
+        {
+          "name": "Tour the Royal Palace"
+        },
+        {
+          "name": "Visit the Prado Museum"
+        }
+      ],
+      "expensive": [
+        {
+          "name": "Dinner at DiverXO"
+        },
+        {
+          "name": "Private tour of Santiago Bernabéu Stadium"
+        }
+      ]
+    }
+  },
+  {
+    "city": "Toronto",
+    "country": "Canada",
+    "currency": "Canadian Dollar (CAD)",
+    "cost": "high",
+    "climate": "continental",
+    "culture": "multicultural",
+    "tourism_type": "city",
+    "language": "English",
+    "other_languages_spoken": ["French", "Cantonese", "Italian"],
+    "best_time_to_visit": {
+      "month": "June",
+      "reason": "Summer offers warm weather and numerous outdoor events and festivals."
+    },
+    "similar_destinations": ["Vancouver", "Montreal", "Ottawa"],
+    "rating": 81.67,
+    "transport": {
+      "public_transport": "Toronto has an extensive public transportation system including subways, buses, and streetcars.",
+      "car_rental": "Car rental services are available and convenient for exploring the surroundings.",
+      "taxi": "Taxis and ride-sharing services are readily available."
+    },
+    "activities": {
+      "free": [
+        {
+          "name": "Visit High Park"
+        },
+        {
+          "name": "Explore the Distillery District"
+        }
+      ],
+      "moderate": [
+        {
+          "name": "Tour the CN Tower"
+        },
+        {
+          "name": "Visit the Royal Ontario Museum"
+        }
+      ],
+      "expensive": [
+        {
+          "name": "Dinner at Canoe Restaurant"
+        },
+        {
+          "name": "Private tour of Niagara Falls"
+        }
+      ]
+    }
+  },
+  {
+    "city": "Moscow",
+    "country": "Russia",
+    "currency": "Russian Ruble (RUB)",
+    "cost": "high",
+    "climate": "continental",
+    "culture": "historical",
+    "tourism_type": "city",
+    "language": "Russian",
+    "other_languages_spoken": ["English"],
+    "best_time_to_visit": {
+      "month": "June",
+      "reason": "Summer offers warm weather and long daylight hours, perfect for sightseeing."
+    },
+    "similar_destinations": ["Saint Petersburg", "Kazan", "Novosibirsk"],
+    "rating": 78.12,
+    "transport": {
+      "public_transport": "Moscow has an extensive public transportation system including metro, buses, and trams.",
+      "car_rental": "Car rental services are available but traffic can be heavy.",
+      "taxi": "Taxis and ride-sharing services are readily available."
+    },
+    "activities": {
+      "free": [
+        {
+          "name": "Visit Red Square"
+        },
+        {
+          "name": "Explore Gorky Park"
+        }
+      ],
+      "moderate": [
+        {
+          "name": "Tour the Kremlin"
+        },
+        {
+          "name": "Visit the Tretyakov Gallery"
+        }
+      ],
+      "expensive": [
+        {
+          "name": "Dinner at White Rabbit"
+        },
+        {
+          "name": "Private tour of the Bolshoi Theatre"
+        }
+      ]
+    }
+  },
+  {
+    "city": "Athens",
+    "country": "Greece",
+    "currency": "Euro (EUR)",
+    "cost": "medium",
+    "climate": "Mediterranean",
+    "culture": "historical",
+    "tourism_type": "city",
+    "language": "Greek",
+    "other_languages_spoken": ["English", "French"],
+    "best_time_to_visit": {
+      "month": "May",
+      "reason": "Spring offers mild weather and fewer tourists, making it ideal for sightseeing."
+    },
+    "similar_destinations": ["Thessaloniki", "Santorini", "Mykonos"],
+    "rating": 79.92,
+    "transport": {
+      "public_transport": "Athens has a comprehensive public transportation system including metro, buses, and trams.",
+      "car_rental": "Car rental services are available but driving in Athens can be challenging.",
+      "taxi": "Taxis and ride-sharing services are readily available."
+    },
+    "activities": {
+      "free": [
+        {
+          "name": "Visit the Acropolis"
+        },
+        {
+          "name": "Explore the Plaka District"
+        }
+      ],
+      "moderate": [
+        {
+          "name": "Tour the Acropolis Museum"
+        },
+        {
+          "name": "Visit the National Archaeological Museum"
+        }
+      ],
+      "expensive": [
+        {
+          "name": "Dinner at Funky Gourmet"
+        },
+        {
+          "name": "Private tour of Delphi"
+        }
+      ]
+    }
+  },
+  {
+    "city": "Bangkok",
+    "country": "Thailand",
+    "currency": "Thai Baht (THB)",
+    "cost": "low",
+    "climate": "tropical",
+    "culture": "traditional",
+    "tourism_type": "city",
+    "language": "Thai",
+    "other_languages_spoken": ["English"],
+    "best_time_to_visit": {
+      "month": "December",
+      "reason": "The weather is cooler and drier, making it ideal for sightseeing and outdoor activities."
+    },
+    "similar_destinations": ["Chiang Mai", "Phuket", "Pattaya"],
+    "rating": 79.45,
+    "transport": {
+      "public_transport": "Bangkok has an extensive public transportation system including the BTS Skytrain, MRT subway, buses, and boats.",
+      "car_rental": "Car rental services are available but traffic can be heavy.",
+      "taxi": "Taxis and ride-sharing services are readily available."
+    },
+    "activities": {
+      "free": [
+        {
+          "name": "Visit Wat Arun"
+        },
+        {
+          "name": "Explore Lumpini Park"
+        }
+      ],
+      "moderate": [
+        {
+          "name": "Tour the Grand Palace"
+        },
+        {
+          "name": "Visit Chatuchak Weekend Market"
+        }
+      ],
+      "expensive": [
+        {
+          "name": "Dinner at Sirocco"
+        },
+        {
+          "name": "Private tour of the Floating Markets"
+        }
+      ]
+    }
+  },
+  {
+    "city": "Copenhagen",
+    "country": "Denmark",
+    "currency": "Danish Krone (DKK)",
+    "cost": "high",
+    "climate": "oceanic",
+    "culture": "liberal",
+    "tourism_type": "city",
+    "language": "Danish",
+    "other_languages_spoken": ["English", "German"],
+    "best_time_to_visit": {
+      "month": "June",
+      "reason": "Summer offers mild weather and numerous outdoor events and festivals."
+    },
+    "similar_destinations": ["Stockholm", "Oslo", "Helsinki"],
+    "rating": 75.28,
+    "transport": {
+      "public_transport": "Copenhagen has an extensive public transportation system including buses, trains, and metro.",
+      "car_rental": "Car rental services are available but cycling is a popular mode of transport.",
+      "taxi": "Taxis and ride-sharing services are readily available."
+    },
+    "activities": {
+      "free": [
+        {
+          "name": "Visit Nyhavn"
+        },
+        {
+          "name": "Explore the King's Garden"
+        }
+      ],
+      "moderate": [
+        {
+          "name": "Tour the National Museum of Denmark"
+        },
+        {
+          "name": "Visit Tivoli Gardens"
+        }
+      ],
+      "expensive": [
+        {
+          "name": "Dinner at Noma"
+        },
+        {
+          "name": "Private canal tour"
+        }
+      ]
+    }
+  },
+  {
+    "city": "Auckland",
+    "country": "New Zealand",
+    "currency": "New Zealand Dollar (NZD)",
+    "cost": "high",
+    "climate": "oceanic",
+    "culture": "multicultural",
+    "tourism_type": "city",
+    "language": "English",
+    "other_languages_spoken": ["Maori", "Samoan"],
+    "best_time_to_visit": {
+      "month": "March",
+      "reason": "Autumn offers mild weather and fewer tourists, making it ideal for sightseeing."
+    },
+    "similar_destinations": ["Wellington", "Christchurch", "Queenstown"],
+    "rating": 71.37,
+    "transport": {
+      "public_transport": "Auckland has a comprehensive public transportation system including buses, trains, and ferries.",
+      "car_rental": "Car rental services are available and convenient for exploring the surroundings.",
+      "taxi": "Taxis and ride-sharing services are readily available."
+    },
+    "activities": {
+      "free": [
+        {
+          "name": "Visit Auckland Domain"
+        },
+        {
+          "name": "Explore Mission Bay"
+        }
+      ],
+      "moderate": [
+        {
+          "name": "Tour the Auckland War Memorial Museum"
+        },
+        {
+          "name": "Visit Kelly Tarlton's Sea Life Aquarium"
+        }
+      ],
+      "expensive": [
+        {
+          "name": "Dinner at The Grove"
+        },
+        {
+          "name": "Private tour of Waiheke Island"
+        }
+      ]
+    }
+  }
+]
