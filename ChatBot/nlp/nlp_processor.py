@@ -27,6 +27,40 @@ class NLPProcessor:
         adjectives_lemm = [lemmatizer.lemmatize(adjective, pos="a") for adjective in adjectives]
         adverbs_lemm = [lemmatizer.lemmatize(adverb, pos="r") for adverb in adverbs]
 
+        if 'weather' in nouns:
+            show_climate_information(nouns)
+        elif 'eat' or 'cuisine' or 'food' in nouns:
+            show_cuisine_information(nouns + adjectives)
+        elif 'see' in verbs_lemm or 'visit' in verbs_lemm or 'attractions' in nouns:
+            show_tourist_attractions(nouns)
+        elif 'language' in nouns:
+            show_language_information(nouns)
+        elif 'currency' in nouns:
+            show_currency_information(nouns)
+        elif 'culture' in nouns:
+            show_cultural_information(nouns)
+        elif 'restaurant' in nouns:
+            show_restaurant_information(nouns) # TODO: API
+        elif 'hotel' or 'stay' or 'sleep' in nouns:
+            show_hotel_information(nouns) # TODO: API
+        elif 'transport' in nouns or 'get around' in ' '.join(words) or 'transport' in words:
+            show_transport_information(nouns)
+        elif 'beach' in nouns:
+            show_beach_recommendations()
+        elif 'historical' in nouns:
+            show_historical_recommendations()
+        elif 'mountain' in nouns:
+            show_mountain_recommendations()
+        elif 'city' in nouns:
+            show_city_information(nouns)
+        elif 'visit' in verbs_lemm or 'go' in verbs_lemm:
+            show_best_times_to_visit(nouns) # Mirar si te un why o when o where
+        elif 'expensive' in adjectives:
+            show_cost_of_living(tags)
+        # ...
+
+
+
         if 'what' in adverbs:
             if 'climate' in nouns:
                 show_climate_information(nouns)
