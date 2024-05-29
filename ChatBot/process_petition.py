@@ -201,8 +201,10 @@ class ProcessPetition:
 
     def show_how_expensive(self, nouns):
         city_found = False
+        print("Nouns: ", nouns)
 
         for noun in nouns:
+            print(noun)
             results = self.dao.search(noun)
             if results:
                 city_info = results[0]
@@ -233,6 +235,7 @@ class ProcessPetition:
             print(self.gpt.city_not_in_database())
 
     def show_cost_of_living(self, adverbs, nouns):
+        print("Adverbs: ", adverbs)
         if 'how' in adverbs:
             self.show_how_expensive(nouns)
         elif 'why' in adverbs:

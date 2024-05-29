@@ -24,7 +24,15 @@ class NLPProcessor:
         self.process_petition = ProcessPetition()
 
     def process(self, user_question):
+        print("User question: ", user_question)
         words, tags, nouns, verbs, adverbs, adjectives = self.tokenize_and_lemmatize(user_question)
+
+        print("Words: ", words)
+        print("Tags: ", tags)
+        print("Nouns: ", nouns)
+        print("Verbs: ", verbs)
+        print("Adverbs: ", adverbs)
+        print("Adjectives: ", adjectives)
 
         self.handle_general_questions(nouns, verbs, adjectives, adverbs, words, tags)
         return False
@@ -86,7 +94,7 @@ class NLPProcessor:
                     place_type = noun
                     break
 
-            self.process_petition.show_type_recommendations(place_type)
+            self.process_petition.show_type_recommendations(adverbs, place_type)
         else:
             return False
         return True
@@ -104,7 +112,7 @@ class NLPProcessor:
 
             self.process_petition.show_culture_recommendations(nouns, adverbs, culture_type)
         elif 'expensive' in adjectives:
-            self.process_petition.show_cost_of_living(adverbs)
+            self.process_petition.show_cost_of_living(adverbs, nouns)
         else:
             return False
         return True

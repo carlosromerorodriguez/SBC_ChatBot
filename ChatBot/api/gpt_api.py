@@ -7,10 +7,11 @@ class GPTAPI:
     openai.api_key = API_KEY
 
     def transform_input(self, user_input, adverbs, verbs, nouns, adjectives, non_matching_words):
+        print(f"User input: {user_input}")
+        print("Non matching words: ", non_matching_words)
         prompt = (
             f"Replace the following words: {', '.join(non_matching_words)} in the sentence '{user_input}' with suitable words from the following lists "
-            f"of adverbs, verbs, nouns, and adjectives. Ensure the sentence keeps its original meaning and does not "
-            f"change city names or other important words."
+            f"of adverbs, verbs, nouns, and adjectives. Ensure the sentence keeps its original meaning."
             f"Adverbs: {', '.join(adverbs)}. "
             f"Verbs: {', '.join(verbs)}. "
             f"Nouns: {', '.join(nouns)}. "
@@ -130,7 +131,6 @@ class GPTAPI:
             return None
 
     def is_greeting_input(self, user_input):
-        print(user_input)
         prompts = [
             f"Given this message: {user_input}, respond YES if it is a greeting or welcome input and NO otherwise"
         ]
@@ -143,8 +143,6 @@ class GPTAPI:
                 max_tokens=10,
                 stream=False,
             )
-
-            print(response)
 
             # Extraer el contenido del mensaje de la respuesta
             reformulated_response = response.choices[0].message.content
@@ -178,9 +176,8 @@ class GPTAPI:
             return None
 
     def is_asking_for_me(self, user_input):
-        print(user_input)
         prompts = [
-            f"Given this message: {user_input}, respond YES if it is a message that is asking for who am I"
+            f"Given this message: {user_input}, respond YES if it is a message that is asking for any Exploryst (a chatbot) information (name, what it does, etc...) and NO otherwise"
         ]
         prompt = random.choice(prompts)
 
@@ -188,7 +185,7 @@ class GPTAPI:
             response = openai.chat.completions.create(
                 model="gpt-4o",
                 messages=[{"role": "user", "content": prompt}],
-                max_tokens=10,
+                max_tokens=50,
                 stream=False,
             )
 

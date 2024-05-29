@@ -13,7 +13,6 @@ def main():
     while not exitFlag:
         user_input = input("> ")
 
-        """
         if gpt.is_greeting_input(user_input):
             print(gpt.salutation_response())
             continue
@@ -23,7 +22,6 @@ def main():
         elif gpt.is_asking_for_me(user_input):
             print(gpt.start_response())
             continue
-        """
 
         # Pas 1: Preprocessar
         transformed_input = transform_input_with_fallback_to_gpt(user_input)
