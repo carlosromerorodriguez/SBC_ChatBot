@@ -46,7 +46,7 @@ class NLPProcessor:
             show_restaurant_information(nouns) # TODO: API
         elif 'hotel' or 'stay' or 'sleep' in nouns:
             show_hotel_information(nouns) # TODO: API
-        elif 'travel' in nouns or 'flight' in nouns or 'plane' in nouns or 'get there' in ' '.join(words): # DONE
+        elif 'travel' in nouns or 'flight' in nouns or 'plane' in nouns or 'get there' in ' '.join(words): # TODO: API
             show_flight_information(adverbs, nouns)
 
         elif 'transport' in nouns or 'get around' in ' '.join(words) in words: # DONE
