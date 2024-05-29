@@ -59,20 +59,6 @@ class ProcessPetition:
         if not language_found:
             print("Sorry, I don't know the language for that location.")
 
-    def show_cultural_recommendations():
-        cultural_found = False
-        dao = KnowledgeDAO()
-        gpt = GPTAPI()
-
-        recommended_cities = [city['city'] for city in cities_dataset if
-                              any(descriptor in city['culture'].lower() for descriptor in rich_cultural_descriptors)]
-
-        if recommended_cities:
-            recommended_city = random.choice(recommended_cities)
-            print(f"For rich cultural experiences, consider visiting {recommended_city}.")
-        else:
-            print("Sorry, we couldn't find a city recommendation for rich cultural experiences.")
-
     def show_culture_recommendations(nouns, adverbs, culture_type):
         if 'what' in adverbs or 'which' in adverbs:
             results = dao.search_by_culture_type(culture_type)
