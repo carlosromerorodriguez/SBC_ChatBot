@@ -47,12 +47,14 @@ def find_non_matching_words(input_text, word_list, ignore_list, cities):
 
     return non_matching_words
 
+
 def correct_cities_in_sentence(user_input, gpt):
     city_dict = gpt.get_cities(user_input)
-    print(f"City dict: {city_dict}")
-    if city_dict:
-        for original, corrected in city_dict.items():
-            user_input = user_input.replace(original, corrected)
+    if not city_dict:
+        return user_input, {}
+
+    for original, corrected in city_dict.items():
+        user_input = user_input.replace(original, corrected)
     return user_input, city_dict.values()
 
 def transform_input_with_fallback_to_gpt(user_input):

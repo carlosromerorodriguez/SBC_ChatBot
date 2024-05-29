@@ -1,3 +1,5 @@
+import json
+
 import openai
 import random
 
@@ -221,8 +223,8 @@ class GPTAPI:
         prompt = (
             f"Given the user input: '{user_input}', identify the known cities mentioned in the text. "
             f"Generate a dictionary where the keys are the original city names found (with possible misspellings) and the values are the corrected city names. "
-            f"Ensure the city names are correctly spelled and in lowercase if there are any errors. "
-            f"If there are no cities, return an empty dictionary."
+            f"Ensure the city names are correctly spelled and capitalized if there are any errors. "
+            f"Exclude any extra wording and just provide the essential answer. Just return the dictionary with the raw names with their \"\", and enclosed in curly braces '{{}}' in a raw format, without any additional text."
         )
 
         try:
@@ -233,8 +235,11 @@ class GPTAPI:
                 stream=False,
             )
 
-            # Convertir la respuesta en una lista de ciudades
-            city_dict = eval(response.choices[0].message.content.strip())
+            response_content = response.choices[0].message.content.strip()
+            response_content = response_content.replace("'", '"')
+            print(response_content)
+
+            city_dict = json.loads(response_content)
             return city_dict
         except Exception as e:
             print(f"Error en la llamada a la API de GPT: {e}")
