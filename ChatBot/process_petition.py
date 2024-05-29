@@ -111,6 +111,34 @@ def show_historical_recommendations(city=None):
         print(
             f"Sorry, we couldn't find historical tour recommendations for {city}." if city else "Sorry, we couldn't find any city recommendation for historical experiences.")
 
+def show_transport_information(adverbs, nouns):
+    if 'how' or 'what' in adverbs:
+        city_found = False
+        for noun in nouns:
+            results = dao.search(noun)
+            if results:
+                city_info = results[0]
+                transport_info = city_info.get('transport', {})
+                response_parts = [f"Transport information for {city_info['city']}, {city_info['country']}:"]
+
+                if 'public_transport' in transport_info:
+                    response_parts.append(f"Public Transport: {transport_info['public_transport']}")
+                if 'car_rental' in transport_info:
+                    response_parts.append(f"Car Rental: {transport_info['car_rental']}")
+                if 'taxi' in transport_info:
+                    response_parts.append(f"Taxi: {transport_info['taxi']}")
+
+                response = " ".join(response_parts)
+                print(gpt.humanize_response(response))
+                city_found = True
+                break
+
+        if not city_found:
+            print(gpt.city_not_in_database())
+    else:
+        print(gpt.not_understood_response())
+
+
 def show_visit_question(nouns, adverbs):
     if 'why' in adverbs:
         show_reasons_to_visit_certain_places(nouns)

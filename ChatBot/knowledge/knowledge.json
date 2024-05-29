@@ -6,7 +6,7 @@
     "cost": "high",
     "climate": "cold",
     "culture": "modern", 
-    "tourism_type": "city",
+    "tourism_type": ["city", "mountain"],
     "language": "German",
     "other_languages_spoken": ["English", "French", "Italian"],
     "best_time_to_visit": {
@@ -246,7 +246,7 @@
     "cost": "high",
     "climate": "temperate",
     "culture": "contemporary",
-    "tourism_type": "city",
+    "tourism_type": ["city", "beach"],
     "language": "English",
     "other_languages_spoken": ["Mandarin", "Arabic", "Greek"],
     "best_time_to_visit": {
@@ -294,7 +294,7 @@
     "cost": "high",
     "climate": "hot desert",
     "culture": "modern",
-    "tourism_type": "city",
+    "tourism_type": ["city", "beach"],
     "language": "Arabic",
     "other_languages_spoken": ["English", "Hindi", "Urdu"],
     "best_time_to_visit": {
@@ -438,7 +438,7 @@
     "cost": "medium",
     "climate": "Mediterranean",
     "culture": "cosmopolitan",
-    "tourism_type": "city",
+    "tourism_type": ["city", "beach"],
     "language": "Spanish",
     "other_languages_spoken": ["Catalan", "English", "French"],
     "best_time_to_visit": {
@@ -534,7 +534,7 @@
     "cost": "high",
     "climate": "Mediterranean",
     "culture": "cosmopolitan",
-    "tourism_type": "city",
+    "tourism_type": ["city", "beach"],
     "language": "English",
     "other_languages_spoken": ["Spanish", "Chinese", "Tagalog"],
     "best_time_to_visit": {
@@ -582,7 +582,7 @@
     "cost": "medium",
     "climate": "temperate",
     "culture": "historical",
-    "tourism_type": "city",
+    "tourism_type": ["city", "mountain"],
     "language": "German",
     "other_languages_spoken": ["English", "Turkish"],
     "best_time_to_visit": {
@@ -678,7 +678,7 @@
     "cost": "high",
     "climate": "oceanic",
     "culture": "historical",
-    "tourism_type": "city",
+    "tourism_type": ["city", "mountain"],
     "language": "German",
     "other_languages_spoken": ["English", "Turkish"],
     "best_time_to_visit": {
@@ -966,7 +966,7 @@
     "cost": "medium",
     "climate": "Mediterranean",
     "culture": "traditional",
-    "tourism_type": "city",
+    "tourism_type": ["city", "beach"],
     "language": "Portuguese",
     "other_languages_spoken": ["English", "French", "Spanish"],
     "best_time_to_visit": {
@@ -1110,7 +1110,7 @@
     "cost": "medium",
     "climate": "tropical",
     "culture": "festive",
-    "tourism_type": "city",
+    "tourism_type": ["city", "beach"],
     "language": "Portuguese",
     "other_languages_spoken": ["English", "Spanish"],
     "best_time_to_visit": {
@@ -1206,7 +1206,7 @@
     "cost": "high",
     "climate": "continental",
     "culture": "multicultural",
-    "tourism_type": "city",
+    "tourism_type": ["city", "mountain"],
     "language": "English",
     "other_languages_spoken": ["French", "Cantonese", "Italian"],
     "best_time_to_visit": {
@@ -1302,7 +1302,7 @@
     "cost": "medium",
     "climate": "Mediterranean",
     "culture": "historical",
-    "tourism_type": "city",
+    "tourism_type": ["city", "beach"],
     "language": "Greek",
     "other_languages_spoken": ["English", "French"],
     "best_time_to_visit": {

@@ -43,20 +43,20 @@ class NLPProcessor:
             show_restaurant_information(nouns) # TODO: API
         elif 'hotel' or 'stay' or 'sleep' in nouns:
             show_hotel_information(nouns) # TODO: API
-        elif 'transport' in nouns or 'get around' in ' '.join(words) or 'transport' in words:
-            show_transport_information(nouns)
+        elif 'transport' in nouns or 'get around' in ' '.join(words) in words: # DONE
+            show_transport_information(adverbs, nouns)
         elif 'beach' in nouns:
-            show_beach_recommendations()
+            show_beach_recommendations(nouns, adverbs)
         elif 'historical' in nouns:
-            show_historical_recommendations()
+            show_historical_recommendations(nouns, adverbs)
         elif 'mountain' in nouns:
-            show_mountain_recommendations()
+            show_mountain_recommendations(nouns, adverbs)
         elif 'city' in nouns:
-            show_city_information(nouns)
+            show_city_tourism_information(nouns, adverbs)
         elif 'visit' in verbs_lemm or 'go' in verbs_lemm: # DONE
-            show_visit_question(nouns, adverbs) # Mirar si te un why o when o where
-        elif 'expensive' in adjectives:
-            show_cost_of_living(tags)
+            show_visit_question(nouns, adverbs)
+        elif 'expensive' in adjectives: # DONE
+            show_cost_of_living(adverbs, nouns)
         # ...
 
 
