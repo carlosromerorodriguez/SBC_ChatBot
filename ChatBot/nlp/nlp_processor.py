@@ -55,6 +55,7 @@ class NLPProcessor:
 
     def handle_general_questions(self, nouns, verbs, adjectives, adverbs, words, tags):
         if self.handle_specific_nouns(nouns, adjectives, verbs, adverbs, words):
+
             return
         if self.handle_adjectives(adjectives, nouns, adverbs):
             return
