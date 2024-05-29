@@ -27,8 +27,13 @@ class NLPProcessor:
         adjectives_lemm = [lemmatizer.lemmatize(adjective, pos="a") for adjective in adjectives]
         adverbs_lemm = [lemmatizer.lemmatize(adverb, pos="r") for adverb in adverbs]
 
-        # Si la pregunta té dos adjectius o més dels que contemplem s'ha de processar diferent que si només en té un
-        # o conté dos camps o més per els quals classifiquem les ciutats
+        #TODO:
+        # - Si la pregunta té dos adjectius o més dels que contemplem s'ha de processar diferent que si només en té un
+        #   o conté dos camps o més per els quals classifiquem les ciutats
+        # - Guardar el context de la ciutat per a les preguntes que ho requereixin
+        # - Canviar dataset perque només hi tingui els tipus de cultura que contemplem
+        # - API
+        # - Bucle de preguntes i suggeriments
 
 
         if 'weather' in nouns:
@@ -52,7 +57,7 @@ class NLPProcessor:
         elif 'transport' in nouns or 'get around' in ' '.join(words) in words: # DONE
             show_transport_information(adverbs, nouns)
 
-        # TODO: Canviar dataset perque només hi tingui aquests tipu de cultura
+
         elif 'historical' in adjectives: # DONE
             show_culture_recommendations(nouns, adverbs, "historical")
         elif 'modern' in adjectives: # DONE
