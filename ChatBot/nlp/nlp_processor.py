@@ -1,3 +1,5 @@
+import spacy
+from spacy import displacy
 import nltk
 from nltk.stem import WordNetLemmatizer
 from api.gpt_api import GPTAPI
@@ -7,6 +9,7 @@ from process_petition import *
 nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger')
 nltk.download('wordnet')
+nlp = spacy.load("en_core_web_sm")
 
 #TODO:
 # - Si la pregunta té dos adjectius o més dels que contemplem s'ha de processar diferent que si només en té un
@@ -38,20 +41,17 @@ class NLPProcessor:
         return False
 
     def tokenize_and_lemmatize(self, user_question):
-        words = nltk.word_tokenize(user_question.lower())
-        tags = nltk.pos_tag(words)
+        doc = nlp(user_question)
 
-        nouns = [token for token, pos in tags if pos.startswith('N')]
-        verbs = [token for token, pos in tags if pos.startswith('V')]
-        adverbs = [token for token, pos in tags if pos.startswith('W')]
-        adjectives = [token for token, pos in tags if pos.startswith('J')]
+        words = [token.text for token in doc]
+        tags = [(token.text, token.tag_) for token in doc]
 
-        verbs_lemme = [WordNetLemmatizer().lemmatize(verb, pos="v") for verb in verbs]
-        nouns_lemme = [WordNetLemmatizer().lemmatize(noun, pos="n") for noun in nouns]
-        adjectives_lemme = [WordNetLemmatizer().lemmatize(adjective, pos="a") for adjective in adjectives]
-        adverbs_lemme = [WordNetLemmatizer().lemmatize(adverb, pos="r") for adverb in adverbs]
+        nouns = [token.lemma_ for token in doc if token.pos_ == 'NOUN' or token.pos_ == 'PROPN']
+        verbs = [token.lemma_ for token in doc if token.pos_ == 'VERB']
+        adverbs = [token.lemma_ for token in doc if token.pos_ == 'ADV']
+        adjectives = [token.lemma_ for token in doc if token.pos_ == 'ADJ']
 
-        return words, tags, nouns_lemme, verbs_lemme, adverbs_lemme, adjectives_lemme
+        return words, tags, nouns, verbs, adverbs, adjectives
 
     def handle_general_questions(self, nouns, verbs, adjectives, adverbs, words, tags):
         if self.handle_specific_nouns(nouns, adjectives, verbs, adverbs, words):
@@ -134,7 +134,6 @@ class NLPProcessor:
 
     def handle_what_which_questions(self, nouns, verbs, adjectives):
         if 'climate' in nouns:
-            print("Climate")
             self.process_petition.show_climate_information(nouns)
         elif any(term in nouns for term in ['eat', 'cuisine', 'food', 'restaurant', 'drink', 'beverage', 'dish', 'meal']):
             self.process_petition.show_cuisine_information(nouns + adjectives)
