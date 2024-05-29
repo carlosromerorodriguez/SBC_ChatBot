@@ -6,6 +6,13 @@ nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger')
 nltk.download('wordnet')
 
+#TODO:
+# - Si la pregunta té dos adjectius o més dels que contemplem s'ha de processar diferent que si només en té un
+#   o conté dos camps o més per els quals classifiquem les ciutats
+# - Guardar el context de la ciutat per a les preguntes que ho requereixin
+# - Canviar dataset perque només hi tingui els tipus de cultura que contemplem
+# - API
+# - Bucle de preguntes i suggeriments
 
 class NLPProcessor:
     city_context = None
