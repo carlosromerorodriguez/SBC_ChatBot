@@ -74,6 +74,19 @@ class NLPProcessor:
             self.process_petition.show_flight_information(adverbs, nouns)
         elif 'transport' in nouns or 'get around' in ' '.join(words):
             self.process_petition.show_transport_information(adverbs, nouns)
+        elif 'culture' in nouns:
+            self.process_petition.show_city_culture_information(nouns)
+        elif 'tourism' in nouns:
+            self.process_petition.search_tourism_type(nouns)
+        elif any(term in nouns for term in ['beach', 'city', 'mountain']):
+            # Extreure el tipus de lloc
+            place_type = None
+            for noun in nouns:
+                if noun in ['beach', 'city', 'mountain']:
+                    place_type = noun
+                    break
+
+            self.process_petition.show_type_recommendations(place_type)
         else:
             return False
         return True
@@ -81,9 +94,17 @@ class NLPProcessor:
     def handle_adjectives(self, adjectives, nouns, adverbs):
         if any(term in adjectives for term in
                ['historical', 'modern', 'artistic', 'traditional', 'cosmopolitan', 'festive']):
-            self.process_petition.show_culture_recommendations(nouns, adverbs, adjectives)
+
+            # Extreure el tipus de cultura
+            culture_type = None
+            for adj in adjectives:
+                if adj in ['historical', 'modern', 'artistic', 'traditional', 'cosmopolitan', 'festive']:
+                    culture_type = adj
+                    break
+
+            self.process_petition.show_culture_recommendations(nouns, adverbs, culture_type)
         elif 'expensive' in adjectives:
-            self.process_petition.show_cost_of_living(adverbs, nouns)
+            self.process_petition.show_cost_of_living(adverbs)
         else:
             return False
         return True
@@ -144,12 +165,7 @@ class NLPProcessor:
             print(self.gpt_api.not_understood_response())
 
     def handle_how_questions(self, words, tags, adjectives):
-        if 'expensive' in adjectives:
-            self.process_petition.show_cost_of_living(tags)
-        elif 'get around' in ' '.join(words) or 'transport' in words:
-            self.process_petition.show_transport_information(tags)
-        else:
-            print(self.gpt_api.not_understood_response())
+        print(self.gpt_api.not_understood_response())
 
     def extract_city_name(self, tags):
         city_name = None

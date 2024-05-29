@@ -156,16 +156,8 @@ class ProcessPetition:
             print(self.gpt.not_understood_response())
 
 
-    def show_visit_question(self, nouns, adverbs):
-        if 'why' in adverbs:
-            self.show_reasons_to_visit_certain_places(nouns)
-        elif 'when' in adverbs:
-            self.show_best_times_to_visit(nouns)
-        else:
-            print(self.gpt.not_understood_response())
-
     def show_best_times_to_visit(self, nouns):
-        response_templates = [
+        response = [
             "The best time to visit {city} is during {month}. {reason}"
         ]
 
@@ -175,7 +167,7 @@ class ProcessPetition:
             if results:
                 city_info = results[0]
                 best_time_info = city_info['best_time_to_visit']
-                response = random.choice(response_templates).format(
+                response = random.choice(response).format(
                     city=city_info['city'],
                     month=best_time_info['month'],
                     reason=best_time_info['reason']
@@ -208,11 +200,10 @@ class ProcessPetition:
             print(self.gpt.city_not_in_database())
 
     def show_how_expensive(self, nouns):
-        dao = KnowledgeDAO()
         city_found = False
 
         for noun in nouns:
-            results = dao.search(noun)
+            results = self.dao.search(noun)
             if results:
                 city_info = results[0]
                 cost_level = city_info['cost']
@@ -225,11 +216,10 @@ class ProcessPetition:
             print(self.gpt.city_not_in_database())
 
     def show_why_expensive(self, nouns):
-        dao = KnowledgeDAO()
         city_found = False
 
         for noun in nouns:
-            results = dao.search(noun)
+            results = self.dao.search(noun)
             if results:
                 city_info = results[0]
                 cost_level = city_info['cost']
@@ -249,6 +239,7 @@ class ProcessPetition:
             self.show_why_expensive(nouns)
         else:
             print(self.gpt.not_understood_response())
+
     """
     def suggest_city(preferences):
         affirmative_responses = ["yes", "yeah", "sure", "of course", "absolutely", "yep"]
