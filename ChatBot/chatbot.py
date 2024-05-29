@@ -36,6 +36,7 @@ import gensim.models.word2vec as w2v
 import seaborn as sns
 import scipy
 import random
+from openai import GPT, DaVinci, Curie, Babbage
 
 """# **Base de coneixement**"""
 

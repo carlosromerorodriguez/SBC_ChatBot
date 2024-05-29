@@ -26,7 +26,7 @@ contemplated_adverbs = [
 ]
 
 
-def convert_input(user_input):
+def transform_input_with_fallback_to_gpt(user_input):
     gpt = GPTAPI()
 
     complete_list = contemplated_adverbs + contemplated_verbs + contemplated_adjectives + contemplated_nouns

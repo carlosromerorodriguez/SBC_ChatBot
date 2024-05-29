@@ -31,20 +31,17 @@ class GPTAPI:
             return None
 
     def humanize_response(self, response):
-        prompt = (
-            f"Rephrase this response to be more natural, I mean, more human and coherent: {response}"
-        )
+        prompt = f"Rephrase this response to be more natural, I mean, more human and coherent: {response}"
 
         try:
-            reformatted_response = openai.chat.completions.create(
+            response = openai.chat.completions.create(
                 model="gpt-4o",
                 messages=[{"role": "user", "content": prompt}],
                 max_tokens=200,
                 stream=False,
             )
-            # Extraer el contenido del mensaje de la respuesta
-            reformulated_response = reformatted_response.choices[0].message['content'].strip()
-            return reformulated_response
+
+            return response.choices[0].message.content
         except Exception as e:
             print(f"Error en la llamada a la API de GPT: {e}")
             return None
@@ -70,8 +67,10 @@ class GPTAPI:
 
     def start_response(self):
         prompt = (
-            "You are Exploryst, a friendly and knowledgeable travel assistant chatbot. Generate a welcoming introduction message for new users. "
-            "Introduce yourself, explain your role, and invite users to ask questions about travel destinations, accommodations, and activities. "
+            "You are Exploryst, a friendly and knowledgeable travel assistant chatbot. Generate a welcoming "
+            "introduction message for new users."
+            "Introduce yourself, explain your role, and invite users to ask questions about travel destinations, "
+            "accommodations, and activities."
             "Keep the tone warm and welcoming."
         )
 
@@ -82,9 +81,8 @@ class GPTAPI:
                 max_tokens=120,
                 stream=False,
             )
-            # Extraer el contenido del mensaje de la respuesta
-            return response.choices[0].message.content
 
+            return response.choices[0].message.content
         except Exception as e:
             print(f"Error en la llamada a la API de GPT: {e}")
             return None
@@ -201,7 +199,6 @@ class GPTAPI:
         except Exception as e:
             print(f"Error en la llamada a la API de GPT: {e}")
             return None
-
 
     def city_not_in_database(self):
         prompt = (
