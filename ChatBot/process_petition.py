@@ -201,7 +201,6 @@ class ProcessPetition:
 
     def show_how_expensive(self, nouns):
         city_found = False
-        print("Nouns: ", nouns)
 
         for noun in nouns:
             print(noun)
@@ -209,7 +208,7 @@ class ProcessPetition:
             if results:
                 city_info = results[0]
                 cost_level = city_info['cost']
-                response = f"The cost of living in {city_info['city']}, {city_info['country']} is considered {cost_level}."
+                response = f"The cost of living in {city_info['city']}, {city_info['country']} is considered {cost_level}. Because of its {city_info['culture']} culture, {city_info['climate']} climate, and tourism types like {', '.join(city_info['tourism_type'])}."
                 print(self.gpt.humanize_response(response))
                 city_found = True
                 break
@@ -235,7 +234,6 @@ class ProcessPetition:
             print(self.gpt.city_not_in_database())
 
     def show_cost_of_living(self, adverbs, nouns):
-        print("Adverbs: ", adverbs)
         if 'how' in adverbs:
             self.show_how_expensive(nouns)
         elif 'why' in adverbs:

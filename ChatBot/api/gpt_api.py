@@ -7,22 +7,23 @@ class GPTAPI:
     openai.api_key = API_KEY
 
     def transform_input(self, user_input, adverbs, verbs, nouns, adjectives, non_matching_words):
-        print(f"User input: {user_input}")
-        print("Non matching words: ", non_matching_words)
         prompt = (
-            f"Replace the following words: {', '.join(non_matching_words)} in the sentence '{user_input}' with suitable words from the following lists "
-            f"of adverbs, verbs, nouns, and adjectives. Ensure the sentence keeps its original meaning."
+            f"Transform the sentence '{user_input}' by replacing the words {', '.join(non_matching_words)} "
+            f"with suitable words from the provided lists of adverbs, verbs, nouns, and adjectives. "
+            f"Ensure the sentence retains its original meaning. "
+            f"Here are the lists of words to use: "
             f"Adverbs: {', '.join(adverbs)}. "
             f"Verbs: {', '.join(verbs)}. "
             f"Nouns: {', '.join(nouns)}. "
-            f"Adjectives: {', '.join(adjectives)}."
+            f"Adjectives: {', '.join(adjectives)}. "
+            f"Output only the transformed sentence without any additional text or highlighted words."
         )
 
         try:
             response = openai.chat.completions.create(
                 model="gpt-4o",
-                messages=[{"role": "user", "content": prompt}],
-                max_tokens=200,
+                messages=[{"role": "system", "content": prompt}],
+                max_tokens=300,
                 stream=False,
             )
 
@@ -30,6 +31,7 @@ class GPTAPI:
         except Exception as e:
             print(f"Error en la llamada a la API de GPT: {e}")
             return None
+
 
     def humanize_response(self, response):
         prompt = f"Rephrase this response to be more natural, I mean, more human and coherent: {response}"
@@ -211,6 +213,29 @@ class GPTAPI:
                 stream=False,
             )
             return response.choices[0].message.content
+        except Exception as e:
+            print(f"Error en la llamada a la API de GPT: {e}")
+            return None
+
+    def get_cities(self, user_input):
+        prompt = (
+            f"Given the user input: '{user_input}', identify the known cities mentioned in the text. "
+            f"Generate a dictionary where the keys are the original city names found (with possible misspellings) and the values are the corrected city names. "
+            f"Ensure the city names are correctly spelled and in lowercase if there are any errors. "
+            f"If there are no cities, return an empty dictionary."
+        )
+
+        try:
+            response = openai.chat.completions.create(
+                model="gpt-4o",
+                messages=[{"role": "system", "content": prompt}],
+                max_tokens=100,
+                stream=False,
+            )
+
+            # Convertir la respuesta en una lista de ciudades
+            city_dict = eval(response.choices[0].message.content.strip())
+            return city_dict
         except Exception as e:
             print(f"Error en la llamada a la API de GPT: {e}")
             return None

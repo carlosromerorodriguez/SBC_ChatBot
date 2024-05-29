@@ -5,3 +5,5 @@ gensim
 seaborn
 scipy
 openai
+spacy
+allcities

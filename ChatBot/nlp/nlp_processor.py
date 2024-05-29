@@ -25,37 +25,33 @@ class NLPProcessor:
     def __init__(self):
         self.gpt_api = GPTAPI()
         self.process_petition = ProcessPetition()
+        self.lemmatizer = WordNetLemmatizer()
 
     def process(self, user_question):
-        print("User question: ", user_question)
         words, tags, nouns, verbs, adverbs, adjectives = self.tokenize_and_lemmatize(user_question)
-
-        print("Words: ", words)
-        print("Tags: ", tags)
-        print("Nouns: ", nouns)
-        print("Verbs: ", verbs)
-        print("Adverbs: ", adverbs)
-        print("Adjectives: ", adjectives)
 
         self.handle_general_questions(nouns, verbs, adjectives, adverbs, words, tags)
         return False
 
     def tokenize_and_lemmatize(self, user_question):
-        doc = nlp(user_question)
+        words = nltk.word_tokenize(user_question)
+        tags = nltk.pos_tag(words)
 
-        words = [token.text for token in doc]
-        tags = [(token.text, token.tag_) for token in doc]
+        nouns = [token for token, pos in tags if pos.startswith('N')]
+        verbs = [token for token, pos in tags if pos.startswith('V')]
+        adverbs = [token for token, pos in tags if pos.startswith('W')]
+        adjectives = [token for token, pos in tags if pos.startswith('J')]
 
-        nouns = [token.lemma_ for token in doc if token.pos_ == 'NOUN' or token.pos_ == 'PROPN']
-        verbs = [token.lemma_ for token in doc if token.pos_ == 'VERB']
-        adverbs = [token.lemma_ for token in doc if token.pos_ == 'ADV']
-        adjectives = [token.lemma_ for token in doc if token.pos_ == 'ADJ']
+        # Lemmatize
+        verbs_lemm = [self.lemmatizer.lemmatize(verb, pos="v") for verb in verbs]
+        nouns_lemm = [self.lemmatizer.lemmatize(noun, pos="n") for noun in nouns]
+        adjectives_lemm = [self.lemmatizer.lemmatize(adjective, pos="a") for adjective in adjectives]
+        adverbs_lemm = [self.lemmatizer.lemmatize(adverb, pos="r") for adverb in adverbs]
 
-        return words, tags, nouns, verbs, adverbs, adjectives
+        return words, tags, nouns_lemm, verbs_lemm, adverbs_lemm, adjectives_lemm
 
     def handle_general_questions(self, nouns, verbs, adjectives, adverbs, words, tags):
         if self.handle_specific_nouns(nouns, adjectives, verbs, adverbs, words):
-
             return
         if self.handle_adjectives(adjectives, nouns, adverbs):
             return
