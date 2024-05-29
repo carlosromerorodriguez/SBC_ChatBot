@@ -59,9 +59,9 @@ class ProcessPetition:
         if not language_found:
             print("Sorry, I don't know the language for that location.")
 
-    def show_culture_recommendations(nouns, adverbs, culture_type):
+    def show_culture_recommendations(self, adverbs, culture_type):
         if 'what' in adverbs or 'which' in adverbs:
-            results = dao.search_by_culture_type(culture_type)
+            results = self.dao.search_by_culture_type(culture_type)
 
             if results:
                 response = f"Top recommendations for {culture_type} culture: "
@@ -72,49 +72,49 @@ class ProcessPetition:
             else:
                 print(f"No destinations with {culture_type} culture found in the database.")
         else:
-            print(gpt.not_understood_response())
+            print(self.gpt.not_understood_response())
 
 
-    def show_city_culture_information(nouns, adverbs):
+    def show_city_culture_information(self, nouns, adverbs):
         if 'what' in adverbs or 'which' in adverbs or 'where' in adverbs:
             city_found = False
             for noun in nouns:
-                results = dao.search(noun)
+                results = self.dao.search(noun)
                 if results:
                     city_info = results[0]
                     culture_info = city_info.get('culture', "")
                     response = f"{city_info['city']}, {city_info['country']} is known for its {culture_info} culture."
-                    print(gpt.humanize_response(response))
+                    print(self.gpt.humanize_response(response))
                     city_found = True
                     break
 
             if not city_found:
-                print(gpt.city_not_in_database())
+                print(self.gpt.city_not_in_database())
         else:
-            print(gpt.not_understood_response())
+            print(self.gpt.not_understood_response())
 
 
-    def search_tourism_type(nouns, adverbs):
+    def search_tourism_type(self, nouns, adverbs):
         if 'what' in adverbs or 'which' in adverbs or 'where' in adverbs:
             city_found = False
             for noun in nouns:
-                results = dao.search(noun)
+                results = self.dao.search(noun)
                 if results:
                     city_info = results[0]
                     tourism_types = ", ".join(city_info['tourism_type'])
                     response = f"{city_info['city']}, {city_info['country']} is known for its {tourism_types} tourism."
-                    print(gpt.humanize_response(response))
+                    print(self.gpt.humanize_response(response))
                     city_found = True
                     break
 
             if not city_found:
-                print(gpt.city_not_in_database())
+                print(self.gpt.city_not_in_database())
         else:
-            print(gpt.not_understood_response())
+            print(self.gpt.not_understood_response())
 
-    def show_type_recommendations(adverbs, type):
+    def show_type_recommendations(self, adverbs, type):
         if 'which' or 'where' in adverbs:
-            results = dao.search_by_tourism_type(type)
+            results = self.dao.search_by_tourism_type(type)
 
             if results:
                 response = f"Top {type} recommendations: "
@@ -125,14 +125,14 @@ class ProcessPetition:
             else:
                 print(f"No {type} destinations found in the database.")
         else:
-            print(gpt.not_understood_response())
+            print(self.gpt.not_understood_response())
 
 
-    def show_transport_information(adverbs, nouns):
+    def show_transport_information(self, adverbs, nouns):
         if 'how' or 'what' in adverbs:
             city_found = False
             for noun in nouns:
-                results = dao.search(noun)
+                results = self.dao.search(noun)
                 if results:
                     city_info = results[0]
                     transport_info = city_info.get('transport', {})
@@ -146,32 +146,32 @@ class ProcessPetition:
                         response_parts.append(f"Taxi: {transport_info['taxi']}")
 
                     response = " ".join(response_parts)
-                    print(gpt.humanize_response(response))
+                    print(self.gpt.humanize_response(response))
                     city_found = True
                     break
 
             if not city_found:
-                print(gpt.city_not_in_database())
+                print(self.gpt.city_not_in_database())
         else:
-            print(gpt.not_understood_response())
+            print(self.gpt.not_understood_response())
 
 
-    def show_visit_question(nouns, adverbs):
+    def show_visit_question(self, nouns, adverbs):
         if 'why' in adverbs:
             self.show_reasons_to_visit_certain_places(nouns)
         elif 'when' in adverbs:
             self.show_best_times_to_visit(nouns)
         else:
-            print(gpt.not_understood_response())
+            print(self.gpt.not_understood_response())
 
-    def show_best_times_to_visit(nouns):
+    def show_best_times_to_visit(self, nouns):
         response_templates = [
             "The best time to visit {city} is during {month}. {reason}"
         ]
 
         city_found = False
         for noun in nouns:
-            results = dao.search(noun)
+            results = self.dao.search(noun)
             if results:
                 city_info = results[0]
                 best_time_info = city_info['best_time_to_visit']
@@ -180,16 +180,16 @@ class ProcessPetition:
                     month=best_time_info['month'],
                     reason=best_time_info['reason']
                 )
-                print(gpt.humanize_response(response))
+                print(self.gpt.humanize_response(response))
                 city_found = True
                 break
         if not city_found:
-            print(gpt.city_not_in_database())
+            print(self.gpt.city_not_in_database())
 
-    def show_reasons_to_visit_certain_places(nouns):
+    def show_reasons_to_visit_certain_places(self, nouns):
         city_found = False
         for noun in nouns:
-            results = dao.search(noun)
+            results = self.dao.search(noun)
             if results:
                 city_info = results[0]
                 tourism_types = ", ".join(city_info['tourism_type'])
@@ -200,14 +200,14 @@ class ProcessPetition:
                 reasons += f"and explore its tourism types like {tourism_types}. "
                 reasons += f"Furthermore, the citizens here speak {city_info['language']}."
 
-                print(gpt.humanize_response(reasons))
+                print(self.gpt.humanize_response(reasons))
                 city_found = True
                 break
 
         if not city_found:
-            print(gpt.city_not_in_database())
+            print(self.gpt.city_not_in_database())
 
-    def show_how_expensive(nouns):
+    def show_how_expensive(self, nouns):
         dao = KnowledgeDAO()
         city_found = False
 
@@ -217,14 +217,14 @@ class ProcessPetition:
                 city_info = results[0]
                 cost_level = city_info['cost']
                 response = f"The cost of living in {city_info['city']}, {city_info['country']} is considered {cost_level}."
-                print(gpt.humanize_response(response))
+                print(self.gpt.humanize_response(response))
                 city_found = True
                 break
 
         if not city_found:
-            print(gpt.city_not_in_database())
+            print(self.gpt.city_not_in_database())
 
-    def show_why_expensive(nouns):
+    def show_why_expensive(self, nouns):
         dao = KnowledgeDAO()
         city_found = False
 
@@ -235,21 +235,21 @@ class ProcessPetition:
                 cost_level = city_info['cost']
                 tourism_types = ", ".join(city_info['tourism_type'])
                 response = f"The cost of living in {city_info['city']}, {city_info['country']} is considered {cost_level} because of its {city_info['culture']} culture, {city_info['climate']} climate, and tourism types like {tourism_types}."
-                print(gpt.humanize_response(response))
+                print(self.gpt.humanize_response(response))
                 city_found = True
                 break
 
         if not city_found:
-            print(gpt.city_not_in_database())
+            print(self.gpt.city_not_in_database())
 
-    def show_cost_of_living(adverbs, nouns):
+    def show_cost_of_living(self, adverbs, nouns):
         if 'how' in adverbs:
             self.show_how_expensive(nouns)
         elif 'why' in adverbs:
             self.show_why_expensive(nouns)
         else:
-            print(gpt.not_understood_response())
-
+            print(self.gpt.not_understood_response())
+    """
     def suggest_city(preferences):
         affirmative_responses = ["yes", "yeah", "sure", "of course", "absolutely", "yep"]
         negative_responses = ["no", "not really", "nope", "nah", "don't", "do not"]
@@ -376,3 +376,4 @@ class ProcessPetition:
                 else:  # No hem entes i per tant tornem a preguntar
                     print(random.choice(misunderstood_responses))
 
+    """
