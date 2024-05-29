@@ -46,16 +46,25 @@ class NLPProcessor:
             show_restaurant_information(nouns) # TODO: API
         elif 'hotel' or 'stay' or 'sleep' in nouns:
             show_hotel_information(nouns) # TODO: API
+        elif 'travel' in nouns or 'flight' in nouns or 'plane' in nouns or 'get there' in ' '.join(words): # DONE
+            show_flight_information(adverbs, nouns)
 
         elif 'transport' in nouns or 'get around' in ' '.join(words) in words: # DONE
             show_transport_information(adverbs, nouns)
 
-        elif 'historical' in adjectives:
-            show_historical_recommendations(nouns, adverbs)
-        elif 'modern' in adjectives:
-            show_modern_recommendations(nouns, adverbs)
-        elif 'artistic' in adjectives:
-            show_artistic_recommendations(nouns, adverbs)
+        # TODO: Canviar dataset perque només hi tingui aquests tipu de cultura
+        elif 'historical' in adjectives: # DONE
+            show_culture_recommendations(nouns, adverbs, "historical")
+        elif 'modern' in adjectives: # DONE
+            show_culture_recommendations(nouns, adverbs, "modern")
+        elif 'artistic' in adjectives: # DONE
+            show_culture_recommendations(nouns, adverbs, "artistic")
+        elif 'traditional' in adjectives: # DONE
+            show_culture_recommendations(nouns, adverbs, "traditional")
+        elif 'cosmopolitan' in adjectives: # DONE
+            show_culture_recommendations(nouns, adverbs, "cosmopolitan")
+        elif 'festive' in adjectives: # DONE
+            show_culture_recommendations(nouns, adverbs, "festive")
 
         elif 'culture' in nouns: # DONE
             show_city_culture_information(nouns, adverbs)

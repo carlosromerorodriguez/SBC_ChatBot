@@ -112,6 +112,22 @@ def show_historical_recommendations(city=None):
             f"Sorry, we couldn't find historical tour recommendations for {city}." if city else "Sorry, we couldn't find any city recommendation for historical experiences.")
 
 
+def show_culture_recommendations(adverbs, culture_type):
+    if 'what' in adverbs or 'which' in adverbs:
+        results = dao.search_by_culture_type(culture_type)
+
+        if results:
+            response = f"Top recommendations for {culture_type} culture: "
+            random_results = random.sample(results, min(2, len(results)))  # Selecciona fins a 2 resultats aleatoris
+            for city_info in random_results:
+                response += f"\n- {city_info['city']}, {city_info['country']}: Known for its {city_info['climate']} climate, {city_info['culture']} culture, and {', '.join(city_info['tourism_type'])} tourism."
+            print(response)
+        else:
+            print(f"No destinations with {culture_type} culture found in the database.")
+    else:
+        print(gpt.not_understood_response())
+
+
 def show_city_culture_information(nouns, adverbs):
     if 'what' in adverbs or 'which' in adverbs or 'where' in adverbs:
         city_found = False
@@ -127,6 +143,8 @@ def show_city_culture_information(nouns, adverbs):
 
         if not city_found:
             print(gpt.city_not_in_database())
+    else:
+        print(gpt.not_understood_response())
 
 
 def search_tourism_type(nouns, adverbs):

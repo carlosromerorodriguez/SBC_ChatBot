@@ -19,3 +19,10 @@ class KnowledgeDAO:
             if tourism_type in entry['tourism_type']:
                 results.append(entry)
         return results
+
+    def search_by_culture_type(self, culture_type):
+        results = []
+        for entry in self.knowledge:
+            if entry['culture'].lower() == culture_type.lower():
+                results.append(entry)
+        return results
