@@ -54,7 +54,7 @@
     "cost": "high",
     "climate": "mild",
     "culture": "artistic",
-    "tourism_type": "city",
+    "tourism_type": ["city"],
     "language": "French",
     "other_languages_spoken": ["English"],
     "best_time_to_visit": {
@@ -102,7 +102,7 @@
     "cost": "high",
     "climate": "humid subtropical",
     "culture": "modern",
-    "tourism_type": "city",
+    "tourism_type": ["city"],
     "language": "Japanese",
     "other_languages_spoken": ["English"],
     "best_time_to_visit": {
@@ -150,7 +150,7 @@
     "cost": "high",
     "climate": "humid subtropical",
     "culture": "cosmopolitan",
-    "tourism_type": "city",
+    "tourism_type": ["city"],
     "language": "English",
     "other_languages_spoken": ["Spanish", "Chinese", "Italian"],
     "best_time_to_visit": {
@@ -198,7 +198,7 @@
     "cost": "high",
     "climate": "temperate maritime",
     "culture": "historic",
-    "tourism_type": "city",
+    "tourism_type": ["city"],
     "language": "English",
     "other_languages_spoken": ["French", "Spanish", "German"],
     "best_time_to_visit": {
@@ -342,7 +342,7 @@
     "cost": "medium",
     "climate": "Mediterranean",
     "culture": "historic",
-    "tourism_type": "city",
+    "tourism_type": ["city"],
     "language": "Italian",
     "other_languages_spoken": ["English", "Spanish", "French"],
     "best_time_to_visit": {
@@ -379,54 +379,6 @@
         },
         {
           "name": "Private tour of the Sistine Chapel"
-        }
-      ]
-    }
-  },
-  {
-    "city": "Bangkok",
-    "country": "Thailand",
-    "currency": "Thai Baht (THB)",
-    "cost": "low",
-    "climate": "tropical",
-    "culture": "traditional",
-    "tourism_type": "city",
-    "language": "Thai",
-    "other_languages_spoken": ["English"],
-    "best_time_to_visit": {
-      "month": "December",
-      "reason": "The weather is cooler and drier, making it ideal for sightseeing and outdoor activities."
-    },
-    "similar_destinations": ["Chiang Mai", "Phuket", "Pattaya"],
-    "rating": 79.45,
-    "transport": {
-      "public_transport": "Bangkok has an extensive public transportation system including the BTS Skytrain, MRT subway, buses, and boats.",
-      "car_rental": "Car rental services are available but traffic can be heavy.",
-      "taxi": "Taxis and ride-sharing services are readily available."
-    },
-    "activities": {
-      "free": [
-        {
-          "name": "Visit Wat Arun"
-        },
-        {
-          "name": "Explore Lumpini Park"
-        }
-      ],
-      "moderate": [
-        {
-          "name": "Tour the Grand Palace"
-        },
-        {
-          "name": "Visit Chatuchak Weekend Market"
-        }
-      ],
-      "expensive": [
-        {
-          "name": "Dinner at Sirocco"
-        },
-        {
-          "name": "Private tour of the Floating Markets"
         }
       ]
     }
@@ -486,7 +438,7 @@
     "cost": "medium",
     "climate": "Mediterranean",
     "culture": "traditional",
-    "tourism_type": "city",
+    "tourism_type": ["city"],
     "language": "Turkish",
     "other_languages_spoken": ["English", "German", "French"],
     "best_time_to_visit": {
@@ -630,7 +582,7 @@
     "cost": "high",
     "climate": "subtropical",
     "culture": "cosmopolitan",
-    "tourism_type": "city",
+    "tourism_type": ["city"],
     "language": "Cantonese",
     "other_languages_spoken": ["English", "Mandarin"],
     "best_time_to_visit": {
@@ -726,7 +678,7 @@
     "cost": "high",
     "climate": "oceanic",
     "culture": "liberal",
-    "tourism_type": "city",
+    "tourism_type": ["city"],
     "language": "Dutch",
     "other_languages_spoken": ["English", "German", "French"],
     "best_time_to_visit": {
@@ -774,7 +726,7 @@
     "cost": "high",
     "climate": "tropical rainforest",
     "culture": "multicultural",
-    "tourism_type": "city",
+    "tourism_type": ["city"],
     "language": "English",
     "other_languages_spoken": ["Mandarin", "Malay", "Tamil"],
     "best_time_to_visit": {
@@ -822,7 +774,7 @@
     "cost": "low",
     "climate": "humid subtropical",
     "culture": "cosmopolitan",
-    "tourism_type": "city",
+    "tourism_type": ["city"],
     "language": "Spanish",
     "other_languages_spoken": ["English", "Italian"],
     "best_time_to_visit": {
@@ -870,7 +822,7 @@
     "cost": "medium",
     "climate": "Mediterranean",
     "culture": "diverse",
-    "tourism_type": "city",
+    "tourism_type": ["city"],
     "language": "English",
     "other_languages_spoken": ["Afrikaans", "Xhosa"],
     "best_time_to_visit": {
@@ -918,7 +870,7 @@
     "cost": "medium",
     "climate": "oceanic",
     "culture": "historical",
-    "tourism_type": "city",
+    "tourism_type": ["city"],
     "language": "Czech",
     "other_languages_spoken": ["English", "German"],
     "best_time_to_visit": {
@@ -1014,7 +966,7 @@
     "cost": "low",
     "climate": "subtropical highland",
     "culture": "cosmopolitan",
-    "tourism_type": "city",
+    "tourism_type": ["city"],
     "language": "Spanish",
     "other_languages_spoken": ["English", "Nahuatl"],
     "best_time_to_visit": {
@@ -1062,7 +1014,7 @@
     "cost": "medium",
     "climate": "humid continental",
     "culture": "modern",
-    "tourism_type": "city",
+    "tourism_type": ["city"],
     "language": "Korean",
     "other_languages_spoken": ["English", "Japanese"],
     "best_time_to_visit": {
@@ -1158,7 +1110,7 @@
     "cost": "medium",
     "climate": "Mediterranean",
     "culture": "cosmopolitan",
-    "tourism_type": "city",
+    "tourism_type": ["city"],
     "language": "Spanish",
     "other_languages_spoken": ["English", "French"],
     "best_time_to_visit": {
@@ -1254,7 +1206,7 @@
     "cost": "high",
     "climate": "continental",
     "culture": "historical",
-    "tourism_type": "city",
+    "tourism_type": ["city"],
     "language": "Russian",
     "other_languages_spoken": ["English"],
     "best_time_to_visit": {
@@ -1350,7 +1302,7 @@
     "cost": "low",
     "climate": "tropical",
     "culture": "traditional",
-    "tourism_type": "city",
+    "tourism_type": ["city", "beach"],
     "language": "Thai",
     "other_languages_spoken": ["English"],
     "best_time_to_visit": {
@@ -1398,7 +1350,7 @@
     "cost": "high",
     "climate": "oceanic",
     "culture": "liberal",
-    "tourism_type": "city",
+    "tourism_type": ["city"],
     "language": "Danish",
     "other_languages_spoken": ["English", "German"],
     "best_time_to_visit": {
@@ -1446,7 +1398,7 @@
     "cost": "high",
     "climate": "oceanic",
     "culture": "multicultural",
-    "tourism_type": "city",
+    "tourism_type": ["city"],
     "language": "English",
     "other_languages_spoken": ["Maori", "Samoan"],
     "best_time_to_visit": {
