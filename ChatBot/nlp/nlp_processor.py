@@ -19,6 +19,10 @@ nlp = spacy.load("en_core_web_sm")
 # - API
 # - Bucle de preguntes i suggeriments
 
+# what is the weather like in Barcelona and when is the best time to visit
+#                          after gpt api:
+# what is the weather like in Barcelona ; when is the best time to visit
+
 class NLPProcessor:
     city_context = None
 

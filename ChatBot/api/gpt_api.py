@@ -237,7 +237,6 @@ class GPTAPI:
 
             response_content = response.choices[0].message.content.strip()
             response_content = response_content.replace("'", '"')
-            print(response_content)
 
             city_dict = json.loads(response_content)
             return city_dict

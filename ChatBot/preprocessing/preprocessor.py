@@ -65,7 +65,6 @@ def transform_input_with_fallback_to_gpt(user_input):
     ignore_list = ["the", "is", "a", "an", "and", "or", "but", "if", "in", "on", "with", "for", "to", "of", "at", "by"]
 
     user_input, cities = correct_cities_in_sentence(user_input, gpt)
-    print(f"Cities: {cities}")
 
     non_matching_words = find_non_matching_words(user_input, complete_list, ignore_list, cities)
 

@@ -2,6 +2,7 @@ from nlp.nlp_processor import *
 from preprocessing.preprocessor import transform_input_with_fallback_to_gpt
 from api.gpt_api import GPTAPI
 
+# TODO: Passar user input a humanize per aconseguir una resposta més natural
 
 def main():
     gpt = GPTAPI()
@@ -26,7 +27,6 @@ def main():
         # Pas 1: Preprocessar
         transformed_input = transform_input_with_fallback_to_gpt(user_input)
 
-        print(f"Transformed input: {transformed_input}")
         # Pas 2: Procesar amb NLP i comprovar si hem de sortir del bucle
         exitFlag = nlp.process(transformed_input)
 
