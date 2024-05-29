@@ -27,6 +27,10 @@ class NLPProcessor:
         adjectives_lemm = [lemmatizer.lemmatize(adjective, pos="a") for adjective in adjectives]
         adverbs_lemm = [lemmatizer.lemmatize(adverb, pos="r") for adverb in adverbs]
 
+        # Si la pregunta té dos adjectius o més dels que contemplem s'ha de processar diferent que si només en té un
+        # o conté dos camps o més per els quals classifiquem les ciutats
+
+
         if 'weather' in nouns:
             show_climate_information(nouns)
         elif 'eat' or 'cuisine' or 'food' in nouns:
@@ -37,26 +41,39 @@ class NLPProcessor:
             show_language_information(nouns)
         elif 'currency' in nouns:
             show_currency_information(nouns)
-        elif 'culture' in nouns:
-            show_cultural_information(nouns)
+
         elif 'restaurant' in nouns:
             show_restaurant_information(nouns) # TODO: API
         elif 'hotel' or 'stay' or 'sleep' in nouns:
             show_hotel_information(nouns) # TODO: API
+
         elif 'transport' in nouns or 'get around' in ' '.join(words) in words: # DONE
             show_transport_information(adverbs, nouns)
-        elif 'beach' in nouns:
-            show_beach_recommendations(nouns, adverbs)
-        elif 'historical' in nouns:
+
+        elif 'historical' in adjectives:
             show_historical_recommendations(nouns, adverbs)
-        elif 'mountain' in nouns:
-            show_mountain_recommendations(nouns, adverbs)
-        elif 'city' in nouns:
-            show_city_tourism_information(nouns, adverbs)
+        elif 'modern' in adjectives:
+            show_modern_recommendations(nouns, adverbs)
+        elif 'artistic' in adjectives:
+            show_artistic_recommendations(nouns, adverbs)
+
+        elif 'culture' in nouns: # DONE
+            show_city_culture_information(nouns, adverbs)
+        elif 'tourism' in nouns: # DONE
+            search_tourism_type(nouns, adverbs)
+
+        elif 'beach' in nouns: # DONE
+            show_type_recommendations(adverbs, "beach")
+        elif 'mountain' in nouns: # DONE
+            show_type_recommendations(adverbs, "mountain")
+        elif 'city' in nouns: # DONE
+            show_type_recommendation(adverbs, "city")
+
         elif 'visit' in verbs_lemm or 'go' in verbs_lemm: # DONE
             show_visit_question(nouns, adverbs)
         elif 'expensive' in adjectives: # DONE
             show_cost_of_living(adverbs, nouns)
+
         # ...
 
 

@@ -12,3 +12,10 @@ class KnowledgeDAO:
                 results.append(entry)
 
         return results
+
+    def search_by_tourism_type(self, tourism_type):
+        results = []
+        for entry in self.knowledge:
+            if tourism_type in entry['tourism_type']:
+                results.append(entry)
+        return results

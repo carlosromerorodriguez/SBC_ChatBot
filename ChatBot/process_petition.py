@@ -111,6 +111,58 @@ def show_historical_recommendations(city=None):
         print(
             f"Sorry, we couldn't find historical tour recommendations for {city}." if city else "Sorry, we couldn't find any city recommendation for historical experiences.")
 
+
+def show_city_culture_information(nouns, adverbs):
+    if 'what' in adverbs or 'which' in adverbs or 'where' in adverbs:
+        city_found = False
+        for noun in nouns:
+            results = dao.search(noun)
+            if results:
+                city_info = results[0]
+                culture_info = city_info.get('culture', "")
+                response = f"{city_info['city']}, {city_info['country']} is known for its {culture_info} culture."
+                print(gpt.humanize_response(response))
+                city_found = True
+                break
+
+        if not city_found:
+            print(gpt.city_not_in_database())
+
+
+def search_tourism_type(nouns, adverbs):
+    if 'what' in adverbs or 'which' in adverbs or 'where' in adverbs:
+        city_found = False
+        for noun in nouns:
+            results = dao.search(noun)
+            if results:
+                city_info = results[0]
+                tourism_types = ", ".join(city_info['tourism_type'])
+                response = f"{city_info['city']}, {city_info['country']} is known for its {tourism_types} tourism."
+                print(gpt.humanize_response(response))
+                city_found = True
+                break
+
+        if not city_found:
+            print(gpt.city_not_in_database())
+    else:
+        print(gpt.not_understood_response())
+
+def show_type_recommendations(adverbs, type):
+    if 'which' or 'where' in adverbs:
+        results = dao.search_by_tourism_type(type)
+
+        if results:
+            response = f"Top {type} recommendations: "
+            random_results = random.sample(results, min(2, len(results)))
+            for city_info in random_results:
+                response += f"\n- {city_info['city']}, {city_info['country']}: Known for its {city_info['climate']} climate, {city_info['culture']} culture, and {', '.join(city_info['tourism_type'])} tourism."
+            print(response)
+        else:
+            print(f"No {type} destinations found in the database.")
+    else:
+        print(gpt.not_understood_response())
+
+
 def show_transport_information(adverbs, nouns):
     if 'how' or 'what' in adverbs:
         city_found = False
@@ -175,11 +227,12 @@ def show_reasons_to_visit_certain_places(nouns):
         results = dao.search(noun)
         if results:
             city_info = results[0]
+            tourism_types = ", ".join(city_info['tourism_type'])
             reasons = f"The reasons to visit {city_info['city']}: "
             reasons += f"Is known for its {city_info['culture']} culture, "
             reasons += f"you will enjoy its {city_info['climate']} climate, "
             reasons += f"enjoy its delicious {city_info['cuisine']} cuisine, "
-            reasons += f"and explore its {city_info['tourism_type']} tourism. "
+            reasons += f"and explore its tourism types like {tourism_types}. "
             reasons += f"Furthermore, the citizens here speak {city_info['language']}."
 
             print(gpt.humanize_response(reasons))
@@ -215,7 +268,8 @@ def show_why_expensive(nouns):
         if results:
             city_info = results[0]
             cost_level = city_info['cost']
-            response = f"The cost of living in {city_info['city']}, {city_info['country']} is considered {cost_level} because of its {city_info['culture']} culture, {city_info['climate']} climate, and {city_info['tourism_type']} tourism."
+            tourism_types = ", ".join(city_info['tourism_type'])
+            response = f"The cost of living in {city_info['city']}, {city_info['country']} is considered {cost_level} because of its {city_info['culture']} culture, {city_info['climate']} climate, and tourism types like {tourism_types}."
             print(gpt.humanize_response(response))
             city_found = True
             break
