@@ -3,11 +3,11 @@ from utils import *
 from knowledge.knowledge_DAO import *
 from api.gpt_api import *
 
+dao = KnowledgeDAO()
+gpt = GPTAPI()
 
 def show_climate_information(nouns):
     found = False
-    dao = KnowledgeDAO()
-    gpt = GPTAPI()
 
     for noun in nouns:
         results = dao.search(noun.lower())
@@ -110,6 +110,107 @@ def show_historical_recommendations(city=None):
     else:
         print(
             f"Sorry, we couldn't find historical tour recommendations for {city}." if city else "Sorry, we couldn't find any city recommendation for historical experiences.")
+
+def show_visit_question(nouns, adverbs):
+    if 'why' in adverbs:
+        show_reasons_to_visit_certain_places(nouns)
+    elif 'when' in adverbs:
+        show_best_times_to_visit(nouns)
+    else:
+        print(gpt.not_understood_response())
+
+def show_best_times_to_visit(nouns):
+    response_templates = [
+        "The best time to visit {city} is during {month}. {reason}"
+    ]
+
+    city_found = False
+    for noun in nouns:
+        results = dao.search(noun)
+        if results:
+            city_info = results[0]
+            best_time_info = city_info['best_time_to_visit']
+            response = random.choice(response_templates).format(
+                city=city_info['city'],
+                month=best_time_info['month'],
+                reason=best_time_info['reason']
+            )
+            print(gpt.humanize_response(response))
+            city_found = True
+            break
+    if not city_found:
+        print(gpt.city_not_in_database())
+
+def show_reasons_to_visit_certain_places(nouns):
+    city_found = False
+    for noun in nouns:
+        results = dao.search(noun)
+        if results:
+            city_info = results[0]
+            reasons = f"The reasons to visit {city_info['city']}: "
+            reasons += f"Is known for its {city_info['culture']} culture, "
+            reasons += f"you will enjoy its {city_info['climate']} climate, "
+            reasons += f"enjoy its delicious {city_info['cuisine']} cuisine, "
+            reasons += f"and explore its {city_info['tourism_type']} tourism. "
+            reasons += f"Furthermore, the citizens here speak {city_info['language']}."
+
+            print(gpt.humanize_response(reasons))
+            city_found = True
+            break
+
+    if not city_found:
+        print(gpt.city_not_in_database())
+
+def show_how_expensive(nouns):
+    dao = KnowledgeDAO()
+    city_found = False
+
+    for noun in nouns:
+        results = dao.search(noun)
+        if results:
+            city_info = results[0]
+            cost_level = city_info['cost']
+            response = f"The cost of living in {city_info['city']}, {city_info['country']} is considered {cost_level}."
+            print(gpt.humanize_response(response))
+            city_found = True
+            break
+
+    if not city_found:
+        print(gpt.city_not_in_database())
+
+def show_why_expensive(nouns):
+    dao = KnowledgeDAO()
+    city_found = False
+
+    for noun in nouns:
+        results = dao.search(noun)
+        if results:
+            city_info = results[0]
+            cost_level = city_info['cost']
+            response = f"The cost of living in {city_info['city']}, {city_info['country']} is considered {cost_level} because of its {city_info['culture']} culture, {city_info['climate']} climate, and {city_info['tourism_type']} tourism."
+            print(gpt.humanize_response(response))
+            city_found = True
+            break
+
+    if not city_found:
+        print(gpt.city_not_in_database())
+
+def show_cost_of_living(adverbs, nouns):
+    if 'how' in adverbs:
+        show_how_expensive(nouns)
+    elif 'why' in adverbs:
+        show_why_expensive(nouns)
+    else:
+        print(gpt.not_understood_response())
+
+
+
+
+
+
+
+
+
 
 
 def suggest_city(preferences):
@@ -238,71 +339,3 @@ def suggest(verbs_passed, nouns_passed, adjectives_passed, adverbs_passed):
             else:  # No hem entes i per tant tornem a preguntar
                 print(random.choice(misunderstood_responses))
 
-
-def show_best_times_to_visit(nouns):
-    city_query = ' '.join(nouns)
-
-    response_templates = [
-        "Heading to {city}? The ideal period for your trip is {times}, when the weather is just perfect for exploring.",
-        "If {city} is on your list, consider visiting during {times}. You’ll find the climate quite agreeable.",
-        "The {climate} climate of {city} makes {times} the best time to visit. Enjoy your trip!",
-        "Looking to explore {city}? {times} offers the best weather conditions for your adventures.",
-        "For a pleasant journey to {city}, aim for {times}. That’s when the climate is most favorable."
-    ]
-
-    city_found = False
-    for city_info in cities_dataset:
-        if any(noun.lower() == city_info["city"].lower() for noun in nouns):
-            best_times = get_best_times_to_visit_by_climate(city_info["climate"])
-            response = random.choice(response_templates).format(city=city_info['city'], times=best_times,
-                                                                climate=city_info['climate'])
-            print(response)
-            city_found = True
-            break
-    if not city_found:
-        print("Sorry, we don't have information on the best time to visit that location.")
-
-
-def show_reasons_to_visit_certain_places(nouns):
-    city_found = False
-    for city_info in cities_dataset:
-        if any(noun.lower() == city_info['city'].lower() for noun in nouns):
-            reasons = f"The reasons to visit {city_info['city']}: "
-            reasons += f"Is known for its {city_info['culture']} culture, "
-            reasons += f"you will enjoy its {city_info['climate']} climate, "
-            reasons += f"enjoy its delicious {city_info['cuisine']} cuisine, "
-            reasons += f"and explore its {city_info['tourism_type']} tourism. "
-            reasons += f"Furthermore, the citizens here speak {city_info['language']}."
-
-            print(reasons)
-            city_found = True
-            break
-
-    if not city_found:
-        print("There is no relevant information about the city you mention.")
-
-
-def show_cost_of_living(tags):
-    city_or_country_names = reassemble_city_names(tags)
-    adjectives = [token.lower() for token, tag in tags if tag == 'JJ']
-
-    info_found = False
-    city = False
-    for info in cities_dataset:
-        for name in city_or_country_names:
-            if info['city'].lower() == name.lower() or info['country'].lower() == name.lower():
-                if info['city'].lower() == name.lower(): city = True
-                if "expensive" in adjectives:
-                    cost_level = info['cost']
-                    if city:
-                        print(
-                            f"The cost of living in {name.title()}, {info['country'].title()} is considered {cost_level}.")
-                    else:
-                        print(f"The cost of living in {name.title()} is considered {cost_level}.")
-                    info_found = True
-                    break
-        if info_found:
-            break
-
-    if not info_found:
-        print("Sorry, we don't have cost information for that location.")

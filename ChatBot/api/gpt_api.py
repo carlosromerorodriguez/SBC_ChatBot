@@ -202,3 +202,21 @@ class GPTAPI:
             print(f"Error en la llamada a la API de GPT: {e}")
             return None
 
+
+    def city_not_in_database(self):
+        prompt = (
+            f"Act as a chatbot, generate a response to inform the user that the city introduced is not in the database. "
+            "Apologize for the inconvenience and suggest asking about another city."
+        )
+
+        try:
+            response = openai.chat.completions.create(
+                model="gpt-4o",
+                messages=[{"role": "user", "content": prompt}],
+                max_tokens=100,
+                stream=False,
+            )
+            return response.choices[0].message.content
+        except Exception as e:
+            print(f"Error en la llamada a la API de GPT: {e}")
+            return None

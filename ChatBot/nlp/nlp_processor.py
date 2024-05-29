@@ -53,8 +53,8 @@ class NLPProcessor:
             show_mountain_recommendations()
         elif 'city' in nouns:
             show_city_information(nouns)
-        elif 'visit' in verbs_lemm or 'go' in verbs_lemm:
-            show_best_times_to_visit(nouns) # Mirar si te un why o when o where
+        elif 'visit' in verbs_lemm or 'go' in verbs_lemm: # DONE
+            show_visit_question(nouns, adverbs) # Mirar si te un why o when o where
         elif 'expensive' in adjectives:
             show_cost_of_living(tags)
         # ...
