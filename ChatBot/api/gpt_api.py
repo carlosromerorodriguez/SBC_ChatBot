@@ -34,7 +34,6 @@ class GPTAPI:
             print(f"Error en la llamada a la API de GPT: {e}")
             return None
 
-
     def humanize_response(self, response):
         prompt = f"Rephrase this response to be more natural, I mean, more human and coherent: {response}"
 
@@ -246,9 +245,12 @@ class GPTAPI:
 
     def split_questions(self, user_input):
         prompt = (
+            f"YOU MUST KNOW YOU ARE A TRAVEL CHATBOT, and the user can make you multiple questions in a single "
+            f"message about an specific location or topic."
             f"Given the user input: '{user_input}', identify if there are multiple questions. "
             f"Separate each question clearly with a ' ; ' so that they can be processed individually. "
-            f"Return the separated questions as a single string."
+            f"Return the separated questions as a single string with the questions separated by ' ; ' and no "
+            f"additional text."
         )
 
         try:
