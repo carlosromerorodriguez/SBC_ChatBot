@@ -77,6 +77,7 @@ class ProcessPetition:
 
 
     def show_city_culture_information(self, nouns, adverbs, user_question):
+        print(nouns)
         if 'what' in adverbs or 'which' in adverbs or 'where' in adverbs:
             city_found = False
             for noun in nouns:

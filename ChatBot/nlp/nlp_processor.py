@@ -24,27 +24,17 @@ nlp = spacy.load("en_core_web_sm")
 # what is the weather like in Barcelona ; when is the best time to visit
 
 class NLPProcessor:
+    city_context = None
 
     def __init__(self):
         self.gpt_api = GPTAPI()
         self.process_petition = ProcessPetition()
         self.lemmatizer = WordNetLemmatizer()
 
-    def process(self, user_question):
-        print(user_question)
+    def process(self, user_question, city_context):
+        self.city_context = city_context
+
         words, tags, nouns, verbs, adverbs, adjectives, user_question = self.tokenize_and_lemmatize(user_question)
-        """
-        city = self.extract_one_city_name(tags)
-        if city:
-            self.city_context = city
-
-        if not self.city_context:
-            print("Please specify a city")
-            return False
-
-        user_question = self.gpt_api.replace_city_context(user_question, self.city_context)
-        print("User question with city context: ", user_question)
-        """
 
         self.handle_general_questions(nouns, verbs, adjectives, adverbs, words, tags, user_question)
         return False
@@ -95,7 +85,7 @@ class NLPProcessor:
         elif 'transport' in nouns or 'get around' in ' '.join(words):
             self.process_petition.show_transport_information(adverbs, nouns, user_question)
         elif 'culture' in nouns:
-            self.process_petition.show_city_culture_information(nouns, user_question)
+            self.process_petition.show_city_culture_information(nouns, adverbs, user_question)
         elif 'tourism' in nouns:
             self.process_petition.search_tourism_type(nouns, user_question)
         elif any(term in nouns for term in ['beach', 'city', 'mountain']):

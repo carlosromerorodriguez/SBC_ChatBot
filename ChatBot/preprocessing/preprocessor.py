@@ -74,7 +74,7 @@ class Preprocessor:
 
         if not cities and not self.city_context:
             self.gpt.humanize_input("Can you please specify a name?", user_input)
-            return "", True
+            return "", True, ""
 
         if cities and not self.city_context:
             self.city_context = cities[-1]
@@ -82,7 +82,7 @@ class Preprocessor:
         non_matching_words = self.find_non_matching_words(user_input, complete_list, ignore_list, cities)
 
         if not non_matching_words:
-            return self.convert_first_word_to_lowercase(user_input), False
+            return self.convert_first_word_to_lowercase(user_input), False, self.city_context
 
         return self.convert_first_word_to_lowercase(self.gpt.transform_input(user_input, contemplated_adverbs, contemplated_verbs, contemplated_nouns,
-                                   contemplated_adjectives, non_matching_words)), False
+                                   contemplated_adjectives, non_matching_words)), False, self.city_context
