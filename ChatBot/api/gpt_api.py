@@ -34,8 +34,11 @@ class GPTAPI:
             print(f"Error en la llamada a la API de GPT: {e}")
             return None
 
-    def humanize_response(self, response):
-        prompt = f"Rephrase this response to be more natural, I mean, more human and coherent: {response}"
+    def humanize_response(self, response, user_input):
+        prompt = (
+            f"Given the user question: '{user_input}', rephrase the following response to be more natural, human, and coherent: '{response}'. "
+            f"Ensure that the rephrased response directly addresses the question and sounds conversational."
+        )
 
         try:
             response = openai.chat.completions.create(
