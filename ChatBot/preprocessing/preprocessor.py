@@ -64,7 +64,7 @@ class Preprocessor:
     def transform_input_with_fallback_to_gpt(self, user_input):
         complete_list = contemplated_adverbs + contemplated_verbs + contemplated_adjectives + contemplated_nouns
 
-        ignore_list = ["the", "is", "a", "an", "and", "or", "but", "if", "in", "on", "with", "for", "to", "of", "at", "by"]
+        ignore_list = ["the", "is", "a", "an", "and", "or", "but", "if", "in", "on", "with", "for", "to", "of", "at", "by", "can", "I", "from"]
 
         user_input, cities = self.correct_cities_in_sentence(user_input)
 
