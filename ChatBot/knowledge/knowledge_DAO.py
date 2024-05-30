@@ -26,3 +26,10 @@ class KnowledgeDAO:
             if entry['culture'].lower() == culture_type.lower():
                 results.append(entry)
         return results
+
+    def search_by_weather_type(self, weather_type):
+        results = []
+        for entry in self.knowledge:
+            if entry['climate'].lower() == weather_type.lower():
+                results.append(entry)
+        return results

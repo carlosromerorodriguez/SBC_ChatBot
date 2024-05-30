@@ -77,8 +77,8 @@ class ProcessPetition:
             if not language_found:
                 print(self.gpt.city_not_in_database())
 
-    def show_culture_recommendations(self, adverbs, culture_type, user_question):
-        if 'what' in adverbs or 'which' in adverbs:
+    def show_culture_recommendations(self, adverbs, culture_type, user_question, verbs):
+        if 'what' in adverbs or 'which' in adverbs or 'suggest' in verbs or 'recommend' in verbs:
             results = self.dao.search_by_culture_type(culture_type)
 
             if results:
@@ -92,8 +92,8 @@ class ProcessPetition:
         else:
             print(self.gpt.not_understood_response())
 
-    def show_city_culture_information(self, nouns, adverbs, user_question, city_context):
-        if 'what' in adverbs or 'which' in adverbs or 'where' in adverbs:
+    def show_city_culture_information(self, adverbs, user_question, city_context, verbs):
+        if 'what' in adverbs or 'which' in adverbs or 'where' in adverbs or 'suggest' in verbs or 'recommend' in verbs:
             city_found = False
 
             results = self.dao.search(city_context)
@@ -110,8 +110,8 @@ class ProcessPetition:
         else:
             print(self.gpt.not_understood_response())
 
-    def search_tourism_type(self, adverbs, user_question, city_context):
-        if 'what' in adverbs or 'which' in adverbs or 'where' in adverbs:
+    def search_tourism_type(self, adverbs, user_question, city_context, verbs):
+        if 'what' in adverbs or 'which' in adverbs or 'where' in adverbs or 'suggest' in verbs or 'recommend' in verbs:
             city_found = False
 
             results = self.dao.search(city_context)
@@ -128,8 +128,8 @@ class ProcessPetition:
         else:
             print(self.gpt.not_understood_response())
 
-    def show_type_recommendations(self, adverbs, type, user_question):
-        if 'which' or 'where' in adverbs:
+    def show_type_recommendations(self, adverbs, type, user_question, verbs):
+        if 'which' or 'where' in adverbs or 'suggest' in verbs or 'recommend' in verbs:
             results = self.dao.search_by_tourism_type(type)
 
             if results:
@@ -143,8 +143,8 @@ class ProcessPetition:
         else:
             print(self.gpt.not_understood_response())
 
-    def show_transport_information(self, adverbs, user_question, city_context):
-        if 'how' or 'what' in adverbs:
+    def show_transport_information(self, adverbs, user_question, city_context, verbs):
+        if 'how' or 'what' in adverbs or 'explain' in verbs:
             city_found = False
 
             results = self.dao.search(city_context)
@@ -248,8 +248,8 @@ class ProcessPetition:
         else:
             print(self.gpt.not_understood_response())
 
-    def show_tourist_attractions(self, user_question, adjectives, adverbs, city_context):
-        if 'what' in adverbs or 'which' in adverbs:
+    def show_tourist_attractions(self, user_question, adjectives, adverbs, city_context, verbs):
+        if 'what' in adverbs or 'which' in adverbs or 'suggest' in verbs or 'recommend' in verbs:
             city_found = False
 
             results = self.dao.search(city_context)
@@ -281,7 +281,7 @@ class ProcessPetition:
             if not city_found:
                 print(self.gpt.city_not_in_database())
         elif 'where' in adverbs:
-            self.search_tourism_type(adverbs, user_question, city_context)
+            self.search_tourism_type(adverbs, user_question, city_context, verbs)
         else:
             print(self.gpt.not_understood_response())
 
@@ -342,6 +342,21 @@ class ProcessPetition:
             city_found = True
         if not city_found:
             print(self.gpt.city_not_in_database())
+
+    def show_weather_recommendations(self, nouns, adverbs, weather_type, user_question, verbs):
+        if 'where' in adverbs or 'which' in adverbs or 'what' in adverbs or 'suggest' in verbs or 'recommend' in verbs:
+            results = self.dao.search_by_weather_type(weather_type)
+
+            if results:
+                response = f"Top {weather_type} recommendations: "
+                random_results = random.sample(results, min(2, len(results)))
+                for city_info in random_results:
+                    response += f"\n- {city_info['city']}, {city_info['country']}: Known for its {city_info['climate']} climate, {city_info['culture']} culture, and {', '.join(city_info['tourism_type'])} tourism."
+                print(self.gpt.humanize_response(response, user_question))
+            else:
+                print(f"No {weather_type} destinations found in the database.")
+        else:
+            print(self.gpt.not_understood_response())
 
     """
     def suggest_city(preferences):

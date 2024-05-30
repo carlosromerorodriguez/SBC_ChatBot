@@ -78,9 +78,11 @@ class Preprocessor:
 
         if cities and not self.city_context:
             self.city_context = cities[-1]
+            cities = [self.city_context]
 
         if cities and self.city_context:
             self.city_context = cities[-1]
+            cities = [self.city_context]
 
         non_matching_words = self.find_non_matching_words(user_input, complete_list, ignore_list, cities)
         print (non_matching_words)

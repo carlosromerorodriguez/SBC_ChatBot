@@ -62,7 +62,7 @@ class NLPProcessor:
             return
         if self.handle_specific_verbs(verbs, adverbs, user_question):
             return
-        if self.handle_adjectives(adjectives, nouns, adverbs, user_question):
+        if self.handle_adjectives(adjectives, nouns, adverbs, user_question, verbs):
             return
         if self.handle_adverbs(adverbs, nouns, verbs, adjectives, words, tags, user_question):
             return
@@ -75,7 +75,7 @@ class NLPProcessor:
             self.process_petition.show_cuisine_information(user_question, self.city_context)
         elif any(term in verbs for term in ['see', 'visit']) or 'attractions' in nouns or 'activities' in nouns:
             print('show tourist attractions')
-            self.process_petition.show_tourist_attractions(user_question, adjectives, adverbs, self.city_context)
+            self.process_petition.show_tourist_attractions(user_question, adjectives, adverbs, self.city_context, verbs)
         elif 'language' in nouns:
             self.process_petition.show_language_information(user_question, self.city_context)
         elif 'currency' in nouns:
@@ -89,9 +89,9 @@ class NLPProcessor:
         elif 'transport' in nouns or 'get around' in ' '.join(words):
             self.process_petition.show_transport_information(adverbs, user_question, self.city_context)
         elif 'culture' in nouns:
-            self.process_petition.show_city_culture_information(nouns, adverbs, user_question, self.city_context)
+            self.process_petition.show_city_culture_information(nouns, adverbs, user_question, self.city_context, verbs)
         elif 'tourism' in nouns:
-            self.process_petition.search_tourism_type(user_question, self.city_context)
+            self.process_petition.search_tourism_type(user_question, self.city_context, verbs)
         elif any(term in nouns for term in ['beach', 'city', 'mountain']):
             # Extreure el tipus de lloc
             place_type = None
@@ -100,12 +100,12 @@ class NLPProcessor:
                     place_type = noun
                     break
 
-            self.process_petition.show_type_recommendations(adverbs, place_type, user_question)
+            self.process_petition.show_type_recommendations(adverbs, place_type, user_question, verbs)
         else:
             return False
         return True
 
-    def handle_adjectives(self, adjectives, nouns, adverbs, user_question):
+    def handle_adjectives(self, adjectives, nouns, adverbs, user_question, verbs):
         if any(term in adjectives for term in
                ['historical', 'modern', 'artistic', 'traditional', 'cosmopolitan', 'festive']):
 
@@ -116,7 +116,18 @@ class NLPProcessor:
                     culture_type = adj
                     break
 
-            self.process_petition.show_culture_recommendations(nouns, adverbs, culture_type, user_question)
+            self.process_petition.show_culture_recommendations(nouns, adverbs, culture_type, user_question, verbs)
+        elif any(term in adjectives for term in
+           ['mild', 'cold', 'warm']):
+
+            # Extreure el tipus de cultura
+            weather_type = None
+            for weather in adjectives:
+                if weather in ['mild', 'cold', 'warm']:
+                    weather_type = weather
+                    break
+
+            self.process_petition.show_weather_recommendations(nouns, adverbs, weather_type, user_question, verbs)
         elif 'expensive' in adjectives:
             self.process_petition.show_cost_of_living(adverbs, user_question, self.city_context)
         else:

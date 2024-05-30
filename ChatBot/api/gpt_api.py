@@ -286,8 +286,8 @@ class GPTAPI:
     def replace_city_context(self, user_question, city):
         prompt = (
             f"You are a travel chatbot that provides information about different cities. "
-            f"Given the user question: '{user_question}', replace all pronouns and references that clearly refer to a city (e.g., 'there', 'it', 'destination', 'city', 'place', 'location') with the given city name '{city}'. "
-            f"If the term does not refer to a city, do not replace it. Ensure the sentence remains grammatically correct and coherent. Here are some examples:\n"
+            f"Given the user question: '{user_question}', replace all pronouns that clearly refer to a city (e.g., 'there', 'it', 'destination', 'city', 'place', 'location') with the given city name '{city}'. "
+            f"If the term does not refer to a city and is asking for them, do not replace it. Ensure the sentence remains grammatically correct and coherent. Here are some examples:\n"
             f"Input: 'What is the climate like in it and how expensive is there?' -> Output: 'What is the climate like in {city} and how expensive is {city}?' \n"
             f"Input: 'Is the city affordable?' -> Output: 'Is {city} affordable?' \n"
             f"Input: 'Is it a good place to visit?' -> Output: 'Is {city} a good place to visit?' \n"
