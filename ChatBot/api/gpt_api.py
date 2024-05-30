@@ -279,3 +279,29 @@ class GPTAPI:
             print(f"Error en la llamada a la API de GPT: {e}")
             return None
 
+    def replace_city_context(self, user_question, city):
+        print("CITYYYYYYYYYY: " + city)
+        prompt = (
+            f"You are a travel chatbot. The user can ask multiple questions in a single message about a specific location or topic. "
+            f"Given the user question: '{user_question}', replace all pronouns and references to a city (e.g., 'there', 'it', 'destination', 'city', 'place', 'location') with the given city name '{city}'. "
+            f"Ensure the sentence remains grammatically correct and coherent. Here are some examples:\n"
+            f"Input: 'What is the climate like in it and how expensive is there?' -> Output: 'What is the climate like in {city} and how expensive is {city}?' \n"
+            f"Input: 'Is the city affordable?' -> Output: 'Is {city} affordable?' \n"
+            f"Return only the modified sentence with the city name replaced, without any additional text."
+        )
+
+        try:
+            response = openai.chat.completions.create(
+                model="gpt-4o",
+                messages=[{"role": "system", "content": prompt}],
+                max_tokens=200,
+                stream=False,
+            )
+
+            print("RESPONSE")
+
+            return response.choices[0].message.content.strip()
+        except Exception as e:
+            print(f"Error en la llamada a la API de GPT: {e}")
+            return None
+

@@ -32,12 +32,18 @@ class NLPProcessor:
         self.lemmatizer = WordNetLemmatizer()
 
     def process(self, user_question):
+        print(user_question)
         words, tags, nouns, verbs, adverbs, adjectives, user_question = self.tokenize_and_lemmatize(user_question)
 
         city = self.extract_city_name(tags)
+
         if city:
             self.city_context = city
-        print(f"City context: {self.city_context}")
+            user_question = self.gpt_api.replace_city_context(user_question, self.city_context)
+            print(user_question)
+        else:
+            print("Of which city are you asking about?")
+            return False
 
         self.handle_general_questions(nouns, verbs, adjectives, adverbs, words, tags, user_question)
         return False
