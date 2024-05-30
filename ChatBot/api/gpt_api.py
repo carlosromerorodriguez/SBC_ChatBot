@@ -4,6 +4,7 @@ import openai
 import random
 
 
+
 class GPTAPI:
 
     #def __init__(self, api_key):
@@ -55,12 +56,27 @@ class GPTAPI:
                 stream=False,
             )
 
+            # Mirar si la resposta té algun nom de ciutat
+            cities, flag = self.get_cities(response.choices[0].message.content)
 
+            # Ara tenint el diccionari de ciutats, si hi ha alguna ciutat, canviar el context de la ciutat
+            if cities and not flag:
+                # Agafem els valors del diccionari
+                city_values = list(cities.values())
+                # Canviem el context de la ciutat
+                print("AAAAAAA"+city_values[-1])
+                self.change_city_context(city_values[-1])
 
             return response.choices[0].message.content
         except Exception as e:
             print(f"Error en la llamada a la API de GPT: {e}")
             return None
+
+    @staticmethod
+    def change_city_context(new_city_context):
+        from preprocessing.preprocessor import Preprocessor
+
+        Preprocessor.change_city_context_value(new_city_context)
 
     def goodbye_response(self):
         prompts = [
