@@ -73,20 +73,10 @@ class TravelAPI:
             return None
 
 
-    def get_flight_info(self, origin, destination, departure_date, return_date=None, adults=1, children=0, infants=0,
-                        cabin_class="economy"):
-        url = f"{self.base_url}flights/search"
-        params = {
-            "origin": origin,
-            "destination": destination,
-            "departure_date": departure_date,
-            "return_date": return_date,
-            "adults": adults,
-            "children": children,
-            "infants": infants,
-            "cabin_class": cabin_class,
-            "lang": "en-us"
-        }
+    def get_flight_info(self, origin, destination, departure_date):
+        urlAirport = f"{self.base_url}flights/searchDestination"
+        urlFlights = f"{self.base_url}flights/searchFlights"
+        urlFlightDetails = f"{self.base_url}flights/getFlightDetails"
 
         try:
             response = requests.get(url, headers=self.get_headers(), params=params)

@@ -389,6 +389,10 @@ class ProcessPetition:
     def show_flight_information(self, adverbs, nouns, user_question, city_context):
         # Llamar a la función get_cities para extraer los nombres de las ciudades
         cities_in_question = self.gpt.get_cities(user_question)
+
+        depart_date = input("Enter the departure date (YYYY-MM-DD): ")
+        print("Searching flights in our database...\n")
+
         city_found = False
         if cities_in_question:
             unique_cities = set(cities_in_question.values())
@@ -398,7 +402,6 @@ class ProcessPetition:
                 else:
                     departure_city = city_context
                     destination_city = unique_cities.pop()
-
                 # Realizar la petición a la API para obtener información de vuelos
                 cheapestFlight, fastestFlight, bestFlight = self.travel_api.get_flight_info(departure_city, destination_city,depart_date)
 
