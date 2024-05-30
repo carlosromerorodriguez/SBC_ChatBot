@@ -43,7 +43,8 @@ class GPTAPI:
         prompt = (
             f"Given the user question: '{user_input}', rephrase the following response to be more natural, human, and coherent: '{response}'. "
             f"Ensure that the rephrased response directly addresses the question and sounds conversational."
-            f"Output only the rephrased response without any additional text or highlighted words."
+            f"Output only the rephrased response without any additional text or highlighted words, i dont want any formatting like ** or similar."
+            f"You can add emojis to make the response more engaging and friendly."
         )
 
         try:
@@ -53,6 +54,8 @@ class GPTAPI:
                 max_tokens=200,
                 stream=False,
             )
+
+
 
             return response.choices[0].message.content
         except Exception as e:
@@ -66,6 +69,7 @@ class GPTAPI:
         prompt = random.choice(prompts)
 
         prompt += "fOutput only the farewell message without any additional text or highlighted words."
+        prompt += "You can add emojis to make the response more engaging and friendly."
 
         try:
             response = openai.chat.completions.create(
@@ -88,6 +92,7 @@ class GPTAPI:
             "accommodations, and activities."
             "Keep the tone warm and welcoming."
             "Output only the welcoming message without any additional text or highlighted words."
+            "You can add emojis to make the response more engaging and friendly."
         )
 
         try:
@@ -113,6 +118,7 @@ class GPTAPI:
         prompt = random.choice(prompts)
 
         prompt += f"Output only the greeting message without any additional text or highlighted words."
+        prompt += "You can add emojis to make the response more engaging and friendly."
 
         try:
             response = openai.chat.completions.create(

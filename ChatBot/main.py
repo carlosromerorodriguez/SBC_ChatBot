@@ -3,9 +3,11 @@ from nlp.nlp_processor import *
 from preprocessing.preprocessor import Preprocessor
 from api.gpt_api import GPTAPI
 
-# TODO: Passar user input a humanize per aconseguir una resposta més natural
-# TODO: Añadir logica de restaurantes
+
+
 # TODO: Logica de fechas (ej: inicial > final)
+# TODO: Check date format in hotel i flight petitions
+# TODO: Intentar fer que si hi ha una ciutat a la frase de resposta del GPT, la detecti i actualitzi el context
 
 test_questions = [
     "What is the weather like in Barcelona?",

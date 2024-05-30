@@ -25,7 +25,6 @@ class TravelAPI:
 
     def search_hotels(self, dest_id, checkin_date, checkout_date, adults=1, children_age="0", room_qty=1, page_number=1):
         url = f"{self.base_url}hotels/searchHotels"
-        print("Destination id: ", dest_id)
         params = {
             "dest_id": dest_id,
             "search_type": "CITY",

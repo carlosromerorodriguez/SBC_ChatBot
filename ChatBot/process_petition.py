@@ -354,19 +354,28 @@ class ProcessPetition:
             print(self.gpt.city_not_in_database())
 
     def show_hotel_information(self, city_context):
+        string = f"In {city_context}, there are various hotels you can stay at. Can you fill in the check-in and check-out dates? So I can help you find the best hotel for your stay."
+        print(self.gpt.humanize_response(string, city_context))
+
         initial_date = input("Enter the check-in date (YYYY-MM-DD): ")
         final_date = input("Enter the check-out date (YYYY-MM-DD): ")
 
+        # TODO: Comprovar que el format sigui correcte
+
+        print("Searching hotels in our database...\n")
+
         destination_response = self.travel_api.search_destination(query=city_context)
         if not destination_response or not destination_response.get('data'):
-            print(f"No se pudo encontrar el ID de destino para la ciudad: {city_context}")
+            msg = f"I couldn't find the destination for the city due to an API error: {city_context}"
+            print(self.gpt.humanize_response(msg, city_context))
             return
 
         dest_id = destination_response['data'][0]['dest_id']
 
         hotels_response = self.travel_api.search_hotels(dest_id=dest_id, checkin_date=initial_date, checkout_date=final_date)
         if not hotels_response or not hotels_response.get('data') or not hotels_response['data'].get('hotels'):
-            print("No se pudo obtener la información del hotel.")
+            msg = f"I couldn't find any hotels for the destination due to an API error: {city_context}"
+            print(self.gpt.humanize_response(msg, city_context))
             return
 
         hotel_id = hotels_response['data']['hotels'][0]['hotel_id']
@@ -374,19 +383,23 @@ class ProcessPetition:
 
         if hotel_details:
             hotel_data = hotel_details['data']
-            print("Hotel details:")
-            print(f"Name: {hotel_data['hotel_name']}")
-            print(f"URL: {hotel_data['url']}")
-            print(f"Address: {hotel_data['address']}, {hotel_data['city']}, {hotel_data['country_trans']}")
-            print(f"Check-in: {hotel_data['arrival_date']}")
-            print(f"Check-out: {hotel_data['departure_date']}")
-            print(f"Price: {hotel_data['product_price_breakdown']['gross_amount_hotel_currency']['amount_rounded']}")
-            print(
-                f"Review Score: {hotel_data.get('wifi_review_score', {}).get('rating', 'N/A')} (based on {hotel_data['review_nr']} reviews)")
+            response = f"I found a hotel for you in {city_context}. Here are the details:"
+            response += f"Name: {hotel_data['hotel_name']}"
+            response += f"URL: {hotel_data['url']}"
+            response += f"Address: {hotel_data['address']}, {hotel_data['city']}, {hotel_data['country_trans']}"
+            response += f"Check-in: {hotel_data['arrival_date']}"
+            response += f"Check-out: {hotel_data['departure_date']}"
+            response += f"Price: {hotel_data['product_price_breakdown']['gross_amount_hotel_currency']['amount_rounded']}"
+            response += f"Review Score: {hotel_data.get('wifi_review_score', {}).get('rating', 'N/A')} (based on {hotel_data['review_nr']} reviews)"
+
+            print(self.gpt.humanize_response(response, city_context))
         else:
             print("No se pudo obtener los detalles del hotel.")
 
     def show_flight_information(self, adverbs, nouns, user_question, city_context):
+        string = "I can help you find the best flight for your trip. Can you provide me with the departure date?"
+        print(self.gpt.humanize_response(string, user_question))
+
         # Llamar a la función get_cities para extraer los nombres de las ciudades
         cities_in_question, flag = self.gpt.get_cities(user_question)
 
@@ -395,6 +408,10 @@ class ProcessPetition:
             return
 
         depart_date = input("Enter the departure date (YYYY-MM-DD): ")
+
+        #TODO: Comprovar que el format sigui correcte
+
+
         print("Searching flights in our database...\n")
 
         city_found = False

@@ -5,7 +5,7 @@ import re
 contemplated_nouns = [
     'cuisine', 'attractions', 'language', 'food', 'beach', 'city', 'cost', 'culture', 'transport',
     'places', 'reasons', 'time', 'tourism', 'weather', 'country', 'rating', 'currency', 'activities', 'public_transport', 'car_rental', 'taxi', 'mountain',  'other', 'mountain',
-    'hotel', 'flight', 'plane', 'restaurant', 'stay', 'sleep', 'restaurants', 'restaurant', 'other'
+    'hotel', 'flight', 'plane', 'restaurant', 'stay', 'sleep', 'restaurants', 'other', 'hotels', 'flights', 'planes'
 ]
 
 # Context adjectives
@@ -89,15 +89,23 @@ class Preprocessor:
             self.city_context = cities[-1]
 
         non_matching_words = self.find_non_matching_words(user_input, complete_list, ignore_list, cities)
-        print("Non matching words")
-        print(non_matching_words)
 
         # Passem totes les paraules a minúscules
         non_matching_words = [word.lower() for word in non_matching_words]
 
         for city in cities:
-            if city.lower() in non_matching_words:
-                non_matching_words.remove(city)
+            city_words = city.lower().split()
+            for word in city_words:
+                if word.lower() in non_matching_words:
+                    non_matching_words.remove(word)
+
+        context_city_words = self.city_context.lower().split()
+        for word in context_city_words:
+            if word.lower() in non_matching_words:
+                non_matching_words.remove(word)
+
+        print("Non matching words after removing cities")
+        print(non_matching_words)
 
         if not non_matching_words:
             return self.convert_first_word_to_lowercase(user_input), False, self.city_context
