@@ -292,7 +292,7 @@ class ProcessPetition:
         if results:
             city_info = results[0]
             currency_info = city_info.get('currency', 'Currency information not available')
-            response = f"The currency used in {city_info['city']}, {city_info['country']} is {currency_info}."
+            response = f"The currency used in {city_info['city']}, {city_info['country']} is {currency_info}. That can be represented as"
             print(self.gpt.humanize_response(response, user_question))
             city_found = True
 
