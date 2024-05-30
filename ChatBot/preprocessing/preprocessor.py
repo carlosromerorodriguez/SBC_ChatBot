@@ -5,7 +5,7 @@ import re
 contemplated_nouns = [
     'cuisine', 'attractions', 'language', 'food', 'beach', 'city', 'cost', 'culture', 'transport',
     'places', 'reasons', 'time', 'tourism', 'weather', 'country', 'rating', 'currency', 'activities', 'public_transport', 'car_rental', 'taxi', 'mountain',  'other', 'mountain',
-    'hotel', 'flight', 'plane', 'restaurant', 'stay', 'sleep', 'restaurants', 'other', 'hotels', 'flights', 'planes'
+    'hotel', 'flight', 'plane', 'restaurant', 'stay', 'sleep', 'restaurants', 'other', 'hotels', 'flights', 'planes', 'around'
 ]
 
 # Context adjectives
@@ -16,7 +16,8 @@ contemplated_adjectives = [
 
 # Context verbs
 contemplated_verbs = [
-    'show', 'suggest', 'visit', 'go', 'get around', 'eat', 'see', 'travel', 'get', 'there', 'pay', 'recommend', 'speak'
+    'show', 'suggest', 'visit', 'go', 'get around', 'eat', 'see', 'travel', 'get', 'there', 'pay', 'recommend', 'speak',
+    'living', 'live', 'staying', 'sleeping', 'sleep', 'stay', 'find', 'discover', 'explore', 'experience'
 ]
 
 # Context adverbs

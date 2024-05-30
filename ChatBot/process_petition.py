@@ -205,7 +205,7 @@ class ProcessPetition:
             reasons = f"The reasons to visit {city_info['city']}: "
             reasons += f"Is known for its {city_info['culture']} culture, "
             reasons += f"you will enjoy its {city_info['climate']} climate, "
-            reasons += f"enjoy its delicious {city_info['cuisine']} cuisine, "
+            reasons += f"enjoy its delicious {city_info['typical_food']} cuisine, "
             reasons += f"and explore its tourism types like {tourism_types}. "
             reasons += f"Furthermore, the citizens here speak {city_info['language']}."
 
