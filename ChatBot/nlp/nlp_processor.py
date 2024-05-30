@@ -60,6 +60,8 @@ class NLPProcessor:
         print(user_question)
         if self.handle_specific_nouns(nouns, adjectives, verbs, adverbs, words, user_question):
             return
+        if self.handle_specific_verbs(verbs, adverbs, user_question):
+            return
         if self.handle_adjectives(adjectives, nouns, adverbs, user_question):
             return
         if self.handle_adverbs(adverbs, nouns, verbs, adjectives, words, tags, user_question):
@@ -177,3 +179,12 @@ class NLPProcessor:
                 city_name = token
                 break
         return city_name
+
+    def handle_specific_verbs(self, verbs, adverbs, user_question):
+        if 'pay' in verbs:
+            if 'how' in adverbs:
+                self.process_petition.show_cost_of_living(adverbs, user_question, self.city_context)
+            else:
+                print(self.gpt_api.not_understood_response())
+
+        return False
