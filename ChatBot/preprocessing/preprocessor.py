@@ -31,10 +31,10 @@ class Preprocessor:
     def __init__(self):
         self.gpt = GPTAPI()
 
-    def change_city_context_value(cls, new_city_context):
+    def change_city_context_value(self, new_city_context):
         print("Changing city context to: " + new_city_context)
-        cls.city_context = new_city_context
-        print("City context is now: " + cls.city_context)
+        self.city_context = new_city_context
+        print("City context is now: " + self.city_context)
 
     def convert_first_word_to_lowercase(self, input_string):
         words = input_string.split()

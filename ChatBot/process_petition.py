@@ -474,40 +474,6 @@ class ProcessPetition:
 
         if not city_found:
             await self.send_message(context, chat_id, self.gpt.city_not_in_database())
-
-    async def process_message(self, message, context, chat_id):
-        from nlp.nlp_processor import NLPProcessor
-        nlp = NLPProcessor(self.prp, self.send_message)
-        preprocessor = Preprocessor()
-        user_input = message
-
-        if self.gpt.is_greeting_input(user_input):
-            await self.send_message(context, chat_id, self.gpt.salutation_response())
-            return
-        elif self.gpt.is_goodbye_input(user_input):
-            await self.send_message(context, chat_id, self.gpt.goodbye_response())
-            return
-        elif self.gpt.is_asking_for_me(user_input):
-            await self.send_message(context, chat_id, self.gpt.start_response())
-            return
-
-        separated_questions = self.gpt.split_questions(user_input)
-        if separated_questions:
-            questions = separated_questions.split(' ; ')
-        else:
-            questions = [user_input]
-
-        for question in questions:
-            transformed_input, flagCont, city_context = preprocessor.transform_input_with_fallback_to_gpt(question)
-            if flagCont:
-                continue
-
-            exitFlag = await nlp.process(transformed_input, city_context, context, chat_id)
-
-            if exitFlag:
-                print("El proceso ha terminado.")
-                return
-
     """
     def suggest_city(preferences):
         affirmative_responses = ["yes", "yeah", "sure", "of course", "absolutely", "yep"]

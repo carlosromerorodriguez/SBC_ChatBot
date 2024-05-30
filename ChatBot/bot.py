@@ -3,6 +3,8 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters, C
 from process_petition import ProcessPetition
 from preprocessing.preprocessor import Preprocessor
 from nlp.nlp_processor import *
+from api.gpt_api import GPTAPI
+
 # TODO: Logica de fechas (ej: inicial > final)
 # TODO: Check date format in hotel i flight petitions
 # TODO: Segueix ficant la ciutat com a context a la resposta del GPT quan no toca, exemple: Suggest...
@@ -32,14 +34,18 @@ test_questions = [
     "How do I get around in Hong Kong?"
     "Any similar cities to Tokyo?",
 ]
+
+
 async def send_message_to_telegram(context: ContextTypes.DEFAULT_TYPE, chat_id: int, text: str) -> None:
     message = await context.bot.send_message(chat_id=chat_id, text=text)
     context.user_data['messages'].append(message.message_id)
 
 
+gpt = GPTAPI()
 prp = Preprocessor()
-nlp = NLPProcessor(prp, send_message_to_telegram)
 process_petition = ProcessPetition(prp, send_message_to_telegram)
+nlp = NLPProcessor(prp, process_petition)
+
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if 'messages' not in context.user_data:
@@ -50,17 +56,40 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     context.user_data['messages'].append(message.message_id)
 
 
-
-
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if 'messages' not in context.user_data:
         context.user_data['messages'] = []
 
     text = update.message.text
     chat_id = update.message.chat_id
+    user_input = text
 
-    # Pasar context y chat_id a process_message
-    await process_petition.process_message(text, context, chat_id)
+    if gpt.is_greeting_input(user_input):
+        await send_message_to_telegram(context, chat_id, gpt.salutation_response())
+        return
+    elif gpt.is_goodbye_input(user_input):
+        await send_message_to_telegram(context, chat_id, gpt.goodbye_response())
+        return
+    elif gpt.is_asking_for_me(user_input):
+        await send_message_to_telegram(context, chat_id, gpt.start_response())
+        return
+
+    separated_questions = gpt.split_questions(user_input)
+    if separated_questions:
+        questions = separated_questions.split(' ; ')
+    else:
+        questions = [user_input]
+
+    for question in questions:
+        transformed_input, flagCont, city_context = prp.transform_input_with_fallback_to_gpt(question)
+        if flagCont:
+            continue
+
+        exitFlag = await nlp.process(transformed_input, city_context, context, chat_id)
+
+        if exitFlag:
+            print("El proceso ha terminado.")
+            return
 
 
 async def clear(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
