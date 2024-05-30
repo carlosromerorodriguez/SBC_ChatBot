@@ -34,6 +34,11 @@ class NLPProcessor:
     def process(self, user_question):
         words, tags, nouns, verbs, adverbs, adjectives, user_question = self.tokenize_and_lemmatize(user_question)
 
+        city = self.extract_city_name(tags)
+        if city:
+            self.city_context = city
+        print(f"City context: {self.city_context}")
+
         self.handle_general_questions(nouns, verbs, adjectives, adverbs, words, tags, user_question)
         return False
 
@@ -180,5 +185,13 @@ class NLPProcessor:
         for i, (token, tag) in enumerate(tags):
             if token == 'in' and i + 1 < len(tags):
                 city_name = tags[i + 1][0]
+                break
+        return city_name
+
+    def extract_one_city_name(self, tags):
+        city_name = None
+        for i, (token, tag) in enumerate(tags):
+            if tag == 'NNP':  # Proper noun
+                city_name = token
                 break
         return city_name

@@ -26,7 +26,12 @@ def main():
 
         # Dividir las preguntas si hay múltiples
         separated_questions = gpt.split_questions(user_input)
-        questions = separated_questions.split(' ; ')
+        print(separated_questions)
+
+        if separated_questions:
+            questions = separated_questions.split(' ; ')
+        else:
+            questions = [user_input]
 
         for question in questions:
             # Pas 1: Preprocessar

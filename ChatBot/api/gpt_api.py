@@ -248,24 +248,25 @@ class GPTAPI:
 
     def split_questions(self, user_input):
         prompt = (
-            f"YOU MUST KNOW YOU ARE A TRAVEL CHATBOT, and the user can make you multiple questions in a single "
-            f"message about an specific location or topic."
+            f"You are a travel chatbot, and the user can ask you multiple questions in a single message about a specific location or topic. "
             f"Given the user input: '{user_input}', identify if there are multiple questions. "
             f"Separate each question clearly with a ' ; ' so that they can be processed individually. "
-            f"Return the separated questions as a single string with the questions separated by ' ; ' and no "
-            f"additional text."
+            f"Return the separated questions as a single string with the questions separated by ' ; ' and no additional text. "
+            f"If there is only one question, add a ' ; ' at the end of the question and return the original question with the ' ; ' at the end."
         )
 
         try:
-            response = openai.ChatCompletion.create(
+            response = openai.chat.completions.create(
                 model="gpt-4o",
                 messages=[{"role": "system", "content": prompt}],
                 max_tokens=200,
                 stream=False,
             )
 
+            print(response)
             response_content = response.choices[0].message.content.strip()
             return response_content
         except Exception as e:
             print(f"Error en la llamada a la API de GPT: {e}")
             return None
+
