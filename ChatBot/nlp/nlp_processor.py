@@ -149,17 +149,10 @@ class NLPProcessor:
             print(self.gpt_api.not_understood_response())
 
     def handle_where_questions(self, words, tags, user_question):
-        if "cultural" in words:
-            self.process_petition.show_cultural_recommendations(user_question, self.city_context)
-        elif "food" in words or "cuisine" in words:
+        if "food" in words or "cuisine" in words:
             self.process_petition.show_food_recommendations(user_question, self.city_context)
-        elif "beach" in words:
-            self.process_petition.show_beach_recommendations(user_question, self.city_context)
-        elif "historical" in words:
-            city_name = self.extract_city_name(tags)
-            self.process_petition.show_historical_recommendations(city_name, user_question, self.city_context)
         else:
-            print("Can you specify what kind of places or experiences you're interested in?")
+            print(self.gpt_api.not_understood_response())
 
     def handle_when_questions(self, words, nouns, user_question):
         if 'visit' in words or 'go' in words:
