@@ -255,10 +255,10 @@ class GPTAPI:
             response_content = response_content.replace("'", '"')
 
             city_dict = json.loads(response_content)
-            return city_dict
+            return city_dict, False
         except Exception as e:
             print(f"Error en la llamada a la API de GPT: {e}")
-            return None
+            return None, True
 
     def split_questions(self, user_input):
         prompt = (

@@ -48,13 +48,18 @@ class Preprocessor:
         # Afegir les paraules que no estan en les llistes a non_matching_words
         non_matching_words = [word for word in input_words if
                               word not in word_list and word not in ignore_list and word not in cities and
-                              word.lower != self.city_context.lower()]
+                              word.lower() != self.city_context.lower()]
 
         return non_matching_words
 
 
     def correct_cities_in_sentence(self, user_input):
-        city_dict = self.gpt.get_cities(user_input)
+        city_dict, flag = self.gpt.get_cities(user_input)
+
+        if flag:
+            print(self.gpt.humanize_response("Petition to API failed, something might go wrong. Please try again."), user_input)
+            return user_input, {}
+
         if not city_dict:
             return user_input, {}
 
@@ -75,6 +80,7 @@ class Preprocessor:
 
         if not cities and self.city_context:
             user_input = self.gpt.replace_city_context(user_input, self.city_context)
+            print("USER"+user_input)
 
         elif cities and not self.city_context:
             self.city_context = cities[-1]
@@ -85,6 +91,13 @@ class Preprocessor:
         non_matching_words = self.find_non_matching_words(user_input, complete_list, ignore_list, cities)
         print("Non matching words")
         print(non_matching_words)
+
+        # Passem totes les paraules a minúscules
+        non_matching_words = [word.lower() for word in non_matching_words]
+
+        for city in cities:
+            if city.lower() in non_matching_words:
+                non_matching_words.remove(city)
 
         if not non_matching_words:
             return self.convert_first_word_to_lowercase(user_input), False, self.city_context

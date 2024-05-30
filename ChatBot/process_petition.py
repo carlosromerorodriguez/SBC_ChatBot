@@ -388,7 +388,11 @@ class ProcessPetition:
 
     def show_flight_information(self, adverbs, nouns, user_question, city_context):
         # Llamar a la función get_cities para extraer los nombres de las ciudades
-        cities_in_question = self.gpt.get_cities(user_question)
+        cities_in_question, flag = self.gpt.get_cities(user_question)
+
+        if flag:
+            print(self.gpt.humanize_response("I am sorry, petition to API failed. Please try again.", user_question))
+            return
 
         depart_date = input("Enter the departure date (YYYY-MM-DD): ")
         print("Searching flights in our database...\n")
