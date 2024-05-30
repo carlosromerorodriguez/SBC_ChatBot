@@ -6,3 +6,4 @@ seaborn
 scipy
 openai
 requests
+python-telegram-bot
