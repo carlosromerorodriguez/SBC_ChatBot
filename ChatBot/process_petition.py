@@ -314,12 +314,38 @@ class ProcessPetition:
         if not city_found:
             print(self.gpt.city_not_in_database())
 
-    def show_hotel_information(self, user_question, city_context):
+    def show_hotel_information(self, city_context):
         initial_date = input("Enter the check-in date (YYYY-MM-DD): ")
         final_date = input("Enter the check-out date (YYYY-MM-DD): ")
 
-        hotel_info = self.travel_api.get_hotel_info(location=city_context, checkin_date=initial_date,checkout_date=final_date)
-        print(hotel_info)
+        destination_response = self.travel_api.search_destination(query=city_context)
+        if not destination_response or not destination_response.get('data'):
+            print(f"No se pudo encontrar el ID de destino para la ciudad: {city_context}")
+            return
+
+        dest_id = destination_response['data'][0]['dest_id']
+
+        hotels_response = self.travel_api.search_hotels(dest_id=dest_id, checkin_date=initial_date, checkout_date=final_date)
+        if not hotels_response or not hotels_response.get('data') or not hotels_response['data'].get('hotels'):
+            print("No se pudo obtener la información del hotel.")
+            return
+
+        hotel_id = hotels_response['data']['hotels'][0]['hotel_id']
+        hotel_details = self.travel_api.get_hotel_details(hotel_id, initial_date, final_date)
+
+        if hotel_details:
+            hotel_data = hotel_details['data']
+            print("Hotel details:")
+            print(f"Name: {hotel_data['hotel_name']}")
+            print(f"URL: {hotel_data['url']}")
+            print(f"Address: {hotel_data['address']}, {hotel_data['city']}, {hotel_data['country_trans']}")
+            print(f"Check-in: {hotel_data['arrival_date']}")
+            print(f"Check-out: {hotel_data['departure_date']}")
+            print(f"Price: {hotel_data['product_price_breakdown']['gross_amount_hotel_currency']['amount_rounded']}")
+            print(
+                f"Review Score: {hotel_data.get('wifi_review_score', {}).get('rating', 'N/A')} (based on {hotel_data['review_nr']} reviews)")
+        else:
+            print("No se pudo obtener los detalles del hotel.")
 
     def show_flight_information(self, adverbs, nouns, user_question, city_context):
         # Llamar a la función get_cities para extraer los nombres de las ciudades

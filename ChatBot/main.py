@@ -27,12 +27,13 @@ test_questions = [
     "How do I get around in Hong Kong?"
 ]
 
+
 def main():
     gpt = GPTAPI()
     nlp = NLPProcessor()
     prp = Preprocessor()
 
-    #print(gpt.start_response())
+    # print(gpt.start_response())
 
     exitFlag = False
     while not exitFlag:
@@ -79,6 +80,7 @@ def main():
         if exitFlag:
             exit(0)
     """
+
 
 if __name__ == "__main__":
     main()
