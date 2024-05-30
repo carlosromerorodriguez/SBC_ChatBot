@@ -1,7 +1,7 @@
 import json
 class KnowledgeDAO:
     def __init__(self):
-        with open('knowledge/knowledge.json', 'r') as file:
+        with open('knowledge/knowledge.json', 'r', encoding='utf-8') as file:
             self.knowledge = json.load(file)
 
     def search(self, city):

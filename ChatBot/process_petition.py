@@ -239,6 +239,48 @@ class ProcessPetition:
         else:
             print(self.gpt.not_understood_response())
 
+    def show_tourist_attractions(self, user_question, adjectives, adverbs, city_context):
+
+        print(adjectives)
+        print(adverbs)
+        print(city_context)
+        print(user_question)
+        if 'what' in adverbs or 'which' in adverbs:
+            city_found = False
+
+            results = self.dao.search(city_context)
+            if results:
+                city_info = results[0]
+                activities = city_info.get('activities', {})
+
+                # Filtra les activitats segons els adjectius
+                if 'free' in adjectives:
+                    selected_activities = activities.get('free', [])
+                elif 'moderate' in adjectives:
+                    selected_activities = activities.get('moderate', [])
+                elif 'expensive' in adjectives:
+                    selected_activities = activities.get('expensive', [])
+                else:
+                    # Si no hi ha adjectius específics, mostra totes les activitats
+                    selected_activities = activities.get('free', []) + activities.get('moderate', []) + activities.get(
+                        'expensive', [])
+
+                if selected_activities:
+                    attraction_names = [activity['name'] for activity in selected_activities]
+                    response = f"The top attractions in {city_info['city']} are: {', '.join(attraction_names)}"
+                else:
+                    response = f"There are no specific attractions found for {city_info['city']}."
+
+                print(self.gpt.humanize_response(response, user_question))
+                city_found = True
+
+            if not city_found:
+                print(self.gpt.city_not_in_database())
+        elif 'where' in adverbs:
+            self.search_tourism_type(adverbs, user_question, city_context)
+        else:
+            print(self.gpt.not_understood_response())
+
     """
     def suggest_city(preferences):
         affirmative_responses = ["yes", "yeah", "sure", "of course", "absolutely", "yep"]

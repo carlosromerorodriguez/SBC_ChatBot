@@ -4,8 +4,7 @@ import re
 # Context Nouns
 contemplated_nouns = [
     'cuisine', 'attractions', 'language', 'food', 'beach', 'city', 'cost', 'culture', 'transport',
-    'places', 'experiences', 'reasons', 'time', 'tourism', 'weather', 'country', 'rating', 'destination', 'tour',
-    'currency', 'activities', 'public_transport', 'car_rental', 'taxi', 'mountain', 'historical', 'other', 'mountain'
+    'places', 'reasons', 'time', 'tourism', 'weather', 'country', 'rating', 'currency', 'activities', 'public_transport', 'car_rental', 'taxi', 'mountain',  'other', 'mountain'
 ]
 
 # Context adjectives

@@ -57,6 +57,7 @@ class NLPProcessor:
         return words, tags, nouns_lemm, verbs_lemm, adverbs_lemm, adjectives_lemm, user_question
 
     def handle_general_questions(self, nouns, verbs, adjectives, adverbs, words, tags, user_question):
+        print(user_question)
         if self.handle_specific_nouns(nouns, adjectives, verbs, adverbs, words, user_question):
             return
         if self.handle_adjectives(adjectives, nouns, adverbs, user_question):
@@ -70,8 +71,9 @@ class NLPProcessor:
             self.process_petition.show_climate_information(user_question, self.city_context)
         elif any(term in nouns for term in ['eat', 'cuisine', 'food']):
             self.process_petition.show_cuisine_information(user_question)
-        elif any(term in verbs for term in ['see', 'visit']) or 'attractions' in nouns:
-            self.process_petition.show_tourist_attractions(nouns, user_question, self.city_context)
+        elif any(term in verbs for term in ['see', 'visit']) or 'attractions' in nouns or 'activities' in nouns:
+            print('show tourist attractions')
+            self.process_petition.show_tourist_attractions(user_question, adjectives, adverbs, self.city_context)
         elif 'language' in nouns:
             self.process_petition.show_language_information(user_question, self.city_context)
         elif 'currency' in nouns:
@@ -137,8 +139,6 @@ class NLPProcessor:
             self.process_petition.show_climate_information(user_question, self.city_context)
         elif any(term in nouns for term in ['eat', 'cuisine', 'food', 'restaurant', 'drink', 'beverage', 'dish', 'meal']):
             self.process_petition.show_cuisine_information(user_question, self.city_context)
-        elif any(term in verbs for term in ['see', 'visit']) or 'attractions' in nouns:
-            self.process_petition.show_tourist_attractions(nouns, user_question, self.city_context)
         elif 'language' in nouns:
             self.process_petition.show_language_information(nouns, user_question, self.city_context)
         elif 'currency' in nouns:
