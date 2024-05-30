@@ -57,7 +57,7 @@ class Preprocessor:
         city_dict, flag = self.gpt.get_cities(user_input)
 
         if flag:
-            print(self.gpt.humanize_response("Petition to API failed, something might go wrong. Please try again."), user_input)
+            print(self.gpt.humanize_response("Petition to API failed, something might go wrong. Please try again.", user_input))
             return user_input, {}
 
         if not city_dict:
