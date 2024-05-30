@@ -70,7 +70,7 @@ class NLPProcessor:
         if 'weather' in nouns:
             self.process_petition.show_climate_information(user_question, self.city_context)
         elif any(term in nouns for term in ['eat', 'cuisine', 'food']):
-            self.process_petition.show_cuisine_information(user_question)
+            self.process_petition.show_cuisine_information(user_question, self.city_context)
         elif any(term in verbs for term in ['see', 'visit']) or 'attractions' in nouns or 'activities' in nouns:
             print('show tourist attractions')
             self.process_petition.show_tourist_attractions(user_question, adjectives, adverbs, self.city_context)

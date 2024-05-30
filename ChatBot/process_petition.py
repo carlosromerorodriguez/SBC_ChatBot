@@ -32,10 +32,18 @@ class ProcessPetition:
     def show_cuisine_information(self, user_question, city_context):
         city_found = False
         results = self.dao.search(city_context)
+
         if results:
             city_info = random.choice(results)
-            frase = random.choice(frases).format(**city_info)
-            print(self.gpt.humanize_response(frase, user_question))
+
+            # Check if 'typical_food' exists in the city_info
+            if 'typical_food' in city_info:
+                typical_food = ", ".join(city_info['typical_food'])
+                response = f"The typical food in {city_info['city']} includes: {typical_food}."
+            else:
+                response = f"No typical food information available for {city_info['city']}."
+
+            print(self.gpt.humanize_response(response, user_question))
             city_found = True
 
         if not city_found:
