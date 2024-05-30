@@ -16,7 +16,7 @@ contemplated_adjectives = [
 
 # Context verbs
 contemplated_verbs = [
-    'show', 'suggest', 'visit', 'go', 'get around', 'eat', 'see', 'travel', 'get', 'there', 'pay'
+    'show', 'suggest', 'visit', 'go', 'get around', 'eat', 'see', 'travel', 'get', 'there', 'pay', 'recommend'
 ]
 
 # Context adverbs
@@ -71,10 +71,6 @@ class Preprocessor:
         if not cities and self.city_context:
             user_input = self.gpt.replace_city_context(user_input, self.city_context)
             cities = [self.city_context]
-
-        if not cities and not self.city_context:
-            print(self.gpt.humanize_response("Can you please specify a name?", user_input))
-            return "", True, ""
 
         if cities and not self.city_context:
             self.city_context = cities[-1]

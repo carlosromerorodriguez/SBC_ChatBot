@@ -73,8 +73,7 @@ class NLPProcessor:
             self.process_petition.show_climate_information(user_question, self.city_context)
         elif any(term in nouns for term in ['eat', 'cuisine', 'food']):
             self.process_petition.show_cuisine_information(user_question, self.city_context)
-        elif any(term in verbs for term in ['see', 'visit']) or 'attractions' in nouns or 'activities' in nouns:
-            print('show tourist attractions')
+        elif 'attractions' in nouns or 'activities' in nouns:
             self.process_petition.show_tourist_attractions(user_question, adjectives, adverbs, self.city_context, verbs)
         elif 'language' in nouns:
             self.process_petition.show_language_information(user_question, self.city_context)
@@ -116,7 +115,7 @@ class NLPProcessor:
                     culture_type = adj
                     break
 
-            self.process_petition.show_culture_recommendations(nouns, adverbs, culture_type, user_question, verbs)
+            self.process_petition.show_culture_recommendations(adverbs, culture_type, user_question, verbs)
         elif any(term in adjectives for term in
            ['mild', 'cold', 'warm']):
 
