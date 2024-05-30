@@ -4,33 +4,7 @@ from preprocessing.preprocessor import Preprocessor
 from api.gpt_api import GPTAPI
 
 
-# TODO: Logica de fechas (ej: inicial > final)
-# TODO: Check date format in hotel i flight petitions
-# TODO: Segueix ficant la ciutat com a context a la resposta del GPT quan no toca, exemple: Suggest...
 
-test_questions = [
-    "What is the weather like in Barcelona?",
-    "What kind of food can I eat in Paris?",
-    "What are the best attractions to visit in Rome?",
-    "What language do they speak in Tokyo?",
-    "What currency is used in London?",
-    "How do they pay in Moscow?",
-    "What other languages are spoken in Berlin?",
-    "Can you recommend a restaurant in New York?",
-    "Where can I stay in Dubai?",
-    "How can I get to Sydney?",
-    "How do I get around in Amsterdam?",
-    "What is the culture like in Istanbul?",
-    "What kind of tourism is popular in Berlin?",
-    "Is there a beach in Miami?",
-    "What are the modern attractions in Barcelona?",
-    "How expensive is living in San Francisco?",
-    "Which cuisine is famous in Bangkok?",
-    "When is the best time to visit Vienna?",
-    "Why should I visit Prague?",
-    "How do I get around in Hong Kong?"
-    "Any similar cities to Tokyo?",
-]
 
 
 def main():

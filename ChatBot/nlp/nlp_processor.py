@@ -19,18 +19,19 @@ from process_petition import *
 class NLPProcessor:
     city_context = None
 
-    def __init__(self, preprocessor):
+    def __init__(self, preprocessor, send_message):
         self.gpt_api = GPTAPI()
-        self.process_petition = ProcessPetition(preprocessor)
+        self.process_petition = ProcessPetition(preprocessor, send_message)
         self.lemmatizer = WordNetLemmatizer()
         self.preprocessor = preprocessor
 
-    def process(self, user_question, city_context):
+
+    async def process(self, user_question, city_context, context , chat_id):
         self.city_context = city_context
 
         words, tags, nouns, verbs, adverbs, adjectives, user_question = self.tokenize_and_lemmatize(user_question)
 
-        self.handle_general_questions(nouns, verbs, adjectives, adverbs, words, tags, user_question)
+        await self.handle_general_questions(nouns, verbs, adjectives, adverbs, words, tags, user_question, context, chat_id)
         return False
 
     def tokenize_and_lemmatize(self, user_question):
@@ -50,44 +51,44 @@ class NLPProcessor:
 
         return words, tags, nouns_lemm, verbs_lemm, adverbs_lemm, adjectives_lemm, user_question
 
-    def handle_general_questions(self, nouns, verbs, adjectives, adverbs, words, tags, user_question):
+    async def handle_general_questions(self, nouns, verbs, adjectives, adverbs, words, tags, user_question, context, chat_id):
         print(user_question)
-        if self.handle_specific_nouns(nouns, adjectives, verbs, adverbs, words, user_question):
+        if await self.handle_specific_nouns(nouns, adjectives, verbs, adverbs, words, user_question, context, chat_id):
             return
-        if self.handle_specific_verbs(verbs, adverbs, user_question):
+        if await self.handle_specific_verbs(verbs, adverbs, user_question, context, chat_id):
             return
-        if self.handle_adjectives(adjectives, nouns, adverbs, user_question, verbs):
+        if await self.handle_adjectives(adjectives, nouns, adverbs, user_question, verbs, context, chat_id):
             return
-        if self.handle_adverbs(adverbs, nouns, verbs, adjectives, words, tags, user_question):
+        if await self.handle_adverbs(adverbs, nouns, verbs, adjectives, words, tags, user_question, context, chat_id):
             return
         print(self.gpt_api.not_understood_response())
 
-    def handle_specific_nouns(self, nouns, adjectives, verbs, adverbs, words, user_question):
+    async def handle_specific_nouns(self, nouns, adjectives, verbs, adverbs, words, user_question, context, chat_id):
         print(nouns)
         if 'weather' in nouns:
-            self.process_petition.show_climate_information(user_question, self.city_context)
-        elif any(term in nouns for term in ['cuisine', 'food']) or 'eat' in verbs or 'drink' in verbs:
-            self.process_petition.show_cuisine_information(user_question, self.city_context, verbs, adverbs, adjectives)
+            await self.process_petition.show_climate_information(user_question, self.city_context, context, chat_id)
+        elif any(term in nouns for term in ['cuisine', 'food', 'eat']) or 'eat' in verbs  or 'drink' in verbs:
+            await self.process_petition.show_cuisine_information(user_question, self.city_context, verbs, adverbs, adjectives, context, chat_id)
         elif 'attraction' in nouns or 'activity' in nouns:
-            self.process_petition.show_tourist_attractions(user_question, adjectives, adverbs, self.city_context, verbs)
+            await self.process_petition.show_tourist_attractions(user_question, adjectives, adverbs, self.city_context, verbs, context, chat_id)
         elif 'language' in nouns:
-            self.process_petition.show_language_information(user_question, self.city_context, nouns)
+            await self.process_petition.show_language_information(user_question, self.city_context, nouns, context, chat_id)
         elif 'currency' in nouns:
-            self.process_petition.show_currency_information(nouns, user_question, self.city_context)
+            await self.process_petition.show_currency_information(nouns, user_question, self.city_context, context, chat_id)
         elif 'restaurant' in nouns:
-            self.process_petition.show_restaurant_information(user_question, self.city_context, adjectives)
+            await self.process_petition.show_restaurant_information(user_question, self.city_context, adjectives, context, chat_id)
         elif any(term in nouns for term in ['hotel']) or any(term in verbs for term in ['stay', 'sleep']):
-            self.process_petition.show_hotel_information(self.city_context)
+            await self.process_petition.show_hotel_information(self.city_context, context, chat_id)
         elif any(term in nouns for term in ['flight', 'plane']) or any(term in verbs for term in ['travel']) or 'get there' in ' '.join(words) or 'get to' in ' '.join(words):
-            self.process_petition.show_flight_information(adverbs, nouns, user_question, self.city_context)
+            await self.process_petition.show_flight_information(adverbs, nouns, user_question, self.city_context, context, chat_id)
         elif 'transport' in nouns or 'get around' in ' '.join(words):
-            self.process_petition.show_transport_information(adverbs, user_question, self.city_context, verbs)
+            await self.process_petition.show_transport_information(adverbs, user_question, self.city_context, verbs, context, chat_id)
         elif 'culture' in nouns:
-            self.process_petition.show_city_culture_information(adverbs, user_question, self.city_context, verbs)
+            await self.process_petition.show_city_culture_information(adverbs, user_question, self.city_context, verbs, context, chat_id)
         elif 'tourism' in nouns:
-            self.process_petition.search_tourism_type(adverbs, user_question, self.city_context, verbs)
+            await self.process_petition.search_tourism_type(adverbs, user_question, self.city_context, verbs, context, chat_id)
         elif 'cost' in nouns:
-            self.process_petition.show_cost_of_living(adverbs, user_question, self.city_context)
+            await self.process_petition.show_cost_of_living(adverbs, user_question, self.city_context, context, chat_id)
         elif any(term in nouns for term in ['beach', 'city', 'mountain']):
             # Extreure el tipus de lloc
             place_type = None
@@ -96,12 +97,12 @@ class NLPProcessor:
                     place_type = noun
                     break
 
-            self.process_petition.show_type_recommendations(adverbs, place_type, user_question, verbs)
+            await self.process_petition.show_type_recommendations(adverbs, place_type, user_question, verbs, context, chat_id)
         else:
             return False
         return True
 
-    def handle_adjectives(self, adjectives, nouns, adverbs, user_question, verbs):
+    async def handle_adjectives(self, adjectives, nouns, adverbs, user_question, verbs, context, chat_id):
         if any(term in adjectives for term in
                ['historical', 'modern', 'artistic', 'traditional', 'cosmopolitan', 'festive']):
 
@@ -112,7 +113,7 @@ class NLPProcessor:
                     culture_type = adj
                     break
 
-            self.process_petition.show_culture_recommendations(adverbs, culture_type, user_question, verbs)
+            await self.process_petition.show_culture_recommendations(adverbs, culture_type, user_question, verbs, context, chat_id)
         elif any(term in adjectives for term in
            ['mild', 'cold', 'warm']):
 
@@ -123,7 +124,7 @@ class NLPProcessor:
                     weather_type = weather
                     break
 
-            self.process_petition.show_weather_recommendations(nouns, adverbs, weather_type, user_question, verbs)
+            await self.process_petition.show_weather_recommendations(nouns, adverbs, weather_type, user_question, verbs, context, chat_id)
         elif any(term in adjectives for term in ['expensive', 'moderate', 'cheap']):
 
             if 'cities' or 'place' or 'city' or 'destinations' in nouns:
@@ -133,63 +134,63 @@ class NLPProcessor:
                         range_type = price
                         break
 
-                self.process_petition.cost_adjective(adverbs, user_question, verbs, range_type)
+                await self.process_petition.cost_adjective(adverbs, user_question, verbs, range_type, context, chat_id)
         elif 'expensive' in adjectives:
-            self.process_petition.show_cost_of_living(adverbs, user_question, self.city_context)
+            await self.process_petition.show_cost_of_living(adverbs, user_question, self.city_context, context, chat_id)
         elif 'similar' in adjectives:
-            self.process_petition.show_similar_cities(user_question, self.city_context)
+            await self.process_petition.show_similar_cities(user_question, self.city_context, context, chat_id)
         else:
             return False
         return True
 
-    def handle_specific_verbs(self, verbs, adverbs, user_question):
+    async def handle_specific_verbs(self, verbs, adverbs, user_question, context, chat_id):
         if 'pay' in verbs:
             if 'how' in adverbs:
-                self.process_petition.show_currency_information(adverbs, user_question, self.city_context)
+                await self.process_petition.show_currency_information(adverbs, user_question, self.city_context, context, chat_id)
             else:
                 print(self.gpt_api.not_understood_response())
         else:
             return False
         return True
 
-    def handle_adverbs(self, adverbs, nouns, verbs, adjectives, words, tags, user_question):
+    async def handle_adverbs(self, adverbs, nouns, verbs, adjectives, words, tags, user_question, context, chat_id):
         if 'what' in adverbs or 'which' in adverbs:
-            self.handle_what_which_questions(nouns, verbs, user_question, adverbs, adjectives)
+            await self.handle_what_which_questions(nouns, verbs, user_question, adverbs, adjectives, context, chat_id)
         elif 'where' in adverbs:
-            self.handle_where_questions(words, tags, user_question)
+            await self.handle_where_questions(words, tags, user_question, context, chat_id)
         elif 'when' in adverbs:
-            self.handle_when_questions(words, user_question)
+            await self.handle_when_questions(words, user_question, context, chat_id)
         elif 'why' in adverbs:
-            self.handle_why_questions(words, user_question)
+            await self.handle_why_questions(words, user_question, context, chat_id)
         else:
             return False
         return True
 
-    def handle_what_which_questions(self, nouns, verbs, user_question, adverbs, adjectives):
+    async def handle_what_which_questions(self, nouns, verbs, user_question, adverbs, adjectives, context, chat_id):
         if 'climate' in nouns:
-            self.process_petition.show_climate_information(user_question, self.city_context)
+            await self.process_petition.show_climate_information(user_question, self.city_context, context, chat_id)
         elif any(term in nouns for term in ['eat', 'cuisine', 'food', 'restaurant', 'drink', 'beverage', 'dish', 'meal']):
-            self.process_petition.show_cuisine_information(user_question, self.city_context, verbs, adverbs, adjectives)
+            await self.process_petition.show_cuisine_information(user_question, self.city_context, verbs, adverbs, adjectives, context, chat_id)
         elif 'language' in nouns:
-            self.process_petition.show_language_information(user_question, self.city_context, nouns)
+            await self.process_petition.show_language_information(user_question, self.city_context, nouns, context, chat_id)
         else:
             print(self.gpt_api.not_understood_response())
 
-    def handle_where_questions(self, words, tags, user_question):
+    async def handle_where_questions(self, words, tags, user_question, context, chat_id):
         if "food" in words or "cuisine" in words:
-            self.process_petition.show_food_recommendations(user_question, self.city_context)
+            await self.process_petition.show_food_recommendations(user_question, self.city_context, context, chat_id)
         else:
             print(self.gpt_api.not_understood_response())
 
-    def handle_when_questions(self, words, user_question):
+    async def handle_when_questions(self, words, user_question, context, chat_id):
         if 'visit' in words or 'go' in words:
-            self.process_petition.show_best_times_to_visit(user_question, self.city_context)
+            await self.process_petition.show_best_times_to_visit(user_question, self.city_context, context, chat_id)
         else:
             print(self.gpt_api.not_understood_response())
 
-    def handle_why_questions(self, words, user_question):
+    async def handle_why_questions(self, words, user_question, context, chat_id):
         if 'visit' in words or 'go' in words:
-            self.process_petition.show_reasons_to_visit_certain_places(user_question, self.city_context)
+            await self.process_petition.show_reasons_to_visit_certain_places(user_question, self.city_context, context, chat_id)
         else:
             print(self.gpt_api.not_understood_response())
 

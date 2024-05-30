@@ -1,5 +1,6 @@
 import requests
 
+
 class TravelAPI:
     def __init__(self, api_key):
         self.api_key = api_key
@@ -23,7 +24,8 @@ class TravelAPI:
             print(f"Error en la llamada a la API de Booking: {e}")
             return None
 
-    def search_hotels(self, dest_id, checkin_date, checkout_date, adults=1, children_age="0", room_qty=1, page_number=1):
+    def search_hotels(self, dest_id, checkin_date, checkout_date, adults=1, children_age="0", room_qty=1,
+                      page_number=1):
         url = f"{self.base_url}hotels/searchHotels"
         params = {
             "dest_id": dest_id,
@@ -70,7 +72,6 @@ class TravelAPI:
         except requests.exceptions.RequestException as e:
             print(f"Error en la llamada a la API de Booking: {e}")
             return None
-
 
     def get_flight_info(self, origin, destination, departure_date):
         urlAirport = f"{self.base_url}flights/searchDestination"
@@ -238,14 +239,13 @@ class TravelAPI:
             print(f"Error en la llamada a la API de Booking: {e}")
             return None
 
+# if __name__ == "__main__":
+# api_key = "6eb7659adbmshe5fc3c22f1bddbbp19d5eajsnf7dd83dc13fc"
+# travel_api = TravelAPI(api_key)
 
-#if __name__ == "__main__":
-    #api_key = "6eb7659adbmshe5fc3c22f1bddbbp19d5eajsnf7dd83dc13fc"
-    #travel_api = TravelAPI(api_key)
-
-    #hotel_info = travel_api.get_hotel_info(location="New York", checkin_date="2023-07-01", checkout_date="2023-07-10")
-    #flight_info = travel_api.get_flight_info(origin="JFK", destination="LAX", departure_date="2023-07-01",return_date="2023-07-10")
-    #restaurant_info = travel_api.get_restaurant_info(location="New York")
-    #flight_prices = travel_api.get_flight_prices(origin="JFK", destination="LAX", departure_date="2023-07-01",return_date="2023-07-10")
-    #car_rental_info = travel_api.get_car_rental_info(location="New York", pickup_date="2023-07-01",dropoff_date="2023-07-10")
-    #transport_info = travel_api.get_transport_info(location="London")
+# hotel_info = travel_api.get_hotel_info(location="New York", checkin_date="2023-07-01", checkout_date="2023-07-10")
+# flight_info = travel_api.get_flight_info(origin="JFK", destination="LAX", departure_date="2023-07-01",return_date="2023-07-10")
+# restaurant_info = travel_api.get_restaurant_info(location="New York")
+# flight_prices = travel_api.get_flight_prices(origin="JFK", destination="LAX", departure_date="2023-07-01",return_date="2023-07-10")
+# car_rental_info = travel_api.get_car_rental_info(location="New York", pickup_date="2023-07-01",dropoff_date="2023-07-10")
+# transport_info = travel_api.get_transport_info(location="London")

@@ -3,15 +3,17 @@ from knowledge.knowledge_DAO import KnowledgeDAO
 from api.gpt_api import GPTAPI
 from utils import *
 from api.travel_api import TravelAPI
+from preprocessing.preprocessor import Preprocessor
 
 class ProcessPetition:
-    def __init__(self, prp):
+    def __init__(self, prp, send_message):
         self.dao = KnowledgeDAO()
         self.gpt = GPTAPI()
         self.travel_api = TravelAPI("6eb7659adbmshe5fc3c22f1bddbbp19d5eajsnf7dd83dc13fc")
         self.prp = prp
+        self.send_message = send_message
 
-    def show_climate_information(self, user_question, city_context):
+    async def show_climate_information(self, user_question, city_context, context, chat_id):
         found = False
 
         results = self.dao.search(city_context)
@@ -20,7 +22,7 @@ class ProcessPetition:
             for frase_template in frases:
                 try:
                     frase = frase_template.format(**city_info)
-                    print(self.gpt.humanize_response(frase, user_question, self.prp))
+                    await self.send_message(context, chat_id, self.gpt.humanize_response(frase, user_question,self.prp))
                     found = True
                     break
                 except KeyError as e:
@@ -29,11 +31,11 @@ class ProcessPetition:
                     print("Available keys:", city_info.keys())
 
         if not found:
-            print(self.gpt.city_not_in_database())
+            await self.send_message(context, chat_id, self.gpt.city_not_in_database())
 
-    def show_cuisine_information(self, user_question, city_context, verbs, adverbs, adjectives):
+    async def show_cuisine_information(self, user_question, city_context, verbs, adverbs, adjectives, context, chat_id):
         if 'suggest' in verbs or 'recommend' in verbs or 'where' in adverbs:
-            self.show_restaurant_information(user_question, city_context, adjectives)
+            await self.show_restaurant_information(user_question, city_context, adjectives, context, chat_id)
         else:
             city_found = False
             results = self.dao.search(city_context)
@@ -48,13 +50,13 @@ class ProcessPetition:
                 else:
                     response = f"No typical food information available for {city_info['city']}."
 
-                print(self.gpt.humanize_response(response, user_question, self.prp))
+                await self.send_message(context, chat_id, self.gpt.humanize_response(response, user_question, self.prp))
                 city_found = True
 
             if not city_found:
-                print(self.gpt.city_not_in_database())
+                await self.send_message(context, chat_id, self.gpt.city_not_in_database())
 
-    def show_language_information(self, user_question, city_context, nouns):
+    async def show_language_information(self, user_question, city_context, nouns, context, chat_id):
         language_found = False
 
         if 'other' in nouns:
@@ -64,24 +66,24 @@ class ProcessPetition:
                 city_info = random.choice(results)
                 language_info = city_info.get('other_languages_spoken', "")
                 response = f"{city_info['city']}, {city_info['country']} is known for its {city_info['language']} language, and also speaks {language_info}."
-                print(self.gpt.humanize_response(response, user_question, self.prp))
+                await self.send_message(context, chat_id, self.gpt.humanize_response(response, user_question, self.prp))
                 city_found = True
 
             if not city_found:
-                print(self.gpt.city_not_in_database())
+                 await self.send_message(context, chat_id, self.gpt.city_not_in_database())
         else:
 
             results = self.dao.search(city_context)
             if results:
                 language_info = random.choice(results)
                 frase = random.choice(frases).format(**language_info)
-                print(self.gpt.humanize_response(frase, user_question, self.prp))
+                await self.send_message(context, chat_id, self.gpt.humanize_response(frase, user_question, self.prp))
                 language_found = True
 
             if not language_found:
-                print(self.gpt.city_not_in_database())
+                await self.send_message(context, chat_id, self.gpt.city_not_in_database())
 
-    def show_culture_recommendations(self, adverbs, culture_type, user_question, verbs):
+    async def show_culture_recommendations(self, adverbs, culture_type, user_question, verbs, context, chat_id):
         if 'what' in adverbs or 'which' in adverbs or 'suggest' in verbs or 'recommend' in verbs:
             results = self.dao.search_by_culture_type(culture_type)
 
@@ -90,13 +92,14 @@ class ProcessPetition:
                 random_results = random.sample(results, min(2, len(results)))  # Selecciona fins a 2 resultats aleatoris
                 for city_info in random_results:
                     response += f"\n- {city_info['city']}, {city_info['country']}: Known for its {city_info['climate']} climate, {city_info['culture']} culture, and {', '.join(city_info['tourism_type'])} tourism."
-                print(self.gpt.humanize_response(response, user_question, self.prp))
+                await self.send_message(context, chat_id, self.gpt.humanize_response(response, user_question, self.prp))
             else:
-                print(f"No destinations with {culture_type} culture found in the database.")
+                response = f"No destinations with {culture_type} culture found in the database."
+                await self.send_message(context, chat_id, self.gpt.humanize_response(response, user_question, self.prp))
         else:
-            print(self.gpt.not_understood_response())
+            await self.send_message(context, chat_id, self.gpt.not_understood_response())
 
-    def show_city_culture_information(self, adverbs, user_question, city_context, verbs):
+    async def show_city_culture_information(self, adverbs, user_question, city_context, verbs, context, chat_id):
         if 'what' in adverbs or 'which' in adverbs or 'where' in adverbs or 'suggest' in verbs or 'recommend' in verbs:
             city_found = False
 
@@ -105,16 +108,16 @@ class ProcessPetition:
                 city_info = results[0]
                 culture_info = city_info.get('culture', "")
                 response = f"{city_info['city']}, {city_info['country']} is known for its {culture_info} culture."
-                print(self.gpt.humanize_response(response, user_question, self.prp))
+                await self.send_message(context, chat_id, self.gpt.humanize_response(response, user_question, self.prp))
                 city_found = True
 
 
             if not city_found:
-                print(self.gpt.city_not_in_database())
+                await self.send_message(context, chat_id, self.gpt.city_not_in_database())
         else:
-            print(self.gpt.not_understood_response())
+            await self.send_message(context, chat_id, self.gpt.not_understood_response())
 
-    def search_tourism_type(self, adverbs, user_question, city_context, verbs):
+    async def search_tourism_type(self, adverbs, user_question, city_context, verbs, context, chat_id):
         if 'what' in adverbs or 'which' in adverbs or 'where' in adverbs or 'suggest' in verbs or 'recommend' in verbs:
             city_found = False
 
@@ -123,16 +126,16 @@ class ProcessPetition:
                 city_info = results[0]
                 tourism_types = ", ".join(city_info['tourism_type'])
                 response = f"{city_info['city']}, {city_info['country']} is known for its {tourism_types} tourism."
-                print(self.gpt.humanize_response(response, user_question, self.prp))
+                await self.send_message(context, chat_id, self.gpt.humanize_response(response, user_question, self.prp))
                 city_found = True
 
 
             if not city_found:
-                print(self.gpt.city_not_in_database())
+                await self.send_message(context, chat_id, self.gpt.city_not_in_database())
         else:
-            print(self.gpt.not_understood_response())
+            await self.send_message(context, chat_id, self.gpt.not_understood_response())
 
-    def show_type_recommendations(self, adverbs, type, user_question, verbs):
+    async def show_type_recommendations(self, adverbs, type, user_question, verbs, context, chat_id):
         if 'which' or 'where' in adverbs or 'suggest' in verbs or 'recommend' in verbs:
             results = self.dao.search_by_tourism_type(type)
 
@@ -141,13 +144,13 @@ class ProcessPetition:
                 random_results = random.sample(results, min(2, len(results)))
                 for city_info in random_results:
                     response += f"\n- {city_info['city']}, {city_info['country']}: Known for its {city_info['climate']} climate, {city_info['culture']} culture, and {', '.join(city_info['tourism_type'])} tourism."
-                print(self.gpt.humanize_response(response, user_question, self.prp))
+                await self.send_message(context, chat_id, self.gpt.humanize_response(response, user_question, self.prp))
             else:
                 print(f"No {type} destinations found in the database.")
         else:
-            print(self.gpt.not_understood_response())
+            await self.send_message(context, chat_id, self.gpt.not_understood_response())
 
-    def show_transport_information(self, adverbs, user_question, city_context, verbs):
+    async def show_transport_information(self, adverbs, user_question, city_context, verbs, context, chat_id):
         if 'how' or 'what' in adverbs or 'explain' in verbs:
             city_found = False
 
@@ -165,15 +168,15 @@ class ProcessPetition:
                     response_parts.append(f"Taxi: {transport_info['taxi']}")
 
                 response = " ".join(response_parts)
-                print(self.gpt.humanize_response(response, user_question, self.prp))
+                await self.send_message(context, chat_id, self.gpt.humanize_response(response, user_question, self.prp))
                 city_found = True
 
             if not city_found:
-                print(self.gpt.city_not_in_database())
+                await self.send_message(context, chat_id, self.gpt.city_not_in_database())
         else:
-            print(self.gpt.not_understood_response())
+            await self.send_message(context, chat_id, self.gpt.not_understood_response())
 
-    def show_best_times_to_visit(self, user_question, city_context):
+    async def show_best_times_to_visit(self, user_question, city_context, context, chat_id):
         response = [
             "The best time to visit {city} is during {month}. {reason}"
         ]
@@ -189,13 +192,13 @@ class ProcessPetition:
                 month=best_time_info['month'],
                 reason=best_time_info['reason']
             )
-            print(self.gpt.humanize_response(response, user_question, self.prp))
+            await self.send_message(context, chat_id, self.gpt.humanize_response(response, user_question, self.prp))
             city_found = True
 
         if not city_found:
-            print(self.gpt.city_not_in_database())
+            await self.send_message(context, chat_id, self.gpt.city_not_in_database())
 
-    def show_reasons_to_visit_certain_places(self, user_question, city_context):
+    async def show_reasons_to_visit_certain_places(self, user_question, city_context, context, chat_id):
         city_found = False
 
         results = self.dao.search(city_context)
@@ -209,13 +212,13 @@ class ProcessPetition:
             reasons += f"and explore its tourism types like {tourism_types}. "
             reasons += f"Furthermore, the citizens here speak {city_info['language']}."
 
-            print(self.gpt.humanize_response(reasons, user_question, self.prp))
+            await self.send_message(context, chat_id, self.gpt.humanize_response(reasons, user_question, self.prp))
             city_found = True
 
         if not city_found:
-            print(self.gpt.city_not_in_database())
+            await self.send_message(context, chat_id, self.gpt.city_not_in_database())
 
-    def show_how_expensive(self, user_question, city_context):
+    async def show_how_expensive(self, user_question, city_context, context, chat_id):
         city_found = False
 
         results = self.dao.search(city_context)
@@ -223,13 +226,13 @@ class ProcessPetition:
             city_info = results[0]
             cost_level = city_info['cost']
             response = f"The cost of living in {city_info['city']}, {city_info['country']} is considered {cost_level}. Because of its {city_info['culture']} culture, {city_info['climate']} climate, and tourism types like {', '.join(city_info['tourism_type'])}."
-            print(self.gpt.humanize_response(response, user_question, self.prp))
+            await self.send_message(context, chat_id, self.gpt.humanize_response(response, user_question, self.prp))
             city_found = True
 
         if not city_found:
-            print(self.gpt.city_not_in_database())
+            await self.send_message(context, chat_id, self.gpt.city_not_in_database())
 
-    def show_why_expensive(self, user_question, city_context):
+    async def show_why_expensive(self, user_question, city_context, context, chat_id):
         city_found = False
 
         results = self.dao.search(city_context)
@@ -238,21 +241,21 @@ class ProcessPetition:
             cost_level = city_info['cost']
             tourism_types = ", ".join(city_info['tourism_type'])
             response = f"The cost of living in {city_info['city']}, {city_info['country']} is considered {cost_level} because of its {city_info['culture']} culture, {city_info['climate']} climate, and tourism types like {tourism_types}."
-            print(self.gpt.humanize_response(response, user_question, self.prp))
+            await self.send_message(context, chat_id, self.gpt.humanize_response(response, user_question, self.prp))
             city_found = True
 
         if not city_found:
-            print(self.gpt.city_not_in_database())
+            await self.send_message(context, chat_id, self.gpt.city_not_in_database())
 
-    def show_cost_of_living(self, adverbs, user_question, city_context):
+    async def show_cost_of_living(self, adverbs, user_question, city_context, context, chat_id):
         if 'how' in adverbs:
-            self.show_how_expensive(user_question, city_context)
+            await self.show_how_expensive(user_question, city_context)
         elif 'why' in adverbs:
-            self.show_why_expensive(user_question, city_context)
+            await self.show_why_expensive(user_question, city_context)
         else:
-            print(self.gpt.not_understood_response())
+            await self.send_message(context, chat_id, self.gpt.not_understood_response())
 
-    def show_tourist_attractions(self, user_question, adjectives, adverbs, city_context, verbs):
+    async def show_tourist_attractions(self, user_question, adjectives, adverbs, city_context, verbs, context, chat_id):
         if 'what' in adverbs or 'which' in adverbs or 'suggest' in verbs or 'recommend' in verbs:
             city_found = False
 
@@ -279,20 +282,20 @@ class ProcessPetition:
                 else:
                     response = f"There are no specific attractions found for {city_info['city']}."
 
-                print(self.gpt.humanize_response(response, user_question, self.prp))
+                await self.send_message(context, chat_id, self.gpt.humanize_response(response, user_question, self.prp))
                 city_found = True
 
             if not city_found:
-                print(self.gpt.city_not_in_database())
+                await self.send_message(context, chat_id, self.gpt.city_not_in_database())
         elif 'where' in adverbs:
-            self.search_tourism_type(adverbs, user_question, city_context, verbs)
+            await self.search_tourism_type(adverbs, user_question, city_context, verbs)
         else:
-            print(self.gpt.not_understood_response())
+            await self.send_message(context, chat_id, self.gpt.not_understood_response())
 
-    def cost_adjective(self, adverbs, user_question, verbs, range_type):
-        self.show_price_recommendations(adverbs, user_question, verbs, range_type)
+    async def cost_adjective(self, adverbs, user_question, verbs, range_type, context, chat_id):
+        await self.show_price_recommendations(adverbs, user_question, verbs, range_type, context, chat_id)
 
-    def show_price_recommendations(self, adverbs, user_question, verbs, range_type):
+    async def show_price_recommendations(self, adverbs, user_question, verbs, range_type, context, chat_id):
         if 'which' or 'where' in adverbs or 'suggest' in verbs or 'recommend' in verbs:
             results = self.dao.search_by_price_range(range_type)
 
@@ -301,13 +304,13 @@ class ProcessPetition:
                 random_results = random.sample(results, min(2, len(results)))
                 for city_info in random_results:
                     response += f"\n- {city_info['city']}, {city_info['country']}: Known for its {city_info['climate']} climate, {city_info['culture']} culture, and {', '.join(city_info['tourism_type'])} tourism."
-                print(self.gpt.humanize_response(response, user_question, self.prp))
+                await self.send_message(context, chat_id, self.gpt.humanize_response(response, user_question, self.prp))
             else:
                 print(f"No {range_type} destinations found in the database.")
         else:
-            print(self.gpt.not_understood_response())
+            await self.send_message(context, chat_id, self.gpt.not_understood_response())
 
-    def show_currency_information(self, nouns, user_question, city_context):
+    async def show_currency_information(self, nouns, user_question, city_context, context, chat_id):
         city_found = False
 
         results = self.dao.search(city_context)
@@ -315,13 +318,13 @@ class ProcessPetition:
             city_info = results[0]
             currency_info = city_info.get('currency', 'Currency information not available')
             response = f"The currency used in {city_info['city']}, {city_info['country']} is {currency_info}. That can be represented as"
-            print(self.gpt.humanize_response(response, user_question, self.prp))
+            await self.send_message(context, chat_id, self.gpt.humanize_response(response, user_question, self.prp))
             city_found = True
 
         if not city_found:
-            print(self.gpt.city_not_in_database())
+            await self.send_message(context, chat_id, self.gpt.city_not_in_database())
 
-    def show_restaurant_information(self, user_question, city_context, adjectives):
+    async def show_restaurant_information(self, user_question, city_context, adjectives, context, chat_id):
         city_found = False
 
         results = self.dao.search(city_context)
@@ -348,15 +351,15 @@ class ProcessPetition:
             else:
                 response = f"No restaurant information available for {city_info['city']}."
 
-            print(self.gpt.humanize_response(response, user_question, self.prp))
+            await self.send_message(context, chat_id, self.gpt.humanize_response(response, user_question, self.prp))
             city_found = True
 
         if not city_found:
-            print(self.gpt.city_not_in_database())
+            await self.send_message(context, chat_id, self.gpt.city_not_in_database())
 
-    def show_hotel_information(self, city_context):
+    async def show_hotel_information(self, city_context, context, chat_id):
         string = f"In {city_context}, there are various hotels you can stay at. Can you fill in the check-in and check-out dates? So I can help you find the best hotel for your stay."
-        print(self.gpt.humanize_response(string, city_context, self.prp))
+        await self.send_message(context, chat_id, self.gpt.humanize_response(string, city_context, self.prp))
 
         initial_date = input("Enter the check-in date (YYYY-MM-DD): ")
         final_date = input("Enter the check-out date (YYYY-MM-DD): ")
@@ -368,7 +371,7 @@ class ProcessPetition:
         destination_response = self.travel_api.search_destination(query=city_context)
         if not destination_response or not destination_response.get('data'):
             msg = f"I couldn't find the destination for the city due to an API error: {city_context}"
-            print(self.gpt.humanize_response(msg, city_context, self.prp))
+            await self.send_message(context, chat_id, self.gpt.humanize_response(msg, city_context, self.prp))
             return
 
         dest_id = destination_response['data'][0]['dest_id']
@@ -376,7 +379,7 @@ class ProcessPetition:
         hotels_response = self.travel_api.search_hotels(dest_id=dest_id, checkin_date=initial_date, checkout_date=final_date)
         if not hotels_response or not hotels_response.get('data') or not hotels_response['data'].get('hotels'):
             msg = f"I couldn't find any hotels for the destination due to an API error: {city_context}"
-            print(self.gpt.humanize_response(msg, city_context, self.prp))
+            await self.send_message(context, chat_id, self.gpt.humanize_response(msg, city_context, self.prp))
             return
 
         hotel_id = hotels_response['data']['hotels'][0]['hotel_id']
@@ -393,19 +396,18 @@ class ProcessPetition:
             response += f"Price: {hotel_data['product_price_breakdown']['gross_amount_hotel_currency']['amount_rounded']}"
             response += f"Review Score: {hotel_data.get('wifi_review_score', {}).get('rating', 'N/A')} (based on {hotel_data['review_nr']} reviews)"
 
-            print(self.gpt.humanize_response(response, city_context, self.prp))
+            await self.send_message(context, chat_id, self.gpt.humanize_response(response, city_context, self.prp))
         else:
             print("No se pudo obtener los detalles del hotel.")
 
-    def show_flight_information(self, adverbs, nouns, user_question, city_context):
+    async def show_flight_information(self, adverbs, nouns, user_question, city_context, context, chat_id):
         string = "I can help you find the best flight for your trip. Can you provide me with the departure date?"
-        print(self.gpt.humanize_response(string, user_question, self.prp))
-
+        await self.send_message(context, chat_id, self.gpt.humanize_response(string, user_question, self.prp))
         # Llamar a la función get_cities para extraer los nombres de las ciudades
         cities_in_question, flag = self.gpt.get_cities(user_question)
 
         if flag:
-            print(self.gpt.humanize_response("I am sorry, petition to API failed. Please try again.", user_question, self.prp))
+            await self.send_message(context, chat_id, self.gpt.humanize_response("I am sorry, petition to API failed. Please try again.", user_question, self.prp))
             return
 
         depart_date = input("Enter the departure date (YYYY-MM-DD): ")
@@ -422,7 +424,10 @@ class ProcessPetition:
                 if len(unique_cities) == 2:
                     departure_city, destination_city = unique_cities
                 else:
-                    departure_city = city_context
+                    string = "can you specify the origin?"
+                    await self.send_message(context, chat_id, self.gpt.humanize_response(string, user_question, self.prp))
+
+                    departure_city = input("Enter the departure city: ")
                     destination_city = unique_cities.pop()
                 # Realizar la petición a la API para obtener información de vuelos
                 cheapestFlight, fastestFlight, bestFlight = self.travel_api.get_flight_info(departure_city, destination_city,depart_date)
@@ -432,15 +437,15 @@ class ProcessPetition:
                     response += "I have 3 options for you (Cheapest, Fastest, Best):\n"
                     response += f"\n\tCheapest flight: {cheapestFlight} \n\tFastest flight: {fastestFlight}.\n"
                     response += f"\tThe best flight is: {bestFlight}.\n"
-                    print(self.gpt.humanize_response(response, user_question, self.prp))
+                    await self.send_message(context, chat_id, self.gpt.humanize_response(response, user_question, self.prp))
                     city_found = True
                 else:
                     print("I couldn't find any flights for the selected cities.")
 
         if not city_found:
-            print(self.gpt.city_not_in_database())
+            await self.send_message(context, chat_id, self.gpt.city_not_in_database())
 
-    def show_weather_recommendations(self, nouns, adverbs, weather_type, user_question, verbs):
+    async def show_weather_recommendations(self, nouns, adverbs, weather_type, user_question, verbs, context, chat_id):
         if 'where' in adverbs or 'which' in adverbs or 'what' in adverbs or 'suggest' in verbs or 'recommend' in verbs:
             results = self.dao.search_by_weather_type(weather_type)
 
@@ -449,14 +454,14 @@ class ProcessPetition:
                 random_results = random.sample(results, min(2, len(results)))
                 for city_info in random_results:
                     response += f"\n- {city_info['city']}, {city_info['country']}: Known for its {city_info['climate']} climate, {city_info['culture']} culture, and {', '.join(city_info['tourism_type'])} tourism."
-                print(self.gpt.humanize_response(response, user_question, self.prp))
+                await self.send_message(context, chat_id, self.gpt.humanize_response(response, user_question, self.prp))
             else:
                 print(f"No {weather_type} destinations found in the database.")
         else:
-            print(self.gpt.not_understood_response())
+            await self.send_message(context, chat_id, self.gpt.not_understood_response())
 
 
-    def show_similar_cities(self, user_question, city_context):
+    async def show_similar_cities(self, user_question, city_context, context, chat_id):
         city_found = False
 
         results = self.dao.search(city_context)
@@ -464,12 +469,44 @@ class ProcessPetition:
             city_info = results[0]
             similar_cities = city_info.get('similar_destinations', [])
             response = f"The cities similar to {city_info['city']} are: {', '.join(similar_cities)}"
-            print(self.gpt.humanize_response(response, user_question, self.prp))
+            await self.send_message(context, chat_id, self.gpt.humanize_response(response, user_question, self.prp))
             city_found = True
 
         if not city_found:
-            print(self.gpt.city_not_in_database())
+            await self.send_message(context, chat_id, self.gpt.city_not_in_database())
 
+    async def process_message(self, message, context, chat_id):
+        from nlp.nlp_processor import NLPProcessor
+        nlp = NLPProcessor(self.prp, self.send_message)
+        preprocessor = Preprocessor()
+        user_input = message
+
+        if self.gpt.is_greeting_input(user_input):
+            await self.send_message(context, chat_id, self.gpt.salutation_response())
+            return
+        elif self.gpt.is_goodbye_input(user_input):
+            await self.send_message(context, chat_id, self.gpt.goodbye_response())
+            return
+        elif self.gpt.is_asking_for_me(user_input):
+            await self.send_message(context, chat_id, self.gpt.start_response())
+            return
+
+        separated_questions = self.gpt.split_questions(user_input)
+        if separated_questions:
+            questions = separated_questions.split(' ; ')
+        else:
+            questions = [user_input]
+
+        for question in questions:
+            transformed_input, flagCont, city_context = preprocessor.transform_input_with_fallback_to_gpt(question)
+            if flagCont:
+                continue
+
+            exitFlag = await nlp.process(transformed_input, city_context, context, chat_id)
+
+            if exitFlag:
+                print("El proceso ha terminado.")
+                return
 
     """
     def suggest_city(preferences):
