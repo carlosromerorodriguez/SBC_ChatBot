@@ -34,7 +34,7 @@ def main():
     #print(gpt.start_response())
 
     exitFlag = False
-    """while not exitFlag:
+    while not exitFlag:
         user_input = input("> ")
 
         if gpt.is_greeting_input(user_input):
@@ -67,9 +67,9 @@ def main():
             exitFlag = nlp.process(transformed_input, city_context)
 
             if exitFlag:
-                exit(0)"""
+                exit(0)
 
-    for user_input in test_questions:
+    """for user_input in test_questions:
         transformed_input, flagCont, city_context = prp.transform_input_with_fallback_to_gpt(user_input)
 
         # Pas 2: Procesar amb NLP i comprovar si hem de sortir del bucle
@@ -77,7 +77,7 @@ def main():
 
         if exitFlag:
             exit(0)
-
+    """
 
 if __name__ == "__main__":
     main()

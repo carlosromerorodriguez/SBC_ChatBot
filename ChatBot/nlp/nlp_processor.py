@@ -114,7 +114,7 @@ class NLPProcessor:
 
             self.process_petition.show_culture_recommendations(nouns, adverbs, culture_type, user_question)
         elif 'expensive' in adjectives:
-            self.process_petition.show_cost_of_living(adverbs, nouns, user_question, self.city_context)
+            self.process_petition.show_cost_of_living(adverbs, user_question, self.city_context)
         else:
             return False
         return True
