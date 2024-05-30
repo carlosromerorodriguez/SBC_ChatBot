@@ -3,7 +3,7 @@ import requests
 class TravelAPI:
     def __init__(self, api_key):
         self.api_key = api_key
-        self.base_url = "https://booking-com.p.rapidapi.com/v1/"
+        self.base_url = "https://booking-com15.p.rapidapi.com/api/v1/"
 
     def get_headers(self):
         return {
@@ -11,18 +11,34 @@ class TravelAPI:
             "x-rapidapi-host": "booking-com15.p.rapidapi.com"
         }
 
-    def get_hotel_info(self, dest_id, checkin_date, checkout_date, adults=1, children=0, rooms=1, currency="USD", locale="en-us"):
-        url = f"{self.base_url}hotels/search"
+    def search_destination(self, query):
+        url = f"{self.base_url}hotels/searchDestination"
+        params = {"query": query}
+
+        try:
+            response = requests.get(url, headers=self.get_headers(), params=params)
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.RequestException as e:
+            print(f"Error en la llamada a la API de Booking: {e}")
+            return None
+
+    def search_hotels(self, dest_id, checkin_date, checkout_date, adults=1, children_age="0", room_qty=1, page_number=1):
+        url = f"{self.base_url}hotels/searchHotels"
+        print("Destination id: ", dest_id)
         params = {
             "dest_id": dest_id,
-            "checkin_date": checkin_date,
-            "checkout_date": checkout_date,
-            "adults_number": adults,
-            "children_number": children,
-            "room_number": rooms,
-            "locale": locale,
-            "currency": currency,
-            "units": "metric"
+            "search_type": "CITY",
+            "arrival_date": checkin_date,
+            "departure_date": checkout_date,
+            "adults": adults,
+            "children_age": children_age,
+            "room_qty": room_qty,
+            "page_number": page_number,
+            "units": "metric",
+            "temperature_unit": "c",
+            "languagecode": "en-us",
+            "currency_code": "USD"
         }
 
         try:
@@ -32,6 +48,30 @@ class TravelAPI:
         except requests.exceptions.RequestException as e:
             print(f"Error en la llamada a la API de Booking: {e}")
             return None
+
+    def get_hotel_details(self, hotel_id, arrival_date, departure_date, adults=1, children_age="0", room_qty=1):
+        url = f"{self.base_url}hotels/getHotelDetails"
+        params = {
+            "hotel_id": hotel_id,
+            "arrival_date": arrival_date,
+            "departure_date": departure_date,
+            "adults": adults,
+            "children_age": children_age,
+            "room_qty": room_qty,
+            "units": "metric",
+            "temperature_unit": "c",
+            "languagecode": "en-us",
+            "currency_code": "USD"
+        }
+
+        try:
+            response = requests.get(url, headers=self.get_headers(), params=params)
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.RequestException as e:
+            print(f"Error en la llamada a la API de Booking: {e}")
+            return None
+
 
     def get_flight_info(self, origin, destination, departure_date, return_date=None, adults=1, children=0, infants=0,
                         cabin_class="economy"):
