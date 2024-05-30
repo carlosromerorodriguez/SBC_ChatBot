@@ -249,11 +249,6 @@ class ProcessPetition:
             print(self.gpt.not_understood_response())
 
     def show_tourist_attractions(self, user_question, adjectives, adverbs, city_context):
-
-        print(adjectives)
-        print(adverbs)
-        print(city_context)
-        print(user_question)
         if 'what' in adverbs or 'which' in adverbs:
             city_found = False
 
@@ -289,6 +284,21 @@ class ProcessPetition:
             self.search_tourism_type(adverbs, user_question, city_context)
         else:
             print(self.gpt.not_understood_response())
+
+    def show_currency_information(self, nouns, user_question, city_context):
+        city_found = False
+
+        results = self.dao.search(city_context)
+        if results:
+            city_info = results[0]
+            currency_info = city_info.get('currency', 'Currency information not available')
+            response = f"The currency used in {city_info['city']}, {city_info['country']} is {currency_info}."
+            print(self.gpt.humanize_response(response, user_question))
+            city_found = True
+
+        if not city_found:
+            print(self.gpt.city_not_in_database())
+
 
     def show_restaurant_information(self, user_question, city_context):
         city_found = False
