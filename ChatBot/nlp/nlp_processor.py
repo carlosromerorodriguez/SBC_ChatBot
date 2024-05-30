@@ -35,15 +35,15 @@ class NLPProcessor:
         print(user_question)
         words, tags, nouns, verbs, adverbs, adjectives, user_question = self.tokenize_and_lemmatize(user_question)
 
-        city = self.extract_city_name(tags)
-
+        city = self.extract_one_city_name(tags)
         if city:
             self.city_context = city
-            user_question = self.gpt_api.replace_city_context(user_question, self.city_context)
-            print(user_question)
-        else:
-            print("Of which city are you asking about?")
+
+        if not self.city_context:
+            print("Please specify a city")
             return False
+
+        user_question = self.gpt_api.replace_city_context(user_question, self.city_context)
 
         self.handle_general_questions(nouns, verbs, adjectives, adverbs, words, tags, user_question)
         return False
