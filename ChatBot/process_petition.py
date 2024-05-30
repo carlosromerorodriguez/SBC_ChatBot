@@ -53,7 +53,7 @@ class ProcessPetition:
             if not city_found:
                 print(self.gpt.city_not_in_database())
 
-    def show_language_information(self, nouns, user_question, city_context):
+    def show_language_information(self, user_question, city_context, nouns):
         language_found = False
 
         if 'other' in nouns:

@@ -5,7 +5,7 @@ import re
 contemplated_nouns = [
     'cuisine', 'attractions', 'language', 'food', 'beach', 'city', 'cost', 'culture', 'transport',
     'places', 'reasons', 'time', 'tourism', 'weather', 'country', 'rating', 'currency', 'activities', 'public_transport', 'car_rental', 'taxi', 'mountain',  'other', 'mountain',
-    'hotel', 'flight', 'plane', 'restaurant', 'stay', 'sleep', 'restaurants', 'restaurant'
+    'hotel', 'flight', 'plane', 'restaurant', 'stay', 'sleep', 'restaurants', 'restaurant', 'other'
 ]
 
 # Context adjectives
@@ -16,7 +16,7 @@ contemplated_adjectives = [
 
 # Context verbs
 contemplated_verbs = [
-    'show', 'suggest', 'visit', 'go', 'get around', 'eat', 'see', 'travel', 'get', 'there', 'pay', 'recommend'
+    'show', 'suggest', 'visit', 'go', 'get around', 'eat', 'see', 'travel', 'get', 'there', 'pay', 'recommend', 'speak'
 ]
 
 # Context adverbs
@@ -64,7 +64,8 @@ class Preprocessor:
     def transform_input_with_fallback_to_gpt(self, user_input):
         complete_list = contemplated_adverbs + contemplated_verbs + contemplated_adjectives + contemplated_nouns
 
-        ignore_list = ["the", "is", "a", "an", "and", "or", "but", "if", "in", "on", "with", "for", "to", "of", "at", "by", "can", "I", "from", "you", "me", "this", "summer"]
+        ignore_list = ["the", "is", "a", "an", "and", "or", "but", "if", "in", "on", "with", "for", "to", "of", "at", "by",
+                       "can", "I", "from", "you", "me", "this", "summer", "do", "they", "i", "my", "your", "our", "his"]
 
         user_input, cities = self.correct_cities_in_sentence(user_input)
 

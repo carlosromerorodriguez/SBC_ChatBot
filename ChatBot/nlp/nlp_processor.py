@@ -72,7 +72,7 @@ class NLPProcessor:
         elif 'attractions' in nouns or 'activities' in nouns:
             self.process_petition.show_tourist_attractions(user_question, adjectives, adverbs, self.city_context, verbs)
         elif 'language' in nouns:
-            self.process_petition.show_language_information(user_question, self.city_context)
+            self.process_petition.show_language_information(user_question, self.city_context, nouns)
         elif 'currency' in nouns:
             self.process_petition.show_currency_information(nouns, user_question, self.city_context)
         elif 'restaurant' in nouns:
@@ -172,7 +172,7 @@ class NLPProcessor:
         elif any(term in nouns for term in ['eat', 'cuisine', 'food', 'restaurant', 'drink', 'beverage', 'dish', 'meal']):
             self.process_petition.show_cuisine_information(user_question, self.city_context, verbs, adverbs, adjectives)
         elif 'language' in nouns:
-            self.process_petition.show_language_information(nouns, user_question, self.city_context)
+            self.process_petition.show_language_information(user_question, self.city_context, nouns)
         else:
             print(self.gpt_api.not_understood_response())
 
