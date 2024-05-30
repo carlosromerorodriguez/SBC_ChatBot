@@ -125,12 +125,12 @@ class NLPProcessor:
                     break
 
             self.process_petition.show_weather_recommendations(nouns, adverbs, weather_type, user_question, verbs)
-        elif any(term in adjectives for term in ['low', 'high', 'moderate', 'cheap']):
+        elif any(term in adjectives for term in ['expensive', 'moderate', 'cheap']):
 
-            if 'cities' or 'place' or 'city' in nouns:
+            if 'cities' or 'place' or 'city' or 'destinations' in nouns:
                 range_type = None
                 for price in adjectives:
-                    if price in ['low', 'high', 'moderate', 'cheap']:
+                    if price in ['expensive', 'moderate', 'cheap']:
                         range_type = price
                         break
 
