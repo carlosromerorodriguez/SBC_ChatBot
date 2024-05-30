@@ -4,7 +4,8 @@ import re
 # Context Nouns
 contemplated_nouns = [
     'cuisine', 'attractions', 'language', 'food', 'beach', 'city', 'cost', 'culture', 'transport',
-    'places', 'reasons', 'time', 'tourism', 'weather', 'country', 'rating', 'currency', 'activities', 'public_transport', 'car_rental', 'taxi', 'mountain',  'other', 'mountain'
+    'places', 'reasons', 'time', 'tourism', 'weather', 'country', 'rating', 'currency', 'activities', 'public_transport', 'car_rental', 'taxi', 'mountain',  'other', 'mountain',
+    'hotel', 'flight', 'plane', 'restaurant', 'stay', 'sleep'
 ]
 
 # Context adjectives
@@ -72,7 +73,7 @@ class Preprocessor:
             cities = [self.city_context]
 
         if not cities and not self.city_context:
-            self.gpt.humanize_input("Can you please specify a name?", user_input)
+            print(self.gpt.humanize_response("Can you please specify a name?", user_input))
             return "", True, ""
 
         if cities and not self.city_context:

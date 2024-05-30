@@ -2,12 +2,13 @@ import random
 from knowledge.knowledge_DAO import KnowledgeDAO
 from api.gpt_api import GPTAPI
 from utils import *
-
+from api.travel_api import TravelAPI
 
 class ProcessPetition:
     def __init__(self):
         self.dao = KnowledgeDAO()
         self.gpt = GPTAPI()
+        self.travel_api = TravelAPI("6eb7659adbmshe5fc3c22f1bddbbp19d5eajsnf7dd83dc13fc")
 
     def show_climate_information(self, user_question, city_context):
         found = False
@@ -288,6 +289,27 @@ class ProcessPetition:
             self.search_tourism_type(adverbs, user_question, city_context)
         else:
             print(self.gpt.not_understood_response())
+
+    def show_restaurant_information(self, user_question, city_context):
+        city_found = False
+
+        results = self.dao.search(city_context)
+        if results:
+            city_info = results[0]
+            cuisine_info = city_info.get('cuisine', "")
+            response = f"{city_info['city']}, {city_info['country']} is known for its {cuisine_info} cuisine."
+            print(self.gpt.humanize_response(response, user_question))
+            city_found = True
+
+        if not city_found:
+            print(self.gpt.city_not_in_database())
+
+    def show_hotel_information(self, user_question, city_context):
+        initial_date = input("Enter the check-in date (YYYY-MM-DD): ")
+        final_date = input("Enter the check-out date (YYYY-MM-DD): ")
+
+        hotel_info = self.travel_api.get_hotel_info(location=city_context, checkin_date=initial_date,checkout_date=final_date)
+        print(hotel_info)
 
     """
     def suggest_city(preferences):

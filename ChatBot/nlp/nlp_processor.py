@@ -81,7 +81,7 @@ class NLPProcessor:
         elif 'restaurant' in nouns:
             self.process_petition.show_restaurant_information(nouns, user_question, self.city_context)
         elif any(term in nouns for term in ['hotel', 'stay', 'sleep']):
-            self.process_petition.show_hotel_information(nouns, user_question, self.city_context)
+            self.process_petition.show_hotel_information(user_question, self.city_context)
         elif any(term in nouns for term in ['travel', 'flight', 'plane']) or 'get there' in ' '.join(words):
             self.process_petition.show_flight_information(adverbs, nouns, user_question, self.city_context)
         elif 'transport' in nouns or 'get around' in ' '.join(words):
