@@ -75,15 +75,12 @@ class Preprocessor:
 
         if not cities and self.city_context:
             user_input = self.gpt.replace_city_context(user_input, self.city_context)
-            cities = [self.city_context]
 
         elif cities and not self.city_context:
             self.city_context = cities[-1]
-            cities = [self.city_context]
 
         elif cities and self.city_context:
             self.city_context = cities[-1]
-            cities = [self.city_context]
 
         non_matching_words = self.find_non_matching_words(user_input, complete_list, ignore_list, cities)
         print("Non matching words")
