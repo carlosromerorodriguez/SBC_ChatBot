@@ -121,20 +121,18 @@ class NLPProcessor:
 
     def handle_adverbs(self, adverbs, nouns, verbs, adjectives, words, tags, user_question):
         if 'what' in adverbs or 'which' in adverbs:
-            self.handle_what_which_questions(nouns, verbs, adjectives, user_question)
+            self.handle_what_which_questions(nouns, verbs, user_question)
         elif 'where' in adverbs:
             self.handle_where_questions(words, tags, user_question)
         elif 'when' in adverbs:
-            self.handle_when_questions(words, nouns, user_question)
+            self.handle_when_questions(words, user_question)
         elif 'why' in adverbs:
-            self.handle_why_questions(words, nouns, user_question)
-        elif 'how' in adverbs:
-            self.handle_how_questions(words, tags, adjectives, user_question)
+            self.handle_why_questions(words, user_question)
         else:
             return False
         return True
 
-    def handle_what_which_questions(self, nouns, verbs, adjectives, user_question):
+    def handle_what_which_questions(self, nouns, verbs, user_question):
         if 'climate' in nouns:
             self.process_petition.show_climate_information(user_question, self.city_context)
         elif any(term in nouns for term in ['eat', 'cuisine', 'food', 'restaurant', 'drink', 'beverage', 'dish', 'meal']):
@@ -142,7 +140,7 @@ class NLPProcessor:
         elif any(term in verbs for term in ['see', 'visit']) or 'attractions' in nouns:
             self.process_petition.show_tourist_attractions(nouns, user_question, self.city_context)
         elif 'language' in nouns:
-            self.process_petition.show_language_information(user_question, self.city_context)
+            self.process_petition.show_language_information(nouns, user_question, self.city_context)
         elif 'currency' in nouns:
             self.process_petition.show_currency_information(nouns, user_question, self.city_context)
         else:
@@ -154,20 +152,17 @@ class NLPProcessor:
         else:
             print(self.gpt_api.not_understood_response())
 
-    def handle_when_questions(self, words, nouns, user_question):
+    def handle_when_questions(self, words, user_question):
         if 'visit' in words or 'go' in words:
             self.process_petition.show_best_times_to_visit(user_question, self.city_context)
         else:
             print(self.gpt_api.not_understood_response())
 
-    def handle_why_questions(self, words, nouns, user_question):
+    def handle_why_questions(self, words, user_question):
         if 'visit' in words or 'go' in words:
             self.process_petition.show_reasons_to_visit_certain_places(user_question, self.city_context)
         else:
             print(self.gpt_api.not_understood_response())
-
-    def handle_how_questions(self, words, tags, adjectives):
-        print(self.gpt_api.not_understood_response())
 
     def extract_city_name(self, tags):
         city_name = None

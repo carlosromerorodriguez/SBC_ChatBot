@@ -41,18 +41,32 @@ class ProcessPetition:
         if not city_found:
             print(self.gpt.city_not_in_database())
 
-    def show_language_information(self, user_question, city_context):
+    def show_language_information(self, nouns, user_question, city_context):
         language_found = False
 
-        results = self.dao.search(city_context)
-        if results:
-            language_info = random.choice(results)
-            frase = random.choice(frases).format(**language_info)
-            print(self.gpt.humanize_response(frase, user_question))
-            language_found = True
+        if 'other' in nouns:
+            city_found = False
+            results = self.dao.search(city_context)
+            if results:
+                city_info = random.choice(results)
+                language_info = city_info.get('other_languages_spoken', "")
+                response = f"{city_info['city']}, {city_info['country']} is known for its {city_info['language']} language, and also speaks {language_info}."
+                print(self.gpt.humanize_response(response, user_question))
+                city_found = True
 
-        if not language_found:
-            print(self.gpt.city_not_in_database())
+            if not city_found:
+                print(self.gpt.city_not_in_database())
+        else:
+
+            results = self.dao.search(city_context)
+            if results:
+                language_info = random.choice(results)
+                frase = random.choice(frases).format(**language_info)
+                print(self.gpt.humanize_response(frase, user_question))
+                language_found = True
+
+            if not language_found:
+                print(self.gpt.city_not_in_database())
 
     def show_culture_recommendations(self, adverbs, culture_type, user_question):
         if 'what' in adverbs or 'which' in adverbs:
@@ -140,7 +154,6 @@ class ProcessPetition:
                 response = " ".join(response_parts)
                 print(self.gpt.humanize_response(response, user_question))
                 city_found = True
-
 
             if not city_found:
                 print(self.gpt.city_not_in_database())
