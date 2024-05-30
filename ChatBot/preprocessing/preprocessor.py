@@ -10,8 +10,8 @@ contemplated_nouns = [
 
 # Context adjectives
 contemplated_adjectives = [
-    'expensive', 'cultural', 'historical', 'best', 'cheap', 'moderate', 'modern', 'traditional', 'warm', 'cold', 'mild',
-    'variable', 'free'
+    'expensive', 'historical', 'best', 'cheap', 'moderate', 'warm', 'cold', 'mild',
+    'variable', 'free', 'historical', 'modern', 'artistic', 'traditional', 'cosmopolitan', 'festive'
 ]
 
 # Context verbs
