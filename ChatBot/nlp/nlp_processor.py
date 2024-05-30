@@ -137,6 +137,8 @@ class NLPProcessor:
                 self.process_petition.cost_adjective(adverbs, user_question, verbs, range_type)
         elif 'expensive' in adjectives:
             self.process_petition.show_cost_of_living(adverbs, user_question, self.city_context)
+        elif 'similar' in adjectives:
+            self.process_petition.show_similar_cities(user_question, self.city_context)
         else:
             return False
         return True

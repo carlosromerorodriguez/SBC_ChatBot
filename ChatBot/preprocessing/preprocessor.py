@@ -11,7 +11,7 @@ contemplated_nouns = [
 # Context adjectives
 contemplated_adjectives = [
     'expensive', 'historical', 'best', 'cheap', 'moderate', 'warm', 'cold', 'mild',
-    'variable', 'free', 'historical', 'modern', 'artistic', 'traditional', 'cosmopolitan', 'festive'
+    'variable', 'free', 'historical', 'modern', 'artistic', 'traditional', 'cosmopolitan', 'festive', "similar"
 ]
 
 # Context verbs

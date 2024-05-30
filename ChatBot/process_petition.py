@@ -423,6 +423,22 @@ class ProcessPetition:
         else:
             print(self.gpt.not_understood_response())
 
+
+    def show_similar_cities(self, user_question, city_context):
+        city_found = False
+
+        results = self.dao.search(city_context)
+        if results:
+            city_info = results[0]
+            similar_cities = city_info.get('similar_destinations', [])
+            response = f"The cities similar to {city_info['city']} are: {', '.join(similar_cities)}"
+            print(self.gpt.humanize_response(response, user_question))
+            city_found = True
+
+        if not city_found:
+            print(self.gpt.city_not_in_database())
+
+
     """
     def suggest_city(preferences):
         affirmative_responses = ["yes", "yeah", "sure", "of course", "absolutely", "yep"]
