@@ -16,7 +16,7 @@ contemplated_adjectives = [
 
 # Context verbs
 contemplated_verbs = [
-    'show', 'suggest', 'visit', 'go', 'get around', 'eat', 'see'
+    'show', 'suggest', 'visit', 'go', 'get around', 'eat', 'see', 'travel', 'get', 'there'
 ]
 
 # Context adverbs
