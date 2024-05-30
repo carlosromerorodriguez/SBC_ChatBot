@@ -7,7 +7,6 @@ from api.gpt_api import GPTAPI
 # TODO: Logica de fechas (ej: inicial > final)
 # TODO: Check date format in hotel i flight petitions
 # TODO: Segueix ficant la ciutat com a context a la resposta del GPT quan no toca, exemple: Suggest...
-# TODO: Si a fly falta una ciutat, afegir com a origen la de contexte
 
 test_questions = [
     "What is the weather like in Barcelona?",
@@ -86,7 +85,6 @@ def main():
         if exitFlag:
             exit(0)
     """
-
 
 if __name__ == "__main__":
     main()
