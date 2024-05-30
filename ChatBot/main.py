@@ -24,11 +24,19 @@ def main():
             print(gpt.start_response())
             continue
 
-        # Pas 1: Preprocessar
-        transformed_input = transform_input_with_fallback_to_gpt(user_input)
+        # Dividir las preguntas si hay múltiples
+        separated_questions = gpt.split_questions(user_input)
+        questions = separated_questions.split(' ; ')
 
-        # Pas 2: Procesar amb NLP i comprovar si hem de sortir del bucle
-        exitFlag = nlp.process(transformed_input)
+        for question in questions:
+            # Pas 1: Preprocessar
+            transformed_input = transform_input_with_fallback_to_gpt(question)
+
+            # Pas 2: Procesar amb NLP i comprovar si hem de sortir del bucle
+            exitFlag = nlp.process(transformed_input)
+
+            if exitFlag:
+                exit(0)
 
 
 if __name__ == "__main__":

@@ -243,3 +243,24 @@ class GPTAPI:
         except Exception as e:
             print(f"Error en la llamada a la API de GPT: {e}")
             return None
+
+    def split_questions(self, user_input):
+        prompt = (
+            f"Given the user input: '{user_input}', identify if there are multiple questions. "
+            f"Separate each question clearly with a ' ; ' so that they can be processed individually. "
+            f"Return the separated questions as a single string."
+        )
+
+        try:
+            response = openai.ChatCompletion.create(
+                model="gpt-4o",
+                messages=[{"role": "system", "content": prompt}],
+                max_tokens=200,
+                stream=False,
+            )
+
+            response_content = response.choices[0].message["content"].strip()
+            return response_content
+        except Exception as e:
+            print(f"Error en la llamada a la API de GPT: {e}")
+            return None
