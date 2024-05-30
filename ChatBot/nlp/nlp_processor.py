@@ -1,10 +1,7 @@
-import spacy
-from spacy import displacy
 import nltk
 from nltk.stem import WordNetLemmatizer
 from api.gpt_api import GPTAPI
 from process_petition import *
-
 
 
 #TODO:

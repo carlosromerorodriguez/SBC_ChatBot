@@ -5,4 +5,4 @@ gensim
 seaborn
 scipy
 openai
-spacy
+requests
