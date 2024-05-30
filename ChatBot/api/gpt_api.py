@@ -259,7 +259,7 @@ class GPTAPI:
                 stream=False,
             )
 
-            response_content = response.choices[0].message["content"].strip()
+            response_content = response.choices[0].message.content.strip()
             return response_content
         except Exception as e:
             print(f"Error en la llamada a la API de GPT: {e}")
