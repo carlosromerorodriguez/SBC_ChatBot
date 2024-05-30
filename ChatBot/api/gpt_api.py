@@ -38,12 +38,13 @@ class GPTAPI:
         prompt = (
             f"Given the user question: '{user_input}', rephrase the following response to be more natural, human, and coherent: '{response}'. "
             f"Ensure that the rephrased response directly addresses the question and sounds conversational."
+            f"Output only the rephrased response without any additional text or highlighted words."
         )
 
         try:
             response = openai.chat.completions.create(
                 model="gpt-4o",
-                messages=[{"role": "user", "content": prompt}],
+                messages=[{"role": "system", "content": prompt}],
                 max_tokens=200,
                 stream=False,
             )
@@ -58,6 +59,8 @@ class GPTAPI:
             "Generate only a concise and kind farewell message as a chatbot. Respond only the chatbot response"
         ]
         prompt = random.choice(prompts)
+
+        prompt.append("fOutput only the farewell message without any additional text or highlighted words.")
 
         try:
             response = openai.chat.completions.create(
@@ -79,6 +82,7 @@ class GPTAPI:
             "Introduce yourself, explain your role, and invite users to ask questions about travel destinations, "
             "accommodations, and activities."
             "Keep the tone warm and welcoming."
+            "Output only the welcoming message without any additional text or highlighted words."
         )
 
         try:
@@ -99,8 +103,11 @@ class GPTAPI:
             "Acting as a chatbot generate a friendly greeting response to a user saying hello.",
             "Acting as a chatbot create a welcoming message to respond to a user's greeting.",
             "Acting as a chatbot generate a warm and friendly hello message to a user."
+
         ]
         prompt = random.choice(prompts)
+
+        prompt.append("Output only the greeting message without any additional text or highlighted words.")
 
         try:
             response = openai.chat.completions.create(
@@ -123,6 +130,8 @@ class GPTAPI:
         ]
         prompt = random.choice(prompts)
 
+        prompt.append("Output only the message without any additional text or highlighted words.")
+
         try:
             response = openai.chat.completions.create(
                 model="gpt-4o",
@@ -138,7 +147,7 @@ class GPTAPI:
 
     def is_greeting_input(self, user_input):
         prompts = [
-            f"Given this message: {user_input}, respond YES if it is a greeting or welcome input and NO otherwise"
+            f"Given this message: {user_input}, respond ONLY YES if it is a greeting or welcome input and NO otherwise"
         ]
         prompt = random.choice(prompts)
 
