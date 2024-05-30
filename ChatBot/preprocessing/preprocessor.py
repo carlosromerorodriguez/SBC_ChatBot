@@ -47,7 +47,8 @@ class Preprocessor:
 
         # Afegir les paraules que no estan en les llistes a non_matching_words
         non_matching_words = [word for word in input_words if
-                              word not in word_list and word not in ignore_list and word not in cities]
+                              word not in word_list and word not in ignore_list and word not in cities and
+                              word.lower != self.city_context.lower()]
 
         return non_matching_words
 
@@ -69,20 +70,25 @@ class Preprocessor:
 
         user_input, cities = self.correct_cities_in_sentence(user_input)
 
+        print("Cities")
+        print(cities)
+
         if not cities and self.city_context:
             user_input = self.gpt.replace_city_context(user_input, self.city_context)
             cities = [self.city_context]
 
-        if cities and not self.city_context:
+        elif cities and not self.city_context:
             self.city_context = cities[-1]
             cities = [self.city_context]
 
-        if cities and self.city_context:
+        elif cities and self.city_context:
             self.city_context = cities[-1]
             cities = [self.city_context]
 
         non_matching_words = self.find_non_matching_words(user_input, complete_list, ignore_list, cities)
-        print (non_matching_words)
+        print("Non matching words")
+        print(non_matching_words)
+
         if not non_matching_words:
             return self.convert_first_word_to_lowercase(user_input), False, self.city_context
 

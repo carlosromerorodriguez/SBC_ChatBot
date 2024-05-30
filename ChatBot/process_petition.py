@@ -393,7 +393,6 @@ class ProcessPetition:
         if cities_in_question:
             unique_cities = set(cities_in_question.values())
             if len(unique_cities) == 2 or (len(unique_cities) == 1 and city_context not in unique_cities):
-                print (unique_cities)
                 if len(unique_cities) == 2:
                     departure_city, destination_city = unique_cities
                 else:
@@ -401,10 +400,18 @@ class ProcessPetition:
                     destination_city = unique_cities.pop()
 
                 # Realizar la petición a la API para obtener información de vuelos
+                cheapestFlight, fastestFlight, bestFlight = self.travel_api.get_flight_info(departure_city, destination_city,depart_date)
 
-            response = f"Flights from {departure_city} to {destination_city}:\n"
-            print(self.gpt.humanize_response(response, user_question))
-            city_found = True
+                if cheapestFlight and fastestFlight and bestFlight:
+                    response = f"Flights from {departure_city} to {destination_city}:\n"
+                    response += "I have 3 options for you (Cheapest, Fastest, Best):\n"
+                    response += f"\n\tCheapest flight: {cheapestFlight} \n\tFastest flight: {fastestFlight}.\n"
+                    response += f"\tThe best flight is: {bestFlight}.\n"
+                    print(self.gpt.humanize_response(response, user_question))
+                    city_found = True
+                else:
+                    print("I couldn't find any flights for the selected cities.")
+
         if not city_found:
             print(self.gpt.city_not_in_database())
 

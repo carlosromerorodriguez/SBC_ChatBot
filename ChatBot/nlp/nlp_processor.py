@@ -65,6 +65,9 @@ class NLPProcessor:
         print(self.gpt_api.not_understood_response())
 
     def handle_specific_nouns(self, nouns, adjectives, verbs, adverbs, words, user_question):
+        print(nouns)
+
+
         if 'weather' in nouns:
             self.process_petition.show_climate_information(user_question, self.city_context)
         elif any(term in nouns for term in ['cuisine', 'food']) or 'eat' in verbs or 'drink' in verbs:
@@ -79,7 +82,7 @@ class NLPProcessor:
             self.process_petition.show_restaurant_information(user_question, self.city_context, adjectives)
         elif any(term in nouns for term in ['hotel', 'stay', 'sleep']):
             self.process_petition.show_hotel_information(self.city_context)
-        elif any(term in nouns for term in ['travel', 'flight', 'plane']) or 'get there' in ' '.join(words):
+        elif any(term in nouns for term in ['flight', 'plane']) or (term in nouns for term in ['travel']) or 'get there' in ' '.join(words):
             self.process_petition.show_flight_information(adverbs, nouns, user_question, self.city_context)
         elif 'transport' in nouns or 'get around' in ' '.join(words):
             self.process_petition.show_transport_information(adverbs, user_question, self.city_context)

@@ -4,6 +4,8 @@ from preprocessing.preprocessor import Preprocessor
 from api.gpt_api import GPTAPI
 
 # TODO: Passar user input a humanize per aconseguir una resposta més natural
+# TODO: Añadir logica de restaurantes
+# TODO: Logica de fechas (ej: inicial > final)
 
 test_questions = [
     "What is the weather like in Barcelona?",

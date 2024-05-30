@@ -96,6 +96,27 @@ class TravelAPI:
             print(f"Error en la llamada a la API de Booking: {e}")
             return None
 
+    def format_flight_info(self, flight_data):
+        departure_time = flight_data['departureTime']
+        arrival_time = flight_data['arrivalTime']
+        total_time = flight_data['totalTime'] // 3600
+        price = flight_data['priceBreakdown']['total']['units']
+        segments = flight_data['segments']
+
+        # Formatear la información de las escalas
+        legs_info = []
+        for segment in segments:
+            for leg in segment['legs']:
+                leg_info = (f"Departure: {leg['departureAirport']['name']} ({leg['departureAirport']['code']}) "
+                            f"at {leg['departureTime']}, Arrival: {leg['arrivalAirport']['name']} ({leg['arrivalAirport']['code']}) "
+                            f"at {leg['arrivalTime']}")
+                legs_info.append(leg_info)
+
+        legs_str = " | ".join(legs_info)
+        flight_str = (f"Departure time: {departure_time}; Arrival Time: {arrival_time}; Total time: {total_time}h; "
+                      f"Price: {price} EUR; Stops: {legs_str}")
+        return flight_str
+
     def get_restaurant_info(self, location, adults=1, children=0):
         url = f"{self.base_url}restaurants/search"
         params = {
@@ -106,9 +127,65 @@ class TravelAPI:
         }
 
         try:
-            response = requests.get(url, headers=self.get_headers(), params=params)
+            response = requests.get(urlAirport, headers=self.get_headers(), params={"query": origin})
+
+            if 'error' in response.json():
+                print(f"Error en la llamada a la API de Booking: {response.json()['error']}")
+                return None
+            originAirport = response.json()['data'][0]['id']
+
+            response = requests.get(urlAirport, headers=self.get_headers(), params={"query": destination})
+            destinationAirport = response.json()['data'][0]['id']
+            params = {
+                "fromId": originAirport,
+                "toId": destinationAirport,
+                "departDate": departure_date
+            }
+            response = requests.get(urlFlights, headers=self.get_headers(), params=params)
+            cheapestFlightToken = response.json()['data']['flightDeals'][0]['offerToken']
+            fastestFlightToken = response.json()['data']['flightDeals'][1]['offerToken']
+            bestFlightToken = response.json()['data']['flightDeals'][2]['offerToken']
+
+            params = {
+                "token": cheapestFlightToken,
+                "currency_code": "EUR",
+            }
+
+            response = requests.get(urlFlightDetails, headers=self.get_headers(), params=params)
             response.raise_for_status()
-            return response.json()
+
+            if 'error' in response:
+                print(f"Error en la llamada a la API de Booking: {response['error']}")
+                return None
+            cheapestFlightDepartureTime = response.json()['data']['segments'][0]['departureTime']
+            cheapestFlightArrivalTime = response.json()['data']['segments'][0]['arrivalTime']
+            cheapestFlightTotalTime = response.json()['data']['segments'][0]['totalTime'] // 3600
+            cheapestFlightPrice = response.json()['data']['priceBreakdown']['total']['units']
+            cheapestStr = (f'Departure time: {cheapestFlightDepartureTime}; Arrival Time: {cheapestFlightArrivalTime}; '
+                           f'Total time: {cheapestFlightTotalTime}; Price: {cheapestFlightPrice}')
+            params = {
+                "token": fastestFlightToken,
+                "currency_code": "EUR",
+            }
+
+            response = requests.get(urlFlightDetails, headers=self.get_headers(), params=params)
+            fastestFlightDepartureTime = response.json()['data']['segments'][0]['departureTime']
+            fastestFlightArrivalTime = response.json()['data']['segments'][0]['arrivalTime']
+            fastestFlightTotalTime = response.json()['data']['segments'][0]['totalTime'] // 3600
+            fastestFlightPrice = response.json()['data']['priceBreakdown']['total']['units']
+            fastestStr = f'Departure time: {fastestFlightDepartureTime}; Arrival Time: {fastestFlightArrivalTime}; Total time: {fastestFlightTotalTime}; Price: {fastestFlightPrice} '
+            params = {
+                "token": bestFlightToken,
+                "currency_code": "EUR",
+            }
+
+            response = requests.get(urlFlightDetails, headers=self.get_headers(), params=params)
+            bestFlightDepartureTime = response.json()['data']['segments'][0]['departureTime']
+            bestFlightArrivalTime = response.json()['data']['segments'][0]['arrivalTime']
+            bestFlightTotalTime = response.json()['data']['segments'][0]['totalTime'] // 3600
+            bestFlightPrice = response.json()['data']['priceBreakdown']['total']['units']
+            bestStr = f'Departure time: {bestFlightDepartureTime}; Arrival Time: {bestFlightArrivalTime}; Total time: {bestFlightTotalTime}; Price: {bestFlightPrice} '
+            return cheapestStr, fastestStr, bestStr
         except requests.exceptions.RequestException as e:
             print(f"Error en la llamada a la API de Booking: {e}")
             return None
