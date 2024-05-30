@@ -68,8 +68,6 @@ class Preprocessor:
 
         user_input, cities = self.correct_cities_in_sentence(user_input)
 
-        print("Cities: " + cities)
-
         if not cities and self.city_context:
             user_input = self.gpt.replace_city_context(user_input, self.city_context)
             cities = [self.city_context]

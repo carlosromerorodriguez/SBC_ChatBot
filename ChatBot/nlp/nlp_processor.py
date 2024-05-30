@@ -65,7 +65,6 @@ class NLPProcessor:
         print(self.gpt_api.not_understood_response())
 
     def handle_specific_nouns(self, nouns, adjectives, verbs, adverbs, words, user_question):
-        print(nouns)
         if 'weather' in nouns:
             self.process_petition.show_climate_information(user_question, self.city_context)
         elif any(term in nouns for term in ['cuisine', 'food']) or 'eat' in verbs or 'drink' in verbs:
@@ -88,6 +87,8 @@ class NLPProcessor:
             self.process_petition.show_city_culture_information(nouns, adverbs, user_question, self.city_context, verbs)
         elif 'tourism' in nouns:
             self.process_petition.search_tourism_type(user_question, self.city_context, verbs)
+        elif 'cost' in nouns:
+            self.process_petition.show_cost_of_living(adverbs, user_question, self.city_context)
         elif any(term in nouns for term in ['beach', 'city', 'mountain']):
             # Extreure el tipus de lloc
             place_type = None
