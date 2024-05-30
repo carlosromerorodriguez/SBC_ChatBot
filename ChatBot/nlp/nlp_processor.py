@@ -24,7 +24,6 @@ nlp = spacy.load("en_core_web_sm")
 # what is the weather like in Barcelona ; when is the best time to visit
 
 class NLPProcessor:
-    city_context = None
 
     def __init__(self):
         self.gpt_api = GPTAPI()
@@ -34,7 +33,7 @@ class NLPProcessor:
     def process(self, user_question):
         print(user_question)
         words, tags, nouns, verbs, adverbs, adjectives, user_question = self.tokenize_and_lemmatize(user_question)
-
+        """
         city = self.extract_one_city_name(tags)
         if city:
             self.city_context = city
@@ -44,6 +43,8 @@ class NLPProcessor:
             return False
 
         user_question = self.gpt_api.replace_city_context(user_question, self.city_context)
+        print("User question with city context: ", user_question)
+        """
 
         self.handle_general_questions(nouns, verbs, adjectives, adverbs, words, tags, user_question)
         return False
@@ -76,7 +77,6 @@ class NLPProcessor:
 
     def handle_specific_nouns(self, nouns, adjectives, verbs, adverbs, words, user_question):
         if 'weather' in nouns:
-            print("Weather")
             self.process_petition.show_climate_information(nouns, user_question)
         elif any(term in nouns for term in ['eat', 'cuisine', 'food']):
             self.process_petition.show_cuisine_information(nouns + adjectives, user_question)

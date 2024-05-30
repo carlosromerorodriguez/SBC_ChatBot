@@ -1,5 +1,5 @@
 from nlp.nlp_processor import *
-from preprocessing.preprocessor import transform_input_with_fallback_to_gpt
+from preprocessing.preprocessor import Preprocessor
 from api.gpt_api import GPTAPI
 
 # TODO: Passar user input a humanize per aconseguir una resposta més natural
@@ -7,6 +7,7 @@ from api.gpt_api import GPTAPI
 def main():
     gpt = GPTAPI()
     nlp = NLPProcessor()
+    prp = Preprocessor()
 
     #print(gpt.start_response())
 
@@ -35,7 +36,10 @@ def main():
 
         for question in questions:
             # Pas 1: Preprocessar
-            transformed_input = transform_input_with_fallback_to_gpt(question)
+            transformed_input, flagCont = prp.transform_input_with_fallback_to_gpt(question)
+
+            if flagCont:
+                continue
 
             # Pas 2: Procesar amb NLP i comprovar si hem de sortir del bucle
             exitFlag = nlp.process(transformed_input)

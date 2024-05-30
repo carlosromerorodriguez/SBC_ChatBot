@@ -11,6 +11,8 @@ class ProcessPetition:
 
     def show_climate_information(self, nouns, user_question):
         found = False
+        print(nouns)
+        print(user_question)
 
         for noun in nouns:
             results = self.dao.search(noun.lower())

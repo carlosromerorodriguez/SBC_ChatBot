@@ -60,7 +60,7 @@ class GPTAPI:
         ]
         prompt = random.choice(prompts)
 
-        prompt.append("fOutput only the farewell message without any additional text or highlighted words.")
+        prompt += "fOutput only the farewell message without any additional text or highlighted words."
 
         try:
             response = openai.chat.completions.create(
@@ -107,7 +107,7 @@ class GPTAPI:
         ]
         prompt = random.choice(prompts)
 
-        prompt.append("Output only the greeting message without any additional text or highlighted words.")
+        prompt += f"Output only the greeting message without any additional text or highlighted words."
 
         try:
             response = openai.chat.completions.create(
@@ -130,7 +130,7 @@ class GPTAPI:
         ]
         prompt = random.choice(prompts)
 
-        prompt.append("Output only the message without any additional text or highlighted words.")
+        prompt += f"Output only the message without any additional text or highlighted words."
 
         try:
             response = openai.chat.completions.create(
@@ -272,7 +272,6 @@ class GPTAPI:
                 stream=False,
             )
 
-            print(response)
             response_content = response.choices[0].message.content.strip()
             return response_content
         except Exception as e:
@@ -280,7 +279,6 @@ class GPTAPI:
             return None
 
     def replace_city_context(self, user_question, city):
-        print("CITYYYYYYYYYY: " + city)
         prompt = (
             f"You are a travel chatbot that provides information about different cities. "
             f"Given the user question: '{user_question}', replace all pronouns and references to a city (e.g., 'there', 'it', 'destination', 'city', 'place', 'location') with the given city name '{city}'. "
@@ -299,8 +297,6 @@ class GPTAPI:
                 max_tokens=200,
                 stream=False,
             )
-
-            print(response)
 
             return response.choices[0].message.content.strip()
         except Exception as e:
