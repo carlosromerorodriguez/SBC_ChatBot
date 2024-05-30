@@ -5,13 +5,13 @@ import re
 contemplated_nouns = [
     'cuisine', 'attractions', 'language', 'food', 'beach', 'city', 'cost', 'culture', 'transport',
     'places', 'experiences', 'reasons', 'time', 'tourism', 'weather', 'country', 'rating', 'destination', 'tour',
-    'currency', 'activities', 'public_transport', 'car_rental', 'taxi', 'mountain', 'historical'
+    'currency', 'activities', 'public_transport', 'car_rental', 'taxi', 'mountain', 'historical', 'other', 'mountain'
 ]
 
 # Context adjectives
 contemplated_adjectives = [
-    'expensive', 'cultural', 'historical', 'best', 'cheap', 'moderate', 'modern', 'traditional', 'warm', 'cold', 'mild',
-    'variable', 'free'
+    'expensive', 'historical', 'best', 'cheap', 'moderate', 'warm', 'cold', 'mild',
+    'variable', 'free', 'historical', 'modern', 'artistic', 'traditional', 'cosmopolitan', 'festive'
 ]
 
 # Context verbs
