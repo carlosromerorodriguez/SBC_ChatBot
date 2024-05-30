@@ -19,10 +19,11 @@ from process_petition import *
 class NLPProcessor:
     city_context = None
 
-    def __init__(self):
+    def __init__(self, preprocessor):
         self.gpt_api = GPTAPI()
-        self.process_petition = ProcessPetition()
+        self.process_petition = ProcessPetition(preprocessor)
         self.lemmatizer = WordNetLemmatizer()
+        self.preprocessor = preprocessor
 
     def process(self, user_question, city_context):
         self.city_context = city_context

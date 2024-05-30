@@ -5,10 +5,11 @@ from utils import *
 from api.travel_api import TravelAPI
 
 class ProcessPetition:
-    def __init__(self):
+    def __init__(self, prp):
         self.dao = KnowledgeDAO()
         self.gpt = GPTAPI()
         self.travel_api = TravelAPI("6eb7659adbmshe5fc3c22f1bddbbp19d5eajsnf7dd83dc13fc")
+        self.prp = prp
 
     def show_climate_information(self, user_question, city_context):
         found = False
@@ -19,7 +20,7 @@ class ProcessPetition:
             for frase_template in frases:
                 try:
                     frase = frase_template.format(**city_info)
-                    print(self.gpt.humanize_response(frase, user_question))
+                    print(self.gpt.humanize_response(frase, user_question, self.prp))
                     found = True
                     break
                 except KeyError as e:
@@ -47,7 +48,7 @@ class ProcessPetition:
                 else:
                     response = f"No typical food information available for {city_info['city']}."
 
-                print(self.gpt.humanize_response(response, user_question))
+                print(self.gpt.humanize_response(response, user_question, self.prp))
                 city_found = True
 
             if not city_found:
@@ -63,7 +64,7 @@ class ProcessPetition:
                 city_info = random.choice(results)
                 language_info = city_info.get('other_languages_spoken', "")
                 response = f"{city_info['city']}, {city_info['country']} is known for its {city_info['language']} language, and also speaks {language_info}."
-                print(self.gpt.humanize_response(response, user_question))
+                print(self.gpt.humanize_response(response, user_question, self.prp))
                 city_found = True
 
             if not city_found:
@@ -74,7 +75,7 @@ class ProcessPetition:
             if results:
                 language_info = random.choice(results)
                 frase = random.choice(frases).format(**language_info)
-                print(self.gpt.humanize_response(frase, user_question))
+                print(self.gpt.humanize_response(frase, user_question, self.prp))
                 language_found = True
 
             if not language_found:
@@ -89,7 +90,7 @@ class ProcessPetition:
                 random_results = random.sample(results, min(2, len(results)))  # Selecciona fins a 2 resultats aleatoris
                 for city_info in random_results:
                     response += f"\n- {city_info['city']}, {city_info['country']}: Known for its {city_info['climate']} climate, {city_info['culture']} culture, and {', '.join(city_info['tourism_type'])} tourism."
-                print(self.gpt.humanize_response(response, user_question))
+                print(self.gpt.humanize_response(response, user_question, self.prp))
             else:
                 print(f"No destinations with {culture_type} culture found in the database.")
         else:
@@ -104,7 +105,7 @@ class ProcessPetition:
                 city_info = results[0]
                 culture_info = city_info.get('culture', "")
                 response = f"{city_info['city']}, {city_info['country']} is known for its {culture_info} culture."
-                print(self.gpt.humanize_response(response, user_question))
+                print(self.gpt.humanize_response(response, user_question, self.prp))
                 city_found = True
 
 
@@ -122,7 +123,7 @@ class ProcessPetition:
                 city_info = results[0]
                 tourism_types = ", ".join(city_info['tourism_type'])
                 response = f"{city_info['city']}, {city_info['country']} is known for its {tourism_types} tourism."
-                print(self.gpt.humanize_response(response, user_question))
+                print(self.gpt.humanize_response(response, user_question, self.prp))
                 city_found = True
 
 
@@ -140,7 +141,7 @@ class ProcessPetition:
                 random_results = random.sample(results, min(2, len(results)))
                 for city_info in random_results:
                     response += f"\n- {city_info['city']}, {city_info['country']}: Known for its {city_info['climate']} climate, {city_info['culture']} culture, and {', '.join(city_info['tourism_type'])} tourism."
-                print(self.gpt.humanize_response(response, user_question))
+                print(self.gpt.humanize_response(response, user_question, self.prp))
             else:
                 print(f"No {type} destinations found in the database.")
         else:
@@ -164,7 +165,7 @@ class ProcessPetition:
                     response_parts.append(f"Taxi: {transport_info['taxi']}")
 
                 response = " ".join(response_parts)
-                print(self.gpt.humanize_response(response, user_question))
+                print(self.gpt.humanize_response(response, user_question, self.prp))
                 city_found = True
 
             if not city_found:
@@ -188,7 +189,7 @@ class ProcessPetition:
                 month=best_time_info['month'],
                 reason=best_time_info['reason']
             )
-            print(self.gpt.humanize_response(response, user_question))
+            print(self.gpt.humanize_response(response, user_question, self.prp))
             city_found = True
 
         if not city_found:
@@ -208,7 +209,7 @@ class ProcessPetition:
             reasons += f"and explore its tourism types like {tourism_types}. "
             reasons += f"Furthermore, the citizens here speak {city_info['language']}."
 
-            print(self.gpt.humanize_response(reasons, user_question))
+            print(self.gpt.humanize_response(reasons, user_question, self.prp))
             city_found = True
 
         if not city_found:
@@ -222,7 +223,7 @@ class ProcessPetition:
             city_info = results[0]
             cost_level = city_info['cost']
             response = f"The cost of living in {city_info['city']}, {city_info['country']} is considered {cost_level}. Because of its {city_info['culture']} culture, {city_info['climate']} climate, and tourism types like {', '.join(city_info['tourism_type'])}."
-            print(self.gpt.humanize_response(response, user_question))
+            print(self.gpt.humanize_response(response, user_question, self.prp))
             city_found = True
 
         if not city_found:
@@ -237,7 +238,7 @@ class ProcessPetition:
             cost_level = city_info['cost']
             tourism_types = ", ".join(city_info['tourism_type'])
             response = f"The cost of living in {city_info['city']}, {city_info['country']} is considered {cost_level} because of its {city_info['culture']} culture, {city_info['climate']} climate, and tourism types like {tourism_types}."
-            print(self.gpt.humanize_response(response, user_question))
+            print(self.gpt.humanize_response(response, user_question, self.prp))
             city_found = True
 
         if not city_found:
@@ -278,7 +279,7 @@ class ProcessPetition:
                 else:
                     response = f"There are no specific attractions found for {city_info['city']}."
 
-                print(self.gpt.humanize_response(response, user_question))
+                print(self.gpt.humanize_response(response, user_question, self.prp))
                 city_found = True
 
             if not city_found:
@@ -300,7 +301,7 @@ class ProcessPetition:
                 random_results = random.sample(results, min(2, len(results)))
                 for city_info in random_results:
                     response += f"\n- {city_info['city']}, {city_info['country']}: Known for its {city_info['climate']} climate, {city_info['culture']} culture, and {', '.join(city_info['tourism_type'])} tourism."
-                print(self.gpt.humanize_response(response, user_question))
+                print(self.gpt.humanize_response(response, user_question, self.prp))
             else:
                 print(f"No {range_type} destinations found in the database.")
         else:
@@ -314,7 +315,7 @@ class ProcessPetition:
             city_info = results[0]
             currency_info = city_info.get('currency', 'Currency information not available')
             response = f"The currency used in {city_info['city']}, {city_info['country']} is {currency_info}. That can be represented as"
-            print(self.gpt.humanize_response(response, user_question))
+            print(self.gpt.humanize_response(response, user_question, self.prp))
             city_found = True
 
         if not city_found:
@@ -347,7 +348,7 @@ class ProcessPetition:
             else:
                 response = f"No restaurant information available for {city_info['city']}."
 
-            print(self.gpt.humanize_response(response, user_question))
+            print(self.gpt.humanize_response(response, user_question, self.prp))
             city_found = True
 
         if not city_found:
@@ -355,7 +356,7 @@ class ProcessPetition:
 
     def show_hotel_information(self, city_context):
         string = f"In {city_context}, there are various hotels you can stay at. Can you fill in the check-in and check-out dates? So I can help you find the best hotel for your stay."
-        print(self.gpt.humanize_response(string, city_context))
+        print(self.gpt.humanize_response(string, city_context, self.prp))
 
         initial_date = input("Enter the check-in date (YYYY-MM-DD): ")
         final_date = input("Enter the check-out date (YYYY-MM-DD): ")
@@ -367,7 +368,7 @@ class ProcessPetition:
         destination_response = self.travel_api.search_destination(query=city_context)
         if not destination_response or not destination_response.get('data'):
             msg = f"I couldn't find the destination for the city due to an API error: {city_context}"
-            print(self.gpt.humanize_response(msg, city_context))
+            print(self.gpt.humanize_response(msg, city_context, self.prp))
             return
 
         dest_id = destination_response['data'][0]['dest_id']
@@ -375,7 +376,7 @@ class ProcessPetition:
         hotels_response = self.travel_api.search_hotels(dest_id=dest_id, checkin_date=initial_date, checkout_date=final_date)
         if not hotels_response or not hotels_response.get('data') or not hotels_response['data'].get('hotels'):
             msg = f"I couldn't find any hotels for the destination due to an API error: {city_context}"
-            print(self.gpt.humanize_response(msg, city_context))
+            print(self.gpt.humanize_response(msg, city_context, self.prp))
             return
 
         hotel_id = hotels_response['data']['hotels'][0]['hotel_id']
@@ -392,19 +393,19 @@ class ProcessPetition:
             response += f"Price: {hotel_data['product_price_breakdown']['gross_amount_hotel_currency']['amount_rounded']}"
             response += f"Review Score: {hotel_data.get('wifi_review_score', {}).get('rating', 'N/A')} (based on {hotel_data['review_nr']} reviews)"
 
-            print(self.gpt.humanize_response(response, city_context))
+            print(self.gpt.humanize_response(response, city_context, self.prp))
         else:
             print("No se pudo obtener los detalles del hotel.")
 
     def show_flight_information(self, adverbs, nouns, user_question, city_context):
         string = "I can help you find the best flight for your trip. Can you provide me with the departure date?"
-        print(self.gpt.humanize_response(string, user_question))
+        print(self.gpt.humanize_response(string, user_question, self.prp))
 
         # Llamar a la función get_cities para extraer los nombres de las ciudades
         cities_in_question, flag = self.gpt.get_cities(user_question)
 
         if flag:
-            print(self.gpt.humanize_response("I am sorry, petition to API failed. Please try again.", user_question))
+            print(self.gpt.humanize_response("I am sorry, petition to API failed. Please try again.", user_question, self.prp))
             return
 
         depart_date = input("Enter the departure date (YYYY-MM-DD): ")
@@ -431,7 +432,7 @@ class ProcessPetition:
                     response += "I have 3 options for you (Cheapest, Fastest, Best):\n"
                     response += f"\n\tCheapest flight: {cheapestFlight} \n\tFastest flight: {fastestFlight}.\n"
                     response += f"\tThe best flight is: {bestFlight}.\n"
-                    print(self.gpt.humanize_response(response, user_question))
+                    print(self.gpt.humanize_response(response, user_question, self.prp))
                     city_found = True
                 else:
                     print("I couldn't find any flights for the selected cities.")
@@ -448,7 +449,7 @@ class ProcessPetition:
                 random_results = random.sample(results, min(2, len(results)))
                 for city_info in random_results:
                     response += f"\n- {city_info['city']}, {city_info['country']}: Known for its {city_info['climate']} climate, {city_info['culture']} culture, and {', '.join(city_info['tourism_type'])} tourism."
-                print(self.gpt.humanize_response(response, user_question))
+                print(self.gpt.humanize_response(response, user_question, self.prp))
             else:
                 print(f"No {weather_type} destinations found in the database.")
         else:
@@ -463,7 +464,7 @@ class ProcessPetition:
             city_info = results[0]
             similar_cities = city_info.get('similar_destinations', [])
             response = f"The cities similar to {city_info['city']} are: {', '.join(similar_cities)}"
-            print(self.gpt.humanize_response(response, user_question))
+            print(self.gpt.humanize_response(response, user_question, self.prp))
             city_found = True
 
         if not city_found:

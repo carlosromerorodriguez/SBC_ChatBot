@@ -8,6 +8,7 @@ from api.gpt_api import GPTAPI
 # TODO: Logica de fechas (ej: inicial > final)
 # TODO: Check date format in hotel i flight petitions
 # TODO: Intentar fer que si hi ha una ciutat a la frase de resposta del GPT, la detecti i actualitzi el context
+# TODO: Segueix ficant la ciutat com a context a la resposta del GPT quan no toca, exemple: Suggest...
 
 test_questions = [
     "What is the weather like in Barcelona?",
@@ -34,8 +35,8 @@ test_questions = [
 
 def main():
     gpt = GPTAPI()
-    nlp = NLPProcessor()
     prp = Preprocessor()
+    nlp = NLPProcessor(prp)
 
     # print(gpt.start_response())
 

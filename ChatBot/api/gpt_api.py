@@ -40,7 +40,7 @@ class GPTAPI:
             print(f"Error en la llamada a la API de GPT: {e}")
             return None
 
-    def humanize_response(self, response, user_input):
+    def humanize_response(self, response, user_input, prp):
         prompt = (
             f"Given the user question: '{user_input}', rephrase the following response to be more natural, human, and coherent: '{response}'. "
             f"Ensure that the rephrased response directly addresses the question and sounds conversational."
@@ -60,12 +60,11 @@ class GPTAPI:
             cities, flag = self.get_cities(response.choices[0].message.content)
 
             # Ara tenint el diccionari de ciutats, si hi ha alguna ciutat, canviar el context de la ciutat
-            if cities and not flag:
+            if cities and not flag and 'expensive' not in user_input and 'similar' not in user_input:
                 # Agafem els valors del diccionari
                 city_values = list(cities.values())
                 # Canviem el context de la ciutat
-                print("AAAAAAA"+city_values[-1])
-                self.change_city_context(city_values[-1])
+                self.change_city_context(city_values[-1], prp)
 
             return response.choices[0].message.content
         except Exception as e:
@@ -73,10 +72,8 @@ class GPTAPI:
             return None
 
     @staticmethod
-    def change_city_context(new_city_context):
-        from preprocessing.preprocessor import Preprocessor
-
-        Preprocessor.change_city_context_value(new_city_context)
+    def change_city_context(new_city_context, prp):
+        prp.change_city_context_value(new_city_context)
 
     def goodbye_response(self):
         prompts = [

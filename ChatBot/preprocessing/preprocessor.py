@@ -30,7 +30,6 @@ class Preprocessor:
     def __init__(self):
         self.gpt = GPTAPI()
 
-    @classmethod
     def change_city_context_value(cls, new_city_context):
         print("Changing city context to: " + new_city_context)
         cls.city_context = new_city_context
@@ -63,7 +62,7 @@ class Preprocessor:
         city_dict, flag = self.gpt.get_cities(user_input)
 
         if flag:
-            print(self.gpt.humanize_response("Petition to API failed, something might go wrong. Please try again.", user_input))
+            print(self.gpt.humanize_response("Petition to API failed, something might go wrong. Please try again.", user_input, self))
             return user_input, {}
 
         if not city_dict:
