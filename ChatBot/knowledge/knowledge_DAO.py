@@ -16,7 +16,7 @@ class KnowledgeDAO:
     def search_by_tourism_type(self, tourism_type):
         results = []
         for entry in self.knowledge:
-            if tourism_type in entry['tourism_type']:
+            if tourism_type.lower() in entry['tourism_type']:
                 results.append(entry)
         return results
 
@@ -31,5 +31,12 @@ class KnowledgeDAO:
         results = []
         for entry in self.knowledge:
             if entry['climate'].lower() == weather_type.lower():
+                results.append(entry)
+        return results
+
+    def search_by_price_range(self, price_range):
+        results = []
+        for entry in self.knowledge:
+            if entry['cost'].lower() == price_range.lower():
                 results.append(entry)
         return results

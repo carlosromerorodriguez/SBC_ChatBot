@@ -30,25 +30,28 @@ class ProcessPetition:
         if not found:
             print(self.gpt.city_not_in_database())
 
-    def show_cuisine_information(self, user_question, city_context):
-        city_found = False
-        results = self.dao.search(city_context)
+    def show_cuisine_information(self, user_question, city_context, verbs, adverbs, adjectives):
+        if 'suggest' in verbs or 'recommend' in verbs or 'where' in adverbs:
+            self.show_restaurant_information(user_question, city_context, adjectives)
+        else:
+            city_found = False
+            results = self.dao.search(city_context)
 
-        if results:
-            city_info = random.choice(results)
+            if results:
+                city_info = random.choice(results)
 
-            # Check if 'typical_food' exists in the city_info
-            if 'typical_food' in city_info:
-                typical_food = ", ".join(city_info['typical_food'])
-                response = f"The typical food in {city_info['city']} includes: {typical_food}."
-            else:
-                response = f"No typical food information available for {city_info['city']}."
+                # Check if 'typical_food' exists in the city_info
+                if 'typical_food' in city_info:
+                    typical_food = ", ".join(city_info['typical_food'])
+                    response = f"The typical food in {city_info['city']} includes: {typical_food}."
+                else:
+                    response = f"No typical food information available for {city_info['city']}."
 
-            print(self.gpt.humanize_response(response, user_question))
-            city_found = True
+                print(self.gpt.humanize_response(response, user_question))
+                city_found = True
 
-        if not city_found:
-            print(self.gpt.city_not_in_database())
+            if not city_found:
+                print(self.gpt.city_not_in_database())
 
     def show_language_information(self, nouns, user_question, city_context):
         language_found = False
@@ -285,6 +288,24 @@ class ProcessPetition:
         else:
             print(self.gpt.not_understood_response())
 
+    def cost_adjective(self, adverbs, user_question, verbs, range_type):
+        self.show_price_recommendations(adverbs, user_question, verbs, range_type)
+
+    def show_price_recommendations(self, adverbs, user_question, verbs, range_type):
+        if 'which' or 'where' in adverbs or 'suggest' in verbs or 'recommend' in verbs:
+            results = self.dao.search_by_price_range(range_type)
+
+            if results:
+                response = f"Top {range_type} recommendations: "
+                random_results = random.sample(results, min(2, len(results)))
+                for city_info in random_results:
+                    response += f"\n- {city_info['city']}, {city_info['country']}: Known for its {city_info['climate']} climate, {city_info['culture']} culture, and {', '.join(city_info['tourism_type'])} tourism."
+                print(self.gpt.humanize_response(response, user_question))
+            else:
+                print(f"No {range_type} destinations found in the database.")
+        else:
+            print(self.gpt.not_understood_response())
+
     def show_currency_information(self, nouns, user_question, city_context):
         city_found = False
 
@@ -299,15 +320,33 @@ class ProcessPetition:
         if not city_found:
             print(self.gpt.city_not_in_database())
 
-
-    def show_restaurant_information(self, user_question, city_context):
+    def show_restaurant_information(self, user_question, city_context, adjectives):
         city_found = False
 
         results = self.dao.search(city_context)
         if results:
             city_info = results[0]
-            cuisine_info = city_info.get('cuisine', "")
-            response = f"{city_info['city']}, {city_info['country']} is known for its {cuisine_info} cuisine."
+            restaurant_info = city_info.get('restaurants', {})
+            selected_restaurants = []
+
+            if 'cheap' in adjectives:
+                selected_restaurants = restaurant_info.get('cheap', [])
+            elif 'moderate' in adjectives:
+                selected_restaurants = restaurant_info.get('moderate', [])
+            elif 'expensive' in adjectives:
+                selected_restaurants = restaurant_info.get('expensive', [])
+            else:
+                selected_restaurants = (restaurant_info.get('cheap', []) +
+                                        restaurant_info.get('moderate', []) +
+                                        restaurant_info.get('expensive', []))
+
+            if selected_restaurants:
+                response = f"The recommended restaurants in {city_info['city']} are:"
+                for restaurant in selected_restaurants:
+                    response += f"\n- {restaurant['name']} ({restaurant['cuisine']}) - {restaurant['price_range']}"
+            else:
+                response = f"No restaurant information available for {city_info['city']}."
+
             print(self.gpt.humanize_response(response, user_question))
             city_found = True
 
