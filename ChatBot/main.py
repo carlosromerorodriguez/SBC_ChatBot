@@ -1,3 +1,4 @@
+from api.travel_api import TravelAPI
 from nlp.nlp_processor import *
 from preprocessing.preprocessor import Preprocessor
 from api.gpt_api import GPTAPI

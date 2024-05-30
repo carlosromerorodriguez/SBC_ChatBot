@@ -5,6 +5,11 @@ import random
 
 
 class GPTAPI:
+
+    #def __init__(self, api_key):
+        #self.api_key = api_key
+        #openai.api_key = self.api_key
+
     API_KEY = "sk-proj-HpMoLYRWcDGxR48zvvGiT3BlbkFJIaC5flIDtLiuIAEjcuhe"
     openai.api_key = API_KEY
 
@@ -214,7 +219,7 @@ class GPTAPI:
 
     def city_not_in_database(self):
         prompt = (
-            f"Act as a chatbot, generate a response to inform the user that the city introduced is not in the database. "
+            f"Act as a chatbot, generate a response to inform the user that the city introduced is not in the database."
             "Apologize for the inconvenience and suggest asking about another city."
         )
 
