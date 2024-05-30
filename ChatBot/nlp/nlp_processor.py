@@ -141,8 +141,6 @@ class NLPProcessor:
             self.process_petition.show_cuisine_information(user_question, self.city_context)
         elif 'language' in nouns:
             self.process_petition.show_language_information(nouns, user_question, self.city_context)
-        elif 'currency' in nouns:
-            self.process_petition.show_currency_information(nouns, user_question, self.city_context)
         else:
             print(self.gpt_api.not_understood_response())
 
