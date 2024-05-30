@@ -321,6 +321,28 @@ class ProcessPetition:
         hotel_info = self.travel_api.get_hotel_info(location=city_context, checkin_date=initial_date,checkout_date=final_date)
         print(hotel_info)
 
+    def show_flight_information(self, adverbs, nouns, user_question, city_context):
+        # Llamar a la función get_cities para extraer los nombres de las ciudades
+        cities_in_question = self.gpt.get_cities(user_question)
+        city_found = False
+        if cities_in_question:
+            unique_cities = set(cities_in_question.values())
+            if len(unique_cities) == 2 or (len(unique_cities) == 1 and city_context not in unique_cities):
+                print (unique_cities)
+                if len(unique_cities) == 2:
+                    departure_city, destination_city = unique_cities
+                else:
+                    departure_city = city_context
+                    destination_city = unique_cities.pop()
+
+                # Realizar la petición a la API para obtener información de vuelos
+
+            response = f"Flights from {departure_city} to {destination_city}:\n"
+            print(self.gpt.humanize_response(response, user_question))
+            city_found = True
+        if not city_found:
+            print(self.gpt.city_not_in_database())
+
     """
     def suggest_city(preferences):
         affirmative_responses = ["yes", "yeah", "sure", "of course", "absolutely", "yep"]

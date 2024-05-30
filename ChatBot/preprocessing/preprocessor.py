@@ -80,7 +80,7 @@ class Preprocessor:
             self.city_context = cities[-1]
 
         non_matching_words = self.find_non_matching_words(user_input, complete_list, ignore_list, cities)
-
+        print (non_matching_words)
         if not non_matching_words:
             return self.convert_first_word_to_lowercase(user_input), False, self.city_context
 
