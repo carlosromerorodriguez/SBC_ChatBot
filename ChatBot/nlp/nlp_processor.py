@@ -19,11 +19,13 @@ from process_petition import *
 class NLPProcessor:
     city_context = None
 
-    def __init__(self, preprocessor, _process_petition):
+    def __init__(self, preprocessor, _process_petition, send_message_to_telegram):
         self.gpt_api = GPTAPI()
         self.process_petition = _process_petition
         self.lemmatizer = WordNetLemmatizer()
         self.preprocessor = preprocessor
+        self.send_message_to_telegram = send_message_to_telegram
+        self.gpt = GPTAPI()
 
 
     async def process(self, user_question, city_context, context , chat_id):
@@ -61,10 +63,11 @@ class NLPProcessor:
             return
         if await self.handle_adverbs(adverbs, nouns, verbs, adjectives, words, tags, user_question, context, chat_id):
             return
-        print(self.gpt_api.not_understood_response())
+        await self.send_message_to_telegram(context, chat_id, self.gpt.not_understood_response())
 
     async def handle_specific_nouns(self, nouns, adjectives, verbs, adverbs, words, user_question, context, chat_id):
         print(nouns)
+        print(user_question)
         if 'weather' in nouns:
             await self.process_petition.show_climate_information(user_question, self.city_context, context, chat_id)
         elif any(term in nouns for term in ['cuisine', 'food', 'eat']) or 'eat' in verbs  or 'drink' in verbs:
@@ -80,7 +83,8 @@ class NLPProcessor:
         elif any(term in nouns for term in ['hotel']) or any(term in nouns for term in ['stay', 'sleep']):
             await self.process_petition.show_hotel_information(self.city_context, context, chat_id)
         elif any(term in nouns for term in ['flight', 'plane']) or any(term in verbs for term in ['travel']) or 'get there' in ' '.join(words) or 'get to' in ' '.join(words) or 'from' in user_question:
-            await self.process_petition.show_flight_information(adverbs, nouns, user_question, self.city_context, context, chat_id, self.preprocessor.last_city_context)
+            last_city = self.preprocessor.last_city
+            await self.process_petition.show_flight_information(adverbs, nouns, user_question, self.city_context, context, chat_id, last_city)
         elif 'transport' in nouns or 'get around' in ' '.join(words):
             await self.process_petition.show_transport_information(adverbs, user_question, self.city_context, verbs, context, chat_id)
         elif 'culture' in nouns:
@@ -89,7 +93,9 @@ class NLPProcessor:
             await self.process_petition.search_tourism_type(adverbs, user_question, self.city_context, verbs, context, chat_id)
         elif 'cost' in nouns:
             await self.process_petition.show_cost_of_living(adverbs, user_question, self.city_context, context, chat_id)
-        elif any(term in nouns for term in ['beach', 'city', 'mountain']):
+        elif 'destination' or 'destinations' in nouns:
+            await self.process_petition.show_destinations(user_question, self.city_context, context, chat_id, words)
+        elif any(term.lower() in nouns for term in ['beach', 'city', 'mountain']):
             # Extreure el tipus de lloc
             place_type = None
             for noun in nouns:
@@ -97,9 +103,8 @@ class NLPProcessor:
                     place_type = noun
                     break
 
-            await self.process_petition.show_type_recommendations(adverbs, place_type, user_question, verbs, context, chat_id)
-        elif 'destination' or 'destinations' in nouns:
-            await self.process_petition.show_destinations(user_question, self.city_context, context, chat_id, adjectives)
+            await self.process_petition.show_type_recommendations(adverbs, place_type, user_question, verbs, context,
+                                                                  chat_id)
         else:
             return False
         return True
@@ -150,7 +155,7 @@ class NLPProcessor:
             if 'how' in adverbs:
                 await self.process_petition.show_currency_information(adverbs, user_question, self.city_context, context, chat_id)
             else:
-                print(self.gpt_api.not_understood_response())
+                await self.send_message_to_telegram(context, chat_id, self.gpt.not_understood_response())
         else:
             return False
         return True
@@ -176,24 +181,25 @@ class NLPProcessor:
         elif 'language' in nouns:
             await self.process_petition.show_language_information(user_question, self.city_context, nouns, context, chat_id)
         else:
-            print(self.gpt_api.not_understood_response())
+            await self.send_message_to_telegram(context, chat_id, self.gpt.not_understood_response())
 
     async def handle_where_questions(self, words, tags, user_question, context, chat_id):
         if "food" in words or "cuisine" in words:
             await self.process_petition.show_food_recommendations(user_question, self.city_context, context, chat_id)
         else:
-            print(self.gpt_api.not_understood_response())
+            await self.send_message_to_telegram(context, chat_id, self.gpt.not_understood_response())
 
     async def handle_when_questions(self, words, user_question, context, chat_id):
         if 'visit' in words or 'go' in words:
             await self.process_petition.show_best_times_to_visit(user_question, self.city_context, context, chat_id)
         else:
-            print(self.gpt_api.not_understood_response())
+            await self.send_message_to_telegram(context, chat_id, self.gpt.not_understood_response())
 
     async def handle_why_questions(self, words, user_question, context, chat_id):
         if 'visit' in words or 'go' in words:
             await self.process_petition.show_reasons_to_visit_certain_places(user_question, self.city_context, context, chat_id)
         else:
-            print(self.gpt_api.not_understood_response())
+            await self.send_message_to_telegram(context, chat_id, self.gpt.not_understood_response())
+
 
 

@@ -29,8 +29,9 @@ class Preprocessor:
     city_context = None
     last_city = None
 
-    def __init__(self):
+    def __init__(self, send_message):
         self.gpt = GPTAPI()
+        self.send_message = send_message
 
     def change_city_context_value(self, new_city_context):
         # print("Changing city context to: " + new_city_context)
@@ -71,11 +72,11 @@ class Preprocessor:
         return non_matching_words
 
 
-    def correct_cities_in_sentence(self, user_input):
+    async def correct_cities_in_sentence(self, user_input, chat_id, context):
         city_dict, flag = self.gpt.get_cities(user_input)
 
         if flag:
-            print(self.gpt.humanize_response("Petition to API failed, something might go wrong. Please try again.", user_input, self))
+            await self.send_message(context, chat_id, self.gpt.humanize_response("Petition to API failed, something might go wrong. Please try again.", user_input, self))
             return user_input, {}
 
         if not city_dict:
@@ -85,14 +86,14 @@ class Preprocessor:
             user_input = user_input.replace(original, corrected)
         return user_input, list(city_dict.values())
 
-    def transform_input_with_fallback_to_gpt(self, user_input):
+    async def transform_input_with_fallback_to_gpt(self, user_input, chat_id, context):
         complete_list = contemplated_adverbs + contemplated_verbs + contemplated_adjectives + contemplated_nouns
 
         ignore_list = ["the", "is", "a", "an", "and", "or", "but", "if", "in", "on", "with", "for", "to", "of", "at", "by",
                        "can", "I", "from", "you", "me", "this", "summer", "do", "they", "i", "my", "your", "our", "his"]
 
         # Si la petició e
-        user_input, cities = self.correct_cities_in_sentence(user_input)
+        user_input, cities = await self.correct_cities_in_sentence(user_input, chat_id, context)
 
         # Si no te ciutats es que s'esta fent alusió a una ciutat o s'esta preguntant per a recomanació de ciutats o ciutat
         if not cities:
@@ -101,7 +102,7 @@ class Preprocessor:
                 if self.city_context: # Si ja tenim una ciutat de contexte
                     user_input = self.gpt.replace_city_context(user_input, self.city_context)
                 else:
-                    print(self.gpt.humanize_response("I'm sorry, I didn't understand the city you are asking for. Please try again.", user_input, self))
+                    await self.send_message(context, chat_id, self.gpt.humanize_response("I'm sorry, I didn't understand the city you are asking for. Please try again.", user_input, self))
                     return user_input, True, None
 
         elif cities and not self.city_context:

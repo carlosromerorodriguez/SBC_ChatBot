@@ -443,10 +443,9 @@ class ProcessPetition:
         if unique_cities:
             if len(unique_cities) == 1:
                 # Si només hi ha una ciutat, i la ciutat de contexte no està present
-                if self.prp.last_city_context and self.prp.last_city_context not in unique_cities:
-                    unique_cities.add(city_context)
+                if last_city_context and last_city_context not in unique_cities:
+                    unique_cities.add(last_city_context)
                 else:
-                    print("AAAAAAAA")
                     await self.send_message(context, chat_id, self.gpt.humanize_response(
                         "I need you to specify both origin and destination cities, could you reformulate the sentence?",
                         user_question, self.prp))
@@ -454,7 +453,6 @@ class ProcessPetition:
         else:
             # Si no hi ha ciutats en la pregunta
             if not city_context:
-                print("BBBBBBBBBB")
                 await self.send_message(context, chat_id, self.gpt.humanize_response(
                     "I need you to specify both origin and destination cities, could you reformulate the sentence?",
                     user_question, self.prp))

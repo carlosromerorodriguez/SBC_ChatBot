@@ -98,22 +98,22 @@ async def receive_response(update: Update, context: ContextTypes.DEFAULT_TYPE) -
 
 
 gpt = GPTAPI()
-prp = Preprocessor()
+prp = Preprocessor(send_message_to_telegram)
 process_petition = ProcessPetition(prp, send_message_to_telegram, send_message_and_wait_for_response)
-nlp = NLPProcessor(prp, process_petition)
+nlp = NLPProcessor(prp, process_petition, send_message_to_telegram)
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if 'messages' not in context.user_data:
         context.user_data['messages'] = []
 
-    message = await update.message.reply_text('Â¡Hola! Soy tu bot de Telegram.')
+    message = await update.message.reply_text(gpt.start_response())
     context.user_data['messages'].append(update.message.message_id)
     context.user_data['messages'].append(message.message_id)
 
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    print("He recibido un mensaje")
+    print("message received")
     if 'messages' not in context.user_data:
         context.user_data['messages'] = []
 
@@ -163,14 +163,14 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
         questions = [user_input]
 
     for question in questions:
-        transformed_input, flagCont, city_context = prp.transform_input_with_fallback_to_gpt(question)
+        transformed_input, flagCont, city_context = await prp.transform_input_with_fallback_to_gpt(question, chat_id, context)
         if flagCont:
             continue
 
         exitFlag = await nlp.process(transformed_input, city_context, context, chat_id)
 
         if exitFlag:
-            print("El proceso ha terminado.")
+            await send_message_to_telegram(context, chat_id, gpt.goodbye_response())
             return
 
 
