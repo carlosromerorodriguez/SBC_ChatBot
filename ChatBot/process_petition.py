@@ -318,7 +318,7 @@ class ProcessPetition:
         await self.send_message(context, chat_id, self.gpt.humanize_response("Searching for destinations...", user_question, self.prp))
 
         if results:
-            await self.send_message(context, chat_id, self.gpt.humanize_response("I found some destinations for you:" + results, user_question, self.prp))
+            await self.send_message(context, chat_id, self.gpt.humanize_response("I found some destinations for you:" + ", ".join([city['city'] for city in results]), user_question, self.prp))
         else:
             await self.send_message(context, chat_id, self.gpt.humanize_response("No destinations found with the specified adjectives.", user_question, self.prp))
 
@@ -446,7 +446,7 @@ class ProcessPetition:
                     cities_in_question += {city_context: city_context}
                     return
             else:
-                self.send_message(context, chat_id, self.gpt.humanize_response(
+                await self.send_message(context, chat_id, self.gpt.humanize_response(
                     "I need you to specify me both origin and destination cities, could you reformulate the sentence?",
                     user_question, self.prp))
                 return
