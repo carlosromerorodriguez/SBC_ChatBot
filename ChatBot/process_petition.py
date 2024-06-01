@@ -373,9 +373,20 @@ class ProcessPetition:
         string = f"In {city_context}, there are various hotels you can stay at. Can you fill in the check-in and check-out dates? So I can help you find the best hotel for your stay."
         await self.send_message(context, chat_id, self.gpt.humanize_response(string, city_context, self.prp))
 
-        initial_date = self.send_message(context, chat_id, "Enter the check-in date (YYYY-MM-DD): ")
+        await self.send_message(context, chat_id, "Enter the check-in date (YYYY-MM-DD): ")
+        session_manager.set_session(chat_id, 'asking_for_hotel_check_in', True)
 
-        final_date = self.send_message(context, chat_id, "Enter the check-out date (YYYY-MM-DD): ")
+    async def save_hotel_check_in_date(self, context, chat_id, check_in_date):
+        session_manager.clear_session(chat_id, 'asking_for_hotel_check_in')
+        session_manager.set_session(chat_id, 'hotel_check_in', check_in_date)
+        await self.send_message(context, chat_id, "Enter the check-out date (YYYY-MM-DD): ")
+        session_manager.set_session(chat_id, 'asking_for_hotel_check_out', True)
+
+
+    async def hotel_api_request(self, city_context, chat_id, context, check_out_date):
+        session_manager.clear_session(chat_id, 'asking_for_hotel_check_out')
+
+        check_in_date = session_manager.get_session(chat_id, 'hotel_check_in')
 
         # TODO: Comprovar que el format sigui correcte
 
@@ -446,7 +457,7 @@ class ProcessPetition:
         session_manager.set_session(chat_id, 'cities_in_question', cities_in_question)
 
     async def flight_api_request(self, city_context, chat_id, context, user_question, depart_date):
-        # Recuperar cities_in_question
+        # Recuperar cities_in_questionon(ch
         cities_in_question = session_manager.get_session(chat_id, 'cities_in_question')
         print(cities_in_question)
 

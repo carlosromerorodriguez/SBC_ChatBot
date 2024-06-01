@@ -139,9 +139,9 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
         return
 
     # Si el flag check out hotel
-
-
-
+    if session_manager.get_session(chat_id, 'asking_for_hotel_check_out'):
+        await process_petition.hotel_api_request(prp.city_context, chat_id, context, user_input)
+        return
 
     if gpt.is_greeting_input(user_input):
         await send_message_to_telegram(context, chat_id, gpt.salutation_response())
