@@ -135,7 +135,10 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
         return
 
     # Si flag check-in hotel
+
+
     # Si el flag check out hotel
+
 
 
 

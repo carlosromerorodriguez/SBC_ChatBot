@@ -81,12 +81,8 @@ class Preprocessor:
 
         user_input, cities = self.correct_cities_in_sentence(user_input)
 
-        print("Cities")
-        print(cities)
-
         if not cities and self.city_context:
             user_input = self.gpt.replace_city_context(user_input, self.city_context)
-            print("USER"+user_input)
 
         elif cities and not self.city_context:
             self.city_context = cities[-1]
