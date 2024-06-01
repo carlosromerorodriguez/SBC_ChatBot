@@ -40,3 +40,20 @@ class KnowledgeDAO:
             if entry['cost'].lower() == price_range.lower():
                 results.append(entry)
         return results
+
+    def search_by_adjectives(self, adjectives):
+        results = []
+
+        for city_info in self.knowledge:
+            match = True
+            for adjective in adjectives:
+                if adjective in city_info.values():
+                    continue
+                else:
+                    match = False
+                    break
+
+            if match:
+                results.append(city_info)
+
+        return results

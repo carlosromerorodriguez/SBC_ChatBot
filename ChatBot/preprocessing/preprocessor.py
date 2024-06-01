@@ -4,8 +4,8 @@ import re
 # Context Nouns
 contemplated_nouns = [
     'cuisine', 'attractions', 'language', 'food', 'beach', 'city', 'cost', 'culture', 'transport',
-    'places', 'reasons', 'time', 'tourism', 'weather', 'country', 'rating', 'currency', 'activities', 'public_transport', 'car_rental', 'taxi', 'mountain',  'other', 'mountain',
-    'hotel', 'flight', 'plane', 'restaurant', 'stay', 'sleep', 'restaurants', 'other', 'hotels', 'flights', 'planes', 'around'
+    'reasons', 'time', 'tourism', 'weather', 'country', 'rating', 'currency', 'activities', 'public_transport', 'car_rental', 'taxi', 'mountain',  'other', 'mountain',
+    'hotel', 'flight', 'plane', 'restaurant', 'stay', 'sleep', 'restaurants', 'other', 'hotels', 'flights', 'planes', 'around', 'destination', 'destinations'
 ]
 
 # Context adjectives
@@ -32,9 +32,9 @@ class Preprocessor:
         self.gpt = GPTAPI()
 
     def change_city_context_value(self, new_city_context):
-        print("Changing city context to: " + new_city_context)
+        # print("Changing city context to: " + new_city_context)
         self.city_context = new_city_context
-        print("City context is now: " + self.city_context)
+        # print("City context is now: " + self.city_context)
 
     def convert_first_word_to_lowercase(self, input_string):
         words = input_string.split()
@@ -48,13 +48,23 @@ class Preprocessor:
         ignore_list = [word.lower() for word in ignore_list]
         cities = [city.lower() for city in cities]
 
-        # Dividir el text d'entrada en paraules i convertir a minúscules
+        # Dividim el text d'entrada en paraules i convertir a minúscules
         input_words = re.findall(r'\b\w+\b', input_text.lower())
 
-        # Afegir les paraules que no estan en les llistes a non_matching_words
-        non_matching_words = [word for word in input_words if
-                              word not in word_list and word not in ignore_list and word not in cities and
-                              word.lower() != self.city_context.lower()]
+        # Afegim les paraules que no estan en les llistes a non_matching_words
+        non_matching_words = [
+            word for word in input_words
+            if word not in word_list
+            if word not in ignore_list
+            if word not in cities
+        ]
+
+        # Si self.city_context no és None afegim la comparació
+        if self.city_context is not None:
+            non_matching_words = [
+                word for word in non_matching_words
+                if word.lower() != self.city_context.lower()
+            ]
 
         return non_matching_words
 
@@ -79,10 +89,18 @@ class Preprocessor:
         ignore_list = ["the", "is", "a", "an", "and", "or", "but", "if", "in", "on", "with", "for", "to", "of", "at", "by",
                        "can", "I", "from", "you", "me", "this", "summer", "do", "they", "i", "my", "your", "our", "his"]
 
+        # Si la petició e
         user_input, cities = self.correct_cities_in_sentence(user_input)
 
-        if not cities and self.city_context:
-            user_input = self.gpt.replace_city_context(user_input, self.city_context)
+        # Si no te ciutats es que s'esta fent alusió a una ciutat o s'esta preguntant per a recomanació de ciutats o ciutat
+        if not cities:
+            # Mirem si la pregunta es sobre una ciutat o esta preguntat per a que li recomanem una ciutat o ciutats
+            if not self.gpt.is_asking_for_cities(user_input):
+                if self.city_context: # Si ja tenim una ciutat de contexte
+                    user_input = self.gpt.replace_city_context(user_input, self.city_context)
+                else:
+                    print(self.gpt.humanize_response("I'm sorry, I didn't understand the city you are asking for. Please try again.", user_input, self))
+                    return user_input, True, None
 
         elif cities and not self.city_context:
             self.city_context = cities[-1]
@@ -105,9 +123,6 @@ class Preprocessor:
         for word in context_city_words:
             if word.lower() in non_matching_words:
                 non_matching_words.remove(word)
-
-        print("Non matching words after removing cities")
-        print(non_matching_words)
 
         if not non_matching_words:
             return self.convert_first_word_to_lowercase(user_input), False, self.city_context

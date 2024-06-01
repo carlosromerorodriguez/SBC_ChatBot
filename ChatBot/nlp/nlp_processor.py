@@ -98,6 +98,8 @@ class NLPProcessor:
                     break
 
             await self.process_petition.show_type_recommendations(adverbs, place_type, user_question, verbs, context, chat_id)
+        elif 'destination' or 'destinations' in nouns:
+            await self.process_petition.show_destinations(user_question, self.city_context, context, chat_id)
         else:
             return False
         return True

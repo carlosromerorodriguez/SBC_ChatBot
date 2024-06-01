@@ -312,6 +312,17 @@ class ProcessPetition:
         else:
             await self.send_message(context, chat_id, self.gpt.not_understood_response())
 
+    async def show_destinations(self, user_question, city_context, context, chat_id, adjectives):
+        # Busquem a la base de dades destinacions amb els adjectius especificats
+        results = self.dao.search_by_adjectives(adjectives)
+
+        await self.send_message(context, chat_id, self.gpt.humanize_response("Searching for destinations...", user_question, self.prp))
+
+        if results:
+            await self.send_message(context, chat_id, self.gpt.humanize_response("I found some destinations for you:" + results, user_question, self.prp))
+        else:
+            await self.send_message(context, chat_id, self.gpt.humanize_response("No destinations found with the specified adjectives.", user_question, self.prp))
+
     async def show_currency_information(self, nouns, user_question, city_context, context, chat_id):
         city_found = False
 

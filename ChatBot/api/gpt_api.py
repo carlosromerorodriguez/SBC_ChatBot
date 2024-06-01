@@ -329,3 +329,26 @@ class GPTAPI:
             return None
 
 
+    def is_asking_for_cities(self, user_input) -> bool:
+        prompt = (
+            f"Given the user input: '{user_input}', determine if the user is asking the chatbot a recomendation of cities given certain adjectives. "
+            f"Return YES if it is that case"
+            f"Return NO if the user is asking about information of a specific city that is not mentioned explicitly in the input but is assumed to be known by the chatbot. Eg: 'What is the weather like there?' or 'What are the best places to visit?'"
+            f"Respond with only YES or NO without any additional text or characters."
+        )
+
+        try:
+            response = openai.chat.completions.create(
+                model="gpt-4o",
+                messages=[{"role": "system", "content": prompt}],
+                max_tokens=50,
+                stream=False,
+            )
+
+            reformulated_response = response.choices[0].message.content
+            if reformulated_response == "YES":
+                return True
+            return False
+        except Exception as e:
+            print(f"Error en la llamada a la API de GPT: {e}")
+            return None
