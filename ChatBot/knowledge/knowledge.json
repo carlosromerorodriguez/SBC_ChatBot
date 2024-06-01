@@ -72,6 +72,78 @@
     }
   },
   {
+    "city": "Zurich",
+    "country": "Switzerland",
+    "currency": "Swiss Franc (CHF)",
+    "cost": "expensive",
+    "climate": "cold",
+    "typical_food": ["Raclette", "Fondue", "Zürcher Geschnetzeltes", "Birchermüesli"],
+    "culture": "modern",
+    "tourism_type": ["city", "mountain"],
+    "language": "German",
+    "other_languages_spoken": ["English", "French", "Italian"],
+    "best_time_to_visit": {
+      "month": "July",
+      "reason": "The weather is warm and pleasant, perfect for exploring the city's outdoor attractions and enjoying outdoor activities such as swimming in Lake Zurich."
+    },
+    "similar_destinations": ["Geneva", "Lucerne", "Bern"],
+    "rating": 64.83,
+    "transport": {
+      "public_transport": "Zurich has an extensive public transportation system including trams, buses, and trains, providing easy access to various parts of the city.",
+      "car_rental": "Car rental services are available in Zurich from major companies like Hertz, Avis, and Europcar, offering flexibility for exploring the city and its surroundings.",
+      "taxi": "Taxis are readily available throughout Zurich, providing convenient transportation options for travelers."
+    },
+    "activities": {
+      "free": [
+        {
+          "name": "Explore Old Town (Altstadt)"
+        },
+        {
+          "name": "Enjoy the view from Lindenhof Hill"
+        }
+      ],
+      "moderate": [
+        {
+          "name": "Visit Kunsthaus Zurich"
+        },
+        {
+          "name": "Take a cruise on Lake Zurich"
+        }
+      ],
+      "expensive": [
+        {
+          "name": "Dine at a Michelin-starred restaurant"
+        },
+        {
+          "name": "Helicopter tour over the Alps"
+        }
+      ]
+    },
+     "restaurants": {
+      "cheap": [
+        {
+          "name": "Sternen Grill",
+          "cuisine": "Swiss, Street Food",
+          "price_range": "cheap"
+        }
+      ],
+      "moderate": [
+        {
+          "name": "Le Dezaley",
+          "cuisine": "Swiss, Fondue",
+          "price_range": "moderate"
+        }
+      ],
+      "expensive": [
+        {
+          "name": "Pavillon",
+          "cuisine": "French, European",
+          "price_range": "expensive"
+        }
+      ]
+    }
+  },
+  {
     "city": "Paris",
     "country": "France",
     "currency": "Euro (EUR)",
@@ -432,53 +504,6 @@
     }
   },
   {
-    "city": "Dubai",
-    "country": "United Arab Emirates",
-    "currency": "UAE Dirham (AED)",
-    "cost": "expensive",
-    "climate": "warm",
-    "typical_food": ["Shawarma", "Harees", "Al Machboos", "Luqaimat"],
-    "culture": "modern",
-    "tourism_type": ["city", "beach"],
-    "language": "Arabic",
-    "other_languages_spoken": ["English", "Hindi", "Urdu"],
-    "best_time_to_visit": {
-      "month": "November",
-      "reason": "The weather is cooler and more comfortable for outdoor activities and sightseeing."
-    },
-    "similar_destinations": ["Abu Dhabi", "Doha", "Manama"],
-    "rating": 77.22,
-    "transport": {
-      "public_transport": "Dubai has a modern public transportation system including the metro, buses, and trams.",
-      "car_rental": "Car rental services are available and commonly used.",
-      "taxi": "Taxis and ride-sharing services are readily available."
-    },
-    "activities": {
-      "free": [
-        {
-          "name": "Visit the Dubai Fountain"
-        },
-        {
-          "name": "Explore the Dubai Mall"
-        }
-      ],
-      "moderate": [
-        {
-          "name": "Tour the Burj Khalifa"
-        },
-        {
-          "name": "Visit the Dubai Aquarium"
-        }
-      ],
-      "expensive": [
-        {
-          "name": "Desert Safari"
-        },
-        {
-          "name": "Dinner at At.mosphere"
-        }
-      ]
-    },
     "city": "Dubai",
     "country": "United Arab Emirates",
     "currency": "UAE Dirham (AED)",
