@@ -425,12 +425,11 @@ class ProcessPetition:
         else:
             print("No se pudo obtener los detalles del hotel.")
 
-
-
     async def show_flight_information(self, adverbs, nouns, user_question, city_context, context, chat_id):
         string = "I can help you find the best flight for your trip. Can you provide me with the departure date?"
         await self.send_message(context, chat_id, self.gpt.humanize_response(string, user_question, self.prp))
-        # Llamar a la función get_cities para extraer los nombres de las ciudades
+
+        # Extraiem les ciutats de la preguntas
         cities_in_question, flag = self.gpt.get_cities(user_question)
 
         if flag:
@@ -439,22 +438,39 @@ class ProcessPetition:
                                                                user_question, self.prp))
             return
 
-        if cities_in_question:
-            unique_cities = set(cities_in_question.values())
-            if len(unique_cities) == 2 or (len(unique_cities) == 1 and city_context not in unique_cities):
-                if len(unique_cities) != 2:
-                    cities_in_question += {city_context: city_context}
+        unique_cities = set(cities_in_question.values())
+
+        # Verifiquem que hi hagi ciutats en la pregunta
+        if unique_cities:
+            if len(unique_cities) == 1:
+                # Si només hi ha una ciutat, i la ciutat de contexte no està present
+                if city_context and city_context not in unique_cities:
+                    unique_cities.add(city_context)
+                else:
+                    await self.send_message(context, chat_id, self.gpt.humanize_response(
+                        "I need you to specify both origin and destination cities, could you reformulate the sentence?",
+                        user_question, self.prp))
                     return
-            else:
+            elif len(unique_cities) > 2:
                 await self.send_message(context, chat_id, self.gpt.humanize_response(
-                    "I need you to specify me both origin and destination cities, could you reformulate the sentence?",
+                    "Please specify only the origin and destination cities.",
+                    user_question, self.prp))
+                return
+        else:
+            # Si no hi ha ciutats en la pregunta
+            if not city_context:
+                await self.send_message(context, chat_id, self.gpt.humanize_response(
+                    "I need you to specify both origin and destination cities, could you reformulate the sentence?",
                     user_question, self.prp))
                 return
 
+            # Agregem la ciutat de contexte a la llista de ciutats
+            unique_cities.add(city_context)
+
         await self.send_message(context, chat_id, "Enter the departure date (YYYY-MM-DD): ")
 
-        # Activar FLAG i guardar cities_in_question
-        session_manager.set_session(chat_id, 'cities_in_question', cities_in_question)
+        # Activar FLAG y guardar cities_in_question
+        session_manager.set_session(chat_id, 'cities_in_question', list(unique_cities))
 
     async def flight_api_request(self, city_context, chat_id, context, user_question, depart_date):
         # Recuperar cities_in_questionon(ch
