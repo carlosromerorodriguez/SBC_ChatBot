@@ -483,7 +483,7 @@ class ProcessPetition:
 
         city_found = False
         if cities_in_question:
-            unique_cities = set(cities_in_question.values())
+            unique_cities = set(cities_in_question)
             if len(unique_cities) == 2 or (len(unique_cities) == 1 and city_context not in unique_cities):
                 if len(unique_cities) == 2:
                     departure_city, destination_city = unique_cities
