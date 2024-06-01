@@ -27,12 +27,14 @@ contemplated_adverbs = [
 
 class Preprocessor:
     city_context = None
+    last_city = None
 
     def __init__(self):
         self.gpt = GPTAPI()
 
     def change_city_context_value(self, new_city_context):
         # print("Changing city context to: " + new_city_context)
+        self.last_city = self.city_context
         self.city_context = new_city_context
         # print("City context is now: " + self.city_context)
 

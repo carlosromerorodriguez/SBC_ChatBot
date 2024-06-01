@@ -66,7 +66,7 @@ class GPTAPI:
                 # Canviem el context de la ciutat
                 self.change_city_context(city_values[-1], prp)
 
-            return response.choices[0].message.content
+            return response.choices[0].message.content.replace("*", "")
         except Exception as e:
             print(f"Error en la llamada a la API de GPT: {e}")
             return None
