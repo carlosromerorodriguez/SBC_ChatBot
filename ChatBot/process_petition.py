@@ -3,7 +3,8 @@ from knowledge.knowledge_DAO import KnowledgeDAO
 from api.gpt_api import GPTAPI
 from utils import *
 from api.travel_api import TravelAPI
-from preprocessing.preprocessor import Preprocessor
+from session_manager import session_manager
+
 
 class ProcessPetition:
     def __init__(self, prp, send_message, send_message_and_wait_for_response):
@@ -249,10 +250,10 @@ class ProcessPetition:
             await self.send_message(context, chat_id, self.gpt.city_not_in_database())
 
     async def show_cost_of_living(self, adverbs, user_question, city_context, context, chat_id):
-        if 'how' in adverbs:
-            await self.show_how_expensive(user_question, city_context)
+        if 'how' or 'what' or 'which' in adverbs:
+            await self.show_how_expensive(user_question, city_context, context, chat_id)
         elif 'why' in adverbs:
-            await self.show_why_expensive(user_question, city_context)
+            await self.show_why_expensive(user_question, city_context, context, chat_id)
         else:
             await self.send_message(context, chat_id, self.gpt.not_understood_response())
 
@@ -362,8 +363,9 @@ class ProcessPetition:
         string = f"In {city_context}, there are various hotels you can stay at. Can you fill in the check-in and check-out dates? So I can help you find the best hotel for your stay."
         await self.send_message(context, chat_id, self.gpt.humanize_response(string, city_context, self.prp))
 
-        initial_date = self.send_message_and_wait_for_response(context, chat_id, "Enter the check-in date (YYYY-MM-DD): ")
-        final_date = self.send_message_and_wait_for_response(context, chat_id, "Enter the check-out date (YYYY-MM-DD): ")
+        initial_date = self.send_message(context, chat_id, "Enter the check-in date (YYYY-MM-DD): ")
+
+        final_date = self.send_message(context, chat_id, "Enter the check-out date (YYYY-MM-DD): ")
 
         # TODO: Comprovar que el format sigui correcte
 
@@ -411,12 +413,28 @@ class ProcessPetition:
             await self.send_message(context, chat_id, self.gpt.humanize_response("I am sorry, petition to API failed. Please try again.", user_question, self.prp))
             return
 
-        depart_date = await self.send_message_and_wait_for_response(context, chat_id, "Enter the departure date (YYYY-MM-DD): ")
+        if cities_in_question:
+            unique_cities = set(cities_in_question.values())
+            if len(unique_cities) == 2 or (len(unique_cities) == 1 and city_context not in unique_cities):
+                if len(unique_cities) != 2:
+                    self.send_message(context, chat_id, self.gpt.humanize_response("I need you to specify me both origin and destination cities, could you reformulate the sentence?", user_question, self.prp))
+                    return
 
-        #TODO: Comprovar que el format sigui correcte
+        await self.send_message(context, chat_id, "Enter the departure date (YYYY-MM-DD): ")
+
+        # Activar FLAG i guardar cities_in_question
+        session_manager.set_session(chat_id, 'cities_in_question', cities_in_question)
 
 
-        print("Searching flights in our database...\n")
+    async def flight_api_request(self, city_context, chat_id, context, user_question, depart_date):
+        # Recuperar cities_in_question
+        cities_in_question = session_manager.get_session(chat_id, 'cities_in_question')
+        print(cities_in_question)
+
+        user_question += f"for {cities_in_question}."
+
+        # TODO: MOSTRAR CARREGA A TELEGRAM AL USUARI
+
 
         city_found = False
         if cities_in_question:
@@ -425,11 +443,7 @@ class ProcessPetition:
                 if len(unique_cities) == 2:
                     departure_city, destination_city = unique_cities
                 else:
-                    string = "can you specify the origin?"
-                    await self.send_message(context, chat_id, self.gpt.humanize_response(string, user_question, self.prp))
-
-                    departure_city = self.send_message_and_wait_for_response(context, chat_id, "Enter the departure city: ")
-                    destination_city = unique_cities.pop()
+                    self.send_message(context, chat_id, self.gpt.humanize_response("I need you to specify me both origin and destination cities, could you reformulate the sentence?", user_question, self.prp))
                 # Realizar la petición a la API para obtener información de vuelos
                 cheapestFlight, fastestFlight, bestFlight = self.travel_api.get_flight_info(departure_city, destination_city,depart_date)
 
@@ -445,6 +459,8 @@ class ProcessPetition:
 
         if not city_found:
             await self.send_message(context, chat_id, self.gpt.city_not_in_database())
+
+        session_manager.clear_session(chat_id, 'cities_in_question')
 
     async def show_weather_recommendations(self, nouns, adverbs, weather_type, user_question, verbs, context, chat_id):
         if 'where' in adverbs or 'which' in adverbs or 'what' in adverbs or 'suggest' in verbs or 'recommend' in verbs:

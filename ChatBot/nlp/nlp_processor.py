@@ -135,7 +135,7 @@ class NLPProcessor:
                         break
 
                 await self.process_petition.cost_adjective(adverbs, user_question, verbs, range_type, context, chat_id)
-        elif 'expensive' in adjectives:
+        elif 'expensive' in adjectives or 'cost of living' in user_question:
             await self.process_petition.show_cost_of_living(adverbs, user_question, self.city_context, context, chat_id)
         elif 'similar' in adjectives:
             await self.process_petition.show_similar_cities(user_question, self.city_context, context, chat_id)

@@ -52,7 +52,7 @@ class GPTAPI:
             response = openai.chat.completions.create(
                 model="gpt-4o",
                 messages=[{"role": "system", "content": prompt}],
-                max_tokens=200,
+                max_tokens=300,
                 stream=False,
             )
 

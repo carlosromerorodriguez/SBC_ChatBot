@@ -1,16 +1,15 @@
 import asyncio
+import threading
+from queue import Queue, Empty
+import time
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 from process_petition import ProcessPetition
 from preprocessing.preprocessor import Preprocessor
 from nlp.nlp_processor import NLPProcessor
 from api.gpt_api import GPTAPI
+from session_manager import session_manager
 
-# TODO: Logica de fechas (ej: inicial > final)
-# TODO: Check date format in hotel and flight petitions
-# TODO: Seguir revisando el contexto de la ciudad en las respuestas del GPT cuando no es necesario
-# TODO: Input de vuelos y hoteles por Telegram
-# TODO: Pulir preprocesamiento
 
 test_questions = [
     "What is the weather like in Barcelona?",
@@ -36,7 +35,36 @@ test_questions = [
     "Any similar cities to Tokyo?",
 ]
 
+# Queue to store pending responses
 pending_requests = {}
+response_queues = {}
+
+
+def handle_response_queue(chat_id, response_queue, context):
+    while True:
+        try:
+            response = response_queue.get(timeout=2)  # Esperar por una respuesta durante 2 segundos en cada iteración
+            if response:
+                return response
+        except Empty:
+            continue  # Continua esperant
+        except Exception as e:
+            print(f"Error handling response for chat_id {chat_id}: {e}")
+            return None
+
+def process_messages(context, chat_id):
+    while True:
+        if 'messages' not in context.user_data:
+            context.user_data['messages'] = []
+
+        # Comprobar si estamos esperando una respuesta
+        if context.user_data.get('waiting_for_response'):
+            print("Estoy esperando una respuesta")
+            response = handle_response_queue(chat_id, response_queues[chat_id], context)
+            if response:
+                context.user_data['waiting_for_response'] = False
+                print("Respuesta recibida y procesada")
+                return response
 
 
 async def send_message_to_telegram(context: ContextTypes.DEFAULT_TYPE, chat_id: int, text: str) -> None:
@@ -45,19 +73,17 @@ async def send_message_to_telegram(context: ContextTypes.DEFAULT_TYPE, chat_id: 
 
 
 async def send_message_and_wait_for_response(context: ContextTypes.DEFAULT_TYPE, chat_id: int, text: str) -> str:
-    loop = asyncio.get_event_loop()
-    future = loop.create_future()
+    response_queue = Queue()
+    response_queues[chat_id] = response_queue
 
-    pending_requests[chat_id] = future
+    await send_message_to_telegram(context, chat_id, text)
+    print("Esperando respuesta... 1")
 
-    message = await context.bot.send_message(chat_id=chat_id, text=text)
-    context.user_data['messages'].append(message.message_id)
+    # Utilitzar un thread per processar els missatges
+    response = await asyncio.to_thread(process_messages, context, chat_id)
 
-    context.user_data['waiting_for_response'] = True  # Marcar que estamos esperando una respuesta
-    print("Esperando respuesta...")
-    response = await future
-    print ("he rebut la resposta")
-    context.user_data['waiting_for_response'] = False  # Limpiar el estado de espera
+    if response is None:
+        await context.bot.send_message(chat_id=chat_id, text="Tiempo de espera agotado. Por favor, intenta de nuevo.")
     return response
 
 
@@ -65,9 +91,10 @@ async def receive_response(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     chat_id = update.message.chat_id
     user_input = update.message.text
 
-    if chat_id in pending_requests:
-        future = pending_requests.pop(chat_id)
-        future.set_result(user_input)
+    if chat_id in response_queues:
+        response_queue = response_queues[chat_id]
+        response_queue.put(user_input)
+        print("Respuesta recibida y puesta en la cola")
 
 
 gpt = GPTAPI()
@@ -80,25 +107,37 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if 'messages' not in context.user_data:
         context.user_data['messages'] = []
 
-    message = await update.message.reply_text('¡Hola! Soy tu bot de Telegram.')
+    message = await update.message.reply_text('Â¡Hola! Soy tu bot de Telegram.')
     context.user_data['messages'].append(update.message.message_id)
     context.user_data['messages'].append(message.message_id)
 
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    print("he rebut missatge")
+    print("He recibido un mensaje")
     if 'messages' not in context.user_data:
         context.user_data['messages'] = []
 
     # Comprobar si estamos esperando una respuesta
     if context.user_data.get('waiting_for_response'):
-        print ("he rebut la data")
+        print("Estoy esperando una respuesta")
         await receive_response(update, context)
         return
 
     text = update.message.text
     chat_id = update.message.chat_id
     user_input = text
+
+    # Si flag check-in vol
+    if session_manager.get_session(chat_id, 'cities_in_question'):
+        print(session_manager.get_session(chat_id, 'cities_in_question'))
+        await process_petition.flight_api_request(prp.city_context, chat_id, context, "Can you recommend me flights",
+                                                  text)
+        return
+
+    # Si flag check-in hotel
+    # Si el flag check out hotel
+
+
 
     if gpt.is_greeting_input(user_input):
         await send_message_to_telegram(context, chat_id, gpt.salutation_response())
@@ -109,7 +148,6 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     elif gpt.is_asking_for_me(user_input):
         await send_message_to_telegram(context, chat_id, gpt.start_response())
         return
-
 
     separated_questions = gpt.split_questions(user_input)
     if separated_questions:
