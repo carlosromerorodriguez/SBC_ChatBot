@@ -464,6 +464,8 @@ class ProcessPetition:
 
         await self.send_message(context, chat_id, "Enter the departure date (YYYY-MM-DD): ")
 
+        self.send_message(context, chat_id, "⏳ Searching for flights... ⏳")
+
         # Activar FLAG y guardar cities_in_question
         session_manager.set_session(chat_id, 'cities_in_question', list(unique_cities))
 
