@@ -66,11 +66,15 @@ class NLPProcessor:
         await self.send_message_to_telegram(context, chat_id, self.gpt.not_understood_response())
 
     async def handle_specific_nouns(self, nouns, adjectives, verbs, adverbs, words, user_question, context, chat_id):
-        print(nouns)
+        print("Nouns: ", nouns)
+        print("Adjectives: ", adjectives)
+        print("Verbs: ", verbs)
+        print("Adverbs: ", adverbs)
         print(user_question)
+
         if 'weather' in nouns:
             await self.process_petition.show_climate_information(user_question, self.city_context, context, chat_id)
-        elif any(term in nouns for term in ['cuisine', 'food', 'eat']) or 'eat' in verbs  or 'drink' in verbs:
+        elif any(term in nouns for term in ['cuisine', 'food', 'eat']) or 'eat' in verbs or 'drink' in verbs:
             await self.process_petition.show_cuisine_information(user_question, self.city_context, verbs, adverbs, adjectives, context, chat_id)
         elif 'attraction' in nouns or 'activity' in nouns:
             await self.process_petition.show_tourist_attractions(user_question, adjectives, adverbs, self.city_context, verbs, context, chat_id)
@@ -80,7 +84,7 @@ class NLPProcessor:
             await self.process_petition.show_currency_information(nouns, user_question, self.city_context, context, chat_id)
         elif 'restaurant' in nouns:
             await self.process_petition.show_restaurant_information(user_question, self.city_context, adjectives, context, chat_id)
-        elif any(term in nouns for term in ['hotel']) or any(term in nouns for term in ['stay', 'sleep']):
+        elif any(term in nouns for term in ['hotel']) or any(term in nouns for term in ['stay', 'sleep']) or any(term in verbs for term in ['stay', 'sleep']):
             await self.process_petition.show_hotel_information(self.city_context, context, chat_id)
         elif any(term in nouns for term in ['flight', 'plane']) or any(term in verbs for term in ['travel']) or 'get there' in ' '.join(words) or 'get to' in ' '.join(words) or 'from' in user_question:
             last_city = self.preprocessor.last_city
@@ -92,9 +96,19 @@ class NLPProcessor:
         elif 'tourism' in nouns:
             await self.process_petition.search_tourism_type(adverbs, user_question, self.city_context, verbs, context, chat_id)
         elif 'cost' in nouns:
-            await self.process_petition.show_cost_of_living(adverbs, user_question, self.city_context, context, chat_id)
-        elif 'destination' or 'destinations' in nouns:
-            await self.process_petition.show_destinations(user_question, self.city_context, context, chat_id, words)
+            await self.process_petition.show_cost_of_living(adverbs, user_question, self.city_context, context, chat_id, "A")
+        elif 'similar' in adjectives:
+            await self.process_petition.show_similar_cities(user_question, self.city_context, context, chat_id)
+        elif 'destination' in nouns or 'destinations' in nouns and 'how' not in adverbs:
+
+            if 'beach' in nouns:
+                adjectives.append('beach')
+            elif 'city' in nouns:
+                adjectives.append('city')
+            elif 'mountain' in nouns:
+                adjectives.append('mountain')
+
+            await self.process_petition.show_destinations(user_question, self.city_context, context, chat_id, adjectives)
         elif any(term.lower() in nouns for term in ['beach', 'city', 'mountain']):
             # Extreure el tipus de lloc
             place_type = None
@@ -132,9 +146,11 @@ class NLPProcessor:
                     break
 
             await self.process_petition.show_weather_recommendations(nouns, adverbs, weather_type, user_question, verbs, context, chat_id)
+        elif ('expensive' in adjectives or 'cost of living' in user_question) and all(term not in nouns for term in ['cities', 'place', 'city', 'destinations']):
+            await self.process_petition.show_cost_of_living(adverbs, user_question, self.city_context, context, chat_id, "B")
         elif any(term in adjectives for term in ['expensive', 'moderate', 'cheap']):
 
-            if 'cities' or 'place' or 'city' or 'destinations' in nouns:
+            if 'cities' in nouns or 'place' in nouns or 'city' in nouns or 'destinations' in nouns:
                 range_type = None
                 for price in adjectives:
                     if price in ['expensive', 'moderate', 'cheap']:
@@ -142,10 +158,6 @@ class NLPProcessor:
                         break
 
                 await self.process_petition.cost_adjective(adverbs, user_question, verbs, range_type, context, chat_id)
-        elif 'expensive' in adjectives or 'cost of living' in user_question:
-            await self.process_petition.show_cost_of_living(adverbs, user_question, self.city_context, context, chat_id)
-        elif 'similar' in adjectives:
-            await self.process_petition.show_similar_cities(user_question, self.city_context, context, chat_id)
         else:
             return False
         return True

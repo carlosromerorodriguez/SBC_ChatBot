@@ -42,18 +42,30 @@ class KnowledgeDAO:
         return results
 
     def search_by_adjectives(self, adjectives):
-        results = []
+        result = []
+        for city in self.knowledge:
+            matches = {adj: False for adj in adjectives}  # Diccionari per rastrejar els adjectius trobats
+            for key, value in city.items():
+                if key not in ['restaurants', 'activities', 'best_times_to_visit', 'transport']:  # Excloent restaurants i activitats
+                    if isinstance(value, str):
+                        for adj in adjectives:
+                            if adj.lower() in value.lower():
+                                matches[adj] = True
+                    elif isinstance(value, list):
+                        for adj in adjectives:
+                            if any(adj.lower() in item.lower() for item in value if isinstance(item, str)):
+                                matches[adj] = True
+                    elif isinstance(value, dict):
+                        for sub_key, sub_value in value.items():
+                            if isinstance(sub_value, str):
+                                for adj in adjectives:
+                                    if adj.lower() in sub_value.lower():
+                                        matches[adj] = True
+                            elif isinstance(sub_value, list):
+                                for adj in adjectives:
+                                    if any(adj.lower() in item.lower() for item in sub_value if isinstance(item, str)):
+                                        matches[adj] = True
+            if all(matches.values()):  # Si tots els adjectius estan presents
+                result.append(city)
+        return result
 
-        for city_info in self.knowledge:
-            match = True
-            for adjective in adjectives:
-                if adjective in city_info.values():
-                    continue
-                else:
-                    match = False
-                    break
-
-            if match:
-                results.append(city_info)
-
-        return results

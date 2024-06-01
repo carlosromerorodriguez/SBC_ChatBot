@@ -33,6 +33,7 @@ test_questions = [
     "Why should I visit Prague?",
     "How do I get around in Hong Kong?",
     "Any similar cities to Tokyo?",
+    "Suggest me warm and expensive destinations that have a beach"
 ]
 
 # Queue to store pending responses

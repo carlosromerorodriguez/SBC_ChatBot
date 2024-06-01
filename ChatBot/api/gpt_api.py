@@ -282,7 +282,7 @@ class GPTAPI:
     def split_questions(self, user_input):
         prompt = (
             f"You are a travel chatbot, and the user can ask you multiple questions in a single message about a specific location or topic. "
-            f"Given the user input: '{user_input}', identify if there are multiple questions. "
+            f"Given the user input: '{user_input}', identify if there are multiple questions, do not separate adjectives that are complementing a city, eg: 'Recommend me cheap and cold places'."
             f"Separate each question clearly with a ' ; ' so that they can be processed individually. "
             f"Return the separated questions as a single string with the questions separated by ' ; ' and no additional text. "
             f"If there is only one question, add a ' ; ' at the end of the question and return the original question with the ' ; ' at the end."

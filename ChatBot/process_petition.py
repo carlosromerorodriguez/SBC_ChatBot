@@ -248,7 +248,7 @@ class ProcessPetition:
         if not city_found:
             await self.send_message(context, chat_id, self.gpt.city_not_in_database())
 
-    async def show_cost_of_living(self, adverbs, user_question, city_context, context, chat_id):
+    async def show_cost_of_living(self, adverbs, user_question, city_context, context, chat_id, debug):
         if 'how' or 'what' or 'which' in adverbs:
             await self.show_how_expensive(user_question, city_context, context, chat_id)
         elif 'why' in adverbs:
@@ -312,6 +312,7 @@ class ProcessPetition:
             await self.send_message(context, chat_id, self.gpt.not_understood_response())
 
     async def show_destinations(self, user_question, city_context, context, chat_id, adjectives):
+        print(adjectives)
         # Busquem a la base de dades destinacions amb els adjectius especificats
         results = self.dao.search_by_adjectives(adjectives)
 
@@ -433,7 +434,7 @@ class ProcessPetition:
 
         if flag:
             await self.send_message(context, chat_id,
-                                    self.gpt.humanize_response("I am sorry, petition to API failed. Please try again.",
+                                    self.gpt.humanize_response("Petition to API failed, something might go wrong. The answer might be wrong, dont pay attention to that and ask again",
                                                                user_question, self.prp))
             return
 

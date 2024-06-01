@@ -76,7 +76,7 @@ class Preprocessor:
         city_dict, flag = self.gpt.get_cities(user_input)
 
         if flag:
-            await self.send_message(context, chat_id, self.gpt.humanize_response("Petition to API failed, something might go wrong. Please try again.", user_input, self))
+            await self.send_message(context, chat_id, self.gpt.humanize_response("Petition to API failed, something might go wrong. The answer might be wrong, dont pay attention to that and ask again", user_input, self))
             return user_input, {}
 
         if not city_dict:
@@ -90,7 +90,7 @@ class Preprocessor:
         complete_list = contemplated_adverbs + contemplated_verbs + contemplated_adjectives + contemplated_nouns
 
         ignore_list = ["the", "is", "a", "an", "and", "or", "but", "if", "in", "on", "with", "for", "to", "of", "at", "by",
-                       "can", "I", "from", "you", "me", "this", "summer", "do", "they", "i", "my", "your", "our", "his"]
+                       "can", "I", "from", "you", "me", "this", "summer", "do", "they", "i", "my", "your", "our", "his", "that"]
 
         # Si la petició e
         user_input, cities = await self.correct_cities_in_sentence(user_input, chat_id, context)
