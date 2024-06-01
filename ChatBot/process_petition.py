@@ -451,11 +451,6 @@ class ProcessPetition:
                         "I need you to specify both origin and destination cities, could you reformulate the sentence?",
                         user_question, self.prp))
                     return
-            elif len(unique_cities) > 2:
-                await self.send_message(context, chat_id, self.gpt.humanize_response(
-                    "Please specify only the origin and destination cities.",
-                    user_question, self.prp))
-                return
         else:
             # Si no hi ha ciutats en la pregunta
             if not city_context:
