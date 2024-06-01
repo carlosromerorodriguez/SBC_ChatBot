@@ -119,10 +119,11 @@ class Preprocessor:
                 if word.lower() in non_matching_words:
                     non_matching_words.remove(word)
 
-        context_city_words = self.city_context.lower().split()
-        for word in context_city_words:
-            if word.lower() in non_matching_words:
-                non_matching_words.remove(word)
+        if self.city_context:
+            context_city_words = self.city_context.lower().split()
+            for word in context_city_words:
+                if word.lower() in non_matching_words:
+                    non_matching_words.remove(word)
 
         if not non_matching_words:
             return self.convert_first_word_to_lowercase(user_input), False, self.city_context
