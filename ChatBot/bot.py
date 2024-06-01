@@ -130,12 +130,13 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     # Si flag check-in vol
     if session_manager.get_session(chat_id, 'cities_in_question'):
         print(session_manager.get_session(chat_id, 'cities_in_question'))
-        await process_petition.flight_api_request(prp.city_context, chat_id, context, "Can you recommend me flights",
-                                                  text)
+        await process_petition.flight_api_request(prp.city_context, chat_id, context, "Can you recommend me flights", user_input)
         return
 
     # Si flag check-in hotel
-
+    if session_manager.get_session(chat_id, 'asking_for_hotel_check_in'):
+        await process_petition.save_hotel_check_in_date(context, chat_id, user_input)
+        return
 
     # Si el flag check out hotel
 

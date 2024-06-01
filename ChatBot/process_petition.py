@@ -24,7 +24,8 @@ class ProcessPetition:
             for frase_template in frases:
                 try:
                     frase = frase_template.format(**city_info)
-                    await self.send_message(context, chat_id, self.gpt.humanize_response(frase, user_question,self.prp))
+                    await self.send_message(context, chat_id,
+                                            self.gpt.humanize_response(frase, user_question, self.prp))
                     found = True
                     break
                 except KeyError as e:
@@ -72,7 +73,7 @@ class ProcessPetition:
                 city_found = True
 
             if not city_found:
-                 await self.send_message(context, chat_id, self.gpt.city_not_in_database())
+                await self.send_message(context, chat_id, self.gpt.city_not_in_database())
         else:
 
             results = self.dao.search(city_context)
@@ -113,7 +114,6 @@ class ProcessPetition:
                 await self.send_message(context, chat_id, self.gpt.humanize_response(response, user_question, self.prp))
                 city_found = True
 
-
             if not city_found:
                 await self.send_message(context, chat_id, self.gpt.city_not_in_database())
         else:
@@ -130,7 +130,6 @@ class ProcessPetition:
                 response = f"{city_info['city']}, {city_info['country']} is known for its {tourism_types} tourism."
                 await self.send_message(context, chat_id, self.gpt.humanize_response(response, user_question, self.prp))
                 city_found = True
-
 
             if not city_found:
                 await self.send_message(context, chat_id, self.gpt.city_not_in_database())
@@ -390,14 +389,15 @@ class ProcessPetition:
 
         dest_id = destination_response['data'][0]['dest_id']
 
-        hotels_response = self.travel_api.search_hotels(dest_id=dest_id, checkin_date=initial_date, checkout_date=final_date)
+        hotels_response = self.travel_api.search_hotels(dest_id=dest_id, checkin_date=check_in_date,
+                                                        checkout_date=check_out_date)
         if not hotels_response or not hotels_response.get('data') or not hotels_response['data'].get('hotels'):
             msg = f"I couldn't find any hotels for the destination due to an API error: {city_context}"
             await self.send_message(context, chat_id, self.gpt.humanize_response(msg, city_context, self.prp))
             return
 
         hotel_id = hotels_response['data']['hotels'][0]['hotel_id']
-        hotel_details = self.travel_api.get_hotel_details(hotel_id, initial_date, final_date)
+        hotel_details = self.travel_api.get_hotel_details(hotel_id, check_in_date, check_out_date)
 
         if hotel_details:
             hotel_data = hotel_details['data']
@@ -414,6 +414,8 @@ class ProcessPetition:
         else:
             print("No se pudo obtener los detalles del hotel.")
 
+
+
     async def show_flight_information(self, adverbs, nouns, user_question, city_context, context, chat_id):
         string = "I can help you find the best flight for your trip. Can you provide me with the departure date?"
         await self.send_message(context, chat_id, self.gpt.humanize_response(string, user_question, self.prp))
@@ -421,21 +423,27 @@ class ProcessPetition:
         cities_in_question, flag = self.gpt.get_cities(user_question)
 
         if flag:
-            await self.send_message(context, chat_id, self.gpt.humanize_response("I am sorry, petition to API failed. Please try again.", user_question, self.prp))
+            await self.send_message(context, chat_id,
+                                    self.gpt.humanize_response("I am sorry, petition to API failed. Please try again.",
+                                                               user_question, self.prp))
             return
 
         if cities_in_question:
             unique_cities = set(cities_in_question.values())
             if len(unique_cities) == 2 or (len(unique_cities) == 1 and city_context not in unique_cities):
                 if len(unique_cities) != 2:
-                    self.send_message(context, chat_id, self.gpt.humanize_response("I need you to specify me both origin and destination cities, could you reformulate the sentence?", user_question, self.prp))
+                    cities_in_question += {city_context: city_context}
                     return
+            else:
+                self.send_message(context, chat_id, self.gpt.humanize_response(
+                    "I need you to specify me both origin and destination cities, could you reformulate the sentence?",
+                    user_question, self.prp))
+                return
 
         await self.send_message(context, chat_id, "Enter the departure date (YYYY-MM-DD): ")
 
         # Activar FLAG i guardar cities_in_question
         session_manager.set_session(chat_id, 'cities_in_question', cities_in_question)
-
 
     async def flight_api_request(self, city_context, chat_id, context, user_question, depart_date):
         # Recuperar cities_in_question
@@ -446,7 +454,6 @@ class ProcessPetition:
 
         # TODO: MOSTRAR CARREGA A TELEGRAM AL USUARI
 
-
         city_found = False
         if cities_in_question:
             unique_cities = set(cities_in_question.values())
@@ -454,16 +461,21 @@ class ProcessPetition:
                 if len(unique_cities) == 2:
                     departure_city, destination_city = unique_cities
                 else:
-                    self.send_message(context, chat_id, self.gpt.humanize_response("I need you to specify me both origin and destination cities, could you reformulate the sentence?", user_question, self.prp))
+                    self.send_message(context, chat_id, self.gpt.humanize_response(
+                        "I need you to specify me both origin and destination cities, could you reformulate the sentence?",
+                        user_question, self.prp))
                 # Realizar la petición a la API para obtener información de vuelos
-                cheapestFlight, fastestFlight, bestFlight = self.travel_api.get_flight_info(departure_city, destination_city,depart_date)
+                cheapestFlight, fastestFlight, bestFlight = self.travel_api.get_flight_info(departure_city,
+                                                                                            destination_city,
+                                                                                            depart_date)
 
                 if cheapestFlight and fastestFlight and bestFlight:
                     response = f"Flights from {departure_city} to {destination_city}:\n"
                     response += "I have 3 options for you (Cheapest, Fastest, Best):\n"
                     response += f"\n\tCheapest flight: {cheapestFlight} \n\tFastest flight: {fastestFlight}.\n"
                     response += f"\tThe best flight is: {bestFlight}.\n"
-                    await self.send_message(context, chat_id, self.gpt.humanize_response(response, user_question, self.prp))
+                    await self.send_message(context, chat_id,
+                                            self.gpt.humanize_response(response, user_question, self.prp))
                     city_found = True
                 else:
                     print("I couldn't find any flights for the selected cities.")
@@ -488,7 +500,6 @@ class ProcessPetition:
         else:
             await self.send_message(context, chat_id, self.gpt.not_understood_response())
 
-
     async def show_similar_cities(self, user_question, city_context, context, chat_id):
         city_found = False
 
@@ -502,6 +513,7 @@ class ProcessPetition:
 
         if not city_found:
             await self.send_message(context, chat_id, self.gpt.city_not_in_database())
+
     """
     def suggest_city(preferences):
         affirmative_responses = ["yes", "yeah", "sure", "of course", "absolutely", "yep"]

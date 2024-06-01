@@ -77,7 +77,7 @@ class NLPProcessor:
             await self.process_petition.show_currency_information(nouns, user_question, self.city_context, context, chat_id)
         elif 'restaurant' in nouns:
             await self.process_petition.show_restaurant_information(user_question, self.city_context, adjectives, context, chat_id)
-        elif any(term in nouns for term in ['hotel']) or any(term in verbs for term in ['stay', 'sleep']):
+        elif any(term in nouns for term in ['hotel']) or any(term in nouns for term in ['stay', 'sleep']):
             await self.process_petition.show_hotel_information(self.city_context, context, chat_id)
         elif any(term in nouns for term in ['flight', 'plane']) or any(term in verbs for term in ['travel']) or 'get there' in ' '.join(words) or 'get to' in ' '.join(words):
             await self.process_petition.show_flight_information(adverbs, nouns, user_question, self.city_context, context, chat_id)
