@@ -352,3 +352,49 @@ class GPTAPI:
         except Exception as e:
             print(f"Error en la llamada a la API de GPT: {e}")
             return None
+
+
+    def thanking_response(self):
+        prompt = (
+            f"Generate a response that shows gratitude and appreciation for the user's thanks. "
+            f"Respond in a friendly and polite manner, acknowledging the user's thanks and providing a positive and engaging response. "
+            f"Output only the response without any additional text or highlighted words."
+            f"You can add emojis to make the response more engaging and friendly."
+        )
+
+        try:
+            response = openai.chat.completions.create(
+                model="gpt-4o",
+                messages=[{"role": "user", "content": prompt}],
+                max_tokens=150,
+                stream=False,
+            )
+
+            return response.choices[0].message.content
+        except Exception as e:
+            print(f"Error en la llamada a la API de GPT: {e}")
+            return None
+
+    def is_thanking_me(self, user_input):
+        prompt = (
+            f"Given the user input: '{user_input}', determine if the user is thanking the chatbot for the information provided. "
+            f"Return YES if it is that case"
+            f"Return NO if the user is not thanking the chatbot."
+            f"Respond with only YES or NO without any additional text or characters."
+        )
+
+        try:
+            response = openai.chat.completions.create(
+                model="gpt-4o",
+                messages=[{"role": "system", "content": prompt}],
+                max_tokens=50,
+                stream=False,
+            )
+
+            reformulated_response = response.choices[0].message.content
+            if reformulated_response == "YES":
+                return True
+            return False
+        except Exception as e:
+            print(f"Error en la llamada a la API de GPT: {e}")
+            return None

@@ -152,6 +152,9 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     elif gpt.is_asking_for_me(user_input):
         await send_message_to_telegram(context, chat_id, gpt.start_response())
         return
+    elif gpt.is_thanking_me(user_input):
+        await send_message_to_telegram(context, chat_id, gpt.thanking_response())
+        return
 
     separated_questions = gpt.split_questions(user_input)
     if separated_questions:
