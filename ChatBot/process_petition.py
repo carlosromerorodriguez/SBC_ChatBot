@@ -388,9 +388,7 @@ class ProcessPetition:
 
         check_in_date = session_manager.get_session(chat_id, 'hotel_check_in')
 
-        # TODO: Comprovar que el format sigui correcte
-
-        print("Searching hotels in our database...\n")
+        self.send_message(context, chat_id, "⏳ Searching for hotels... ⏳")
 
         destination_response = self.travel_api.search_destination(query=city_context)
         if not destination_response or not destination_response.get('data'):
@@ -424,6 +422,7 @@ class ProcessPetition:
             await self.send_message(context, chat_id, self.gpt.humanize_response(response, city_context, self.prp))
         else:
             print("No se pudo obtener los detalles del hotel.")
+
 
     async def show_flight_information(self, adverbs, nouns, user_question, city_context, context, chat_id):
         string = "I can help you find the best flight for your trip. Can you provide me with the departure date?"
