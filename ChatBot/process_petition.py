@@ -443,7 +443,7 @@ class ProcessPetition:
         if unique_cities:
             if len(unique_cities) == 1:
                 # Si només hi ha una ciutat, i la ciutat de contexte no està present
-                if city_context and city_context not in unique_cities:
+                if self.prp.city_context and city_context not in unique_cities:
                     unique_cities.add(city_context)
                 else:
                     await self.send_message(context, chat_id, self.gpt.humanize_response(
