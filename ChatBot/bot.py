@@ -1,15 +1,16 @@
+import asyncio
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 from process_petition import ProcessPetition
 from preprocessing.preprocessor import Preprocessor
-from nlp.nlp_processor import *
+from nlp.nlp_processor import NLPProcessor
 from api.gpt_api import GPTAPI
 
 # TODO: Logica de fechas (ej: inicial > final)
-# TODO: Check date format in hotel i flight petitions
-# TODO: Segueix ficant la ciutat com a context a la resposta del GPT quan no toca, exemple: Suggest...
-# TODO: input flights hotels per telegram
-# TODO: Pulir preprocessing
+# TODO: Check date format in hotel and flight petitions
+# TODO: Seguir revisando el contexto de la ciudad en las respuestas del GPT cuando no es necesario
+# TODO: Input de vuelos y hoteles por Telegram
+# TODO: Pulir preprocesamiento
 
 test_questions = [
     "What is the weather like in Barcelona?",
@@ -31,9 +32,11 @@ test_questions = [
     "Which cuisine is famous in Bangkok?",
     "When is the best time to visit Vienna?",
     "Why should I visit Prague?",
-    "How do I get around in Hong Kong?"
+    "How do I get around in Hong Kong?",
     "Any similar cities to Tokyo?",
 ]
+
+pending_requests = {}
 
 
 async def send_message_to_telegram(context: ContextTypes.DEFAULT_TYPE, chat_id: int, text: str) -> None:
@@ -41,9 +44,35 @@ async def send_message_to_telegram(context: ContextTypes.DEFAULT_TYPE, chat_id: 
     context.user_data['messages'].append(message.message_id)
 
 
+async def send_message_and_wait_for_response(context: ContextTypes.DEFAULT_TYPE, chat_id: int, text: str) -> str:
+    loop = asyncio.get_event_loop()
+    future = loop.create_future()
+
+    pending_requests[chat_id] = future
+
+    message = await context.bot.send_message(chat_id=chat_id, text=text)
+    context.user_data['messages'].append(message.message_id)
+
+    context.user_data['waiting_for_response'] = True  # Marcar que estamos esperando una respuesta
+    print("Esperando respuesta...")
+    response = await future
+    print ("he rebut la resposta")
+    context.user_data['waiting_for_response'] = False  # Limpiar el estado de espera
+    return response
+
+
+async def receive_response(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    chat_id = update.message.chat_id
+    user_input = update.message.text
+
+    if chat_id in pending_requests:
+        future = pending_requests.pop(chat_id)
+        future.set_result(user_input)
+
+
 gpt = GPTAPI()
 prp = Preprocessor()
-process_petition = ProcessPetition(prp, send_message_to_telegram)
+process_petition = ProcessPetition(prp, send_message_to_telegram, send_message_and_wait_for_response)
 nlp = NLPProcessor(prp, process_petition)
 
 
@@ -57,8 +86,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    print("he rebut missatge")
     if 'messages' not in context.user_data:
         context.user_data['messages'] = []
+
+    # Comprobar si estamos esperando una respuesta
+    if context.user_data.get('waiting_for_response'):
+        print ("he rebut la data")
+        await receive_response(update, context)
+        return
 
     text = update.message.text
     chat_id = update.message.chat_id
@@ -73,6 +109,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     elif gpt.is_asking_for_me(user_input):
         await send_message_to_telegram(context, chat_id, gpt.start_response())
         return
+
 
     separated_questions = gpt.split_questions(user_input)
     if separated_questions:
@@ -108,7 +145,6 @@ async def clear(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 def main() -> None:
     application = Application.builder().token("7435215887:AAEJOiLco8PY2m26PqtysIRhtuNtdhZ--nY").build()
-
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("clear", clear))
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))

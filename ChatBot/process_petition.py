@@ -6,12 +6,13 @@ from api.travel_api import TravelAPI
 from preprocessing.preprocessor import Preprocessor
 
 class ProcessPetition:
-    def __init__(self, prp, send_message):
+    def __init__(self, prp, send_message, send_message_and_wait_for_response):
         self.dao = KnowledgeDAO()
         self.gpt = GPTAPI()
         self.travel_api = TravelAPI("6eb7659adbmshe5fc3c22f1bddbbp19d5eajsnf7dd83dc13fc")
         self.prp = prp
         self.send_message = send_message
+        self.send_message_and_wait_for_response = send_message_and_wait_for_response
 
     async def show_climate_information(self, user_question, city_context, context, chat_id):
         found = False
@@ -361,8 +362,8 @@ class ProcessPetition:
         string = f"In {city_context}, there are various hotels you can stay at. Can you fill in the check-in and check-out dates? So I can help you find the best hotel for your stay."
         await self.send_message(context, chat_id, self.gpt.humanize_response(string, city_context, self.prp))
 
-        initial_date = input("Enter the check-in date (YYYY-MM-DD): ")
-        final_date = input("Enter the check-out date (YYYY-MM-DD): ")
+        initial_date = self.send_message_and_wait_for_response(context, chat_id, "Enter the check-in date (YYYY-MM-DD): ")
+        final_date = self.send_message_and_wait_for_response(context, chat_id, "Enter the check-out date (YYYY-MM-DD): ")
 
         # TODO: Comprovar que el format sigui correcte
 
@@ -410,7 +411,7 @@ class ProcessPetition:
             await self.send_message(context, chat_id, self.gpt.humanize_response("I am sorry, petition to API failed. Please try again.", user_question, self.prp))
             return
 
-        depart_date = input("Enter the departure date (YYYY-MM-DD): ")
+        depart_date = await self.send_message_and_wait_for_response(context, chat_id, "Enter the departure date (YYYY-MM-DD): ")
 
         #TODO: Comprovar que el format sigui correcte
 
@@ -427,7 +428,7 @@ class ProcessPetition:
                     string = "can you specify the origin?"
                     await self.send_message(context, chat_id, self.gpt.humanize_response(string, user_question, self.prp))
 
-                    departure_city = input("Enter the departure city: ")
+                    departure_city = self.send_message_and_wait_for_response(context, chat_id, "Enter the departure city: ")
                     destination_city = unique_cities.pop()
                 # Realizar la petición a la API para obtener información de vuelos
                 cheapestFlight, fastestFlight, bestFlight = self.travel_api.get_flight_info(departure_city, destination_city,depart_date)
