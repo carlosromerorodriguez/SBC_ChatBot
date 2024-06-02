@@ -145,4 +145,4 @@ To deactivate the virtual environment, you can use:
 deactivate
 ```
 
-Thank you for setting up your development environment!
+Thank you for using Exploryst! We hope you enjoy your travels!
