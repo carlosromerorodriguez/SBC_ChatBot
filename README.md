@@ -36,7 +36,13 @@ cd Chatbot
 ```bash
 pip install -r requirements.txt
 ```
-
+## Com executar el projecte
+Un cop preparat l'entorn, accedeixes a aquest link a internet: t.me/exploryst_bot 
+Un cop estiguis en el chat del bot, en la terminal del projecte s'ha d'executar la següent comanda:
+```bash
+python bot.py
+```
+Això farà que el bot comenci a funcionar i puguis interactuar amb ell.
 ## Desactivació de l'Entorn Virtual
 
 Per sortir de l'entorn virtual, pots utilitzar:
