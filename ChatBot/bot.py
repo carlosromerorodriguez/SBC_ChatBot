@@ -36,6 +36,54 @@ test_questions = [
     "Suggest me warm and expensive destinations that have a beach"
 ]
 
+double_questions = [
+    "What is the weather like in Barcelona? What kind of food can I eat there?",
+    "What kind of food can I eat in Paris? What are the best attractions to visit there?",
+    "What are the best attractions to visit in Rome? What language do they speak there?",
+    "What language do they speak in Tokyo? What currency is used there?",
+    "What currency is used in London? How do they pay there?",
+    "How do they pay in Moscow? What other languages are spoken there?",
+    "What other languages are spoken in Berlin? Can you recommend a restaurant there?",
+    "Can you recommend a restaurant in New York? Where can I stay there?",
+    "Where can I stay in Dubai? How can I get there?",
+    "How can I get to Sydney? How do I get around there?",
+    "How do I get around in Amsterdam? What is the culture like there?",
+    "What is the culture like in Istanbul? What kind of tourism is popular there?",
+    "What kind of tourism is popular in Berlin? Is there a beach there?",
+    "Is there a beach in Miami? What are the modern attractions there?",
+    "What are the modern attractions in Barcelona? How expensive is living there?",
+    "How expensive is living in San Francisco? Which cuisine is famous there?",
+    "Which cuisine is famous in Bangkok? When is the best time to visit there?",
+    "When is the best time to visit Vienna? Why should I visit there?",
+    "Why should I visit Prague? How do I get around there?",
+    "How do I get around in Hong Kong? Any similar cities there?",
+    "Any similar cities to Tokyo? Suggest me warm and expensive destinations that have a beach"
+]
+
+simple_context_questions = [
+    "What is the weather like?",
+    "What kind of food can I eat?",
+    "What are the best attractions to visit?",
+    "What language do they speak?",
+    "What currency is used?",
+    "How do they pay?",
+    "What other languages are spoken?",
+    "Can you recommend a restaurant?",
+    "Where can I stay?",
+    "How can I get there?",
+    "How do I get around?",
+    "What is the culture like?",
+    "What kind of tourism is popular?",
+    "Is there a beach?",
+    "What are the modern attractions?",
+    "How expensive is living there?",
+    "Which cuisine is famous?",
+    "When is the best time to visit?",
+    "Why should I visit?",
+    "Any similar cities?",
+    "Suggest me warm and expensive destinations that have a beach"
+]
+
 # Queue to store pending responses
 pending_requests = {}
 response_queues = {}
