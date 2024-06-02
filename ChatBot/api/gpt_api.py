@@ -3,13 +3,7 @@ import json
 import openai
 import random
 
-
-
 class GPTAPI:
-
-    #def __init__(self, api_key):
-        #self.api_key = api_key
-        #openai.api_key = self.api_key
 
     API_KEY = "sk-proj-HpMoLYRWcDGxR48zvvGiT3BlbkFJIaC5flIDtLiuIAEjcuhe"
     openai.api_key = API_KEY
