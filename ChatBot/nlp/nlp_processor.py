@@ -208,7 +208,7 @@ class NLPProcessor:
             await self.send_message_to_telegram(context, chat_id, self.gpt.not_understood_response())
 
     async def handle_why_questions(self, words, user_question, context, chat_id):
-        if 'visit' in words or 'go' in words:
+        if 'visit' in words or 'go' in words or 'explore' in words or 'discover' in words or 'experience' in words:
             await self.process_petition.show_reasons_to_visit_certain_places(user_question, self.city_context, context, chat_id)
         else:
             await self.send_message_to_telegram(context, chat_id, self.gpt.not_understood_response())

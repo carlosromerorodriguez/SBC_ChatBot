@@ -1,7 +1,5 @@
 import asyncio
-import threading
 from queue import Queue, Empty
-import time
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 from process_petition import ProcessPetition
@@ -33,16 +31,15 @@ test_questions = [
     "Why should I visit Prague?",
     "How do I get around in Hong Kong?",
     "Any similar cities to Tokyo?",
-    "Suggest me warm and expensive destinations that have a beach"
 ]
 
 double_questions = [
     "What is the weather like in Barcelona? What kind of food can I eat there?",
     "What kind of food can I eat in Paris? What are the best attractions to visit there?",
     "What are the best attractions to visit in Rome? What language do they speak there?",
-    "What language do they speak in Tokyo? What currency is used there?",
+    "What language do they speak in Tokyo and What currency should I use there?",
     "What currency is used in London? How do they pay there?",
-    "How do they pay in Moscow? What other languages are spoken there?",
+    "How do they pay in Moscow and what other languages are spoken there?",
     "What other languages are spoken in Berlin? Can you recommend a restaurant there?",
     "Can you recommend a restaurant in New York? Where can I stay there?",
     "Where can I stay in Dubai? How can I get there?",
@@ -55,10 +52,11 @@ double_questions = [
     "How expensive is living in San Francisco? Which cuisine is famous there?",
     "Which cuisine is famous in Bangkok? When is the best time to visit there?",
     "When is the best time to visit Vienna? Why should I visit there?",
-    "Why should I visit Prague? How do I get around there?",
+    "Why should I visit Prague, because about the public transport, how do I get around in the there?",
     "How do I get around in Hong Kong? Any similar cities there?",
-    "Any similar cities to Tokyo? Suggest me warm and expensive destinations that have a beach"
+    "Any similar cities to Tokyo? "
 ]
+
 
 simple_context_questions = [
     "What is the weather like?",
@@ -81,7 +79,14 @@ simple_context_questions = [
     "When is the best time to visit?",
     "Why should I visit?",
     "Any similar cities?",
-    "Suggest me warm and expensive destinations that have a beach"
+]
+
+suggestion_questions = [
+    "Suggest me warm and expensive destinations that have a beach",
+    "Suggest me a place that has mountains and is cold to go skiing",
+    "Suggest me a historical city to visit",
+    "Suggest me a cheap and modern destination",
+    "Recommend me a traditional and artistic city",
 ]
 
 # Queue to store pending responses
