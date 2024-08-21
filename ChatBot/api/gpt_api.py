@@ -5,7 +5,7 @@ import random
 
 class GPTAPI:
 
-    API_KEY = "sk-proj-HpMoLYRWcDGxR48zvvGiT3BlbkFJIaC5flIDtLiuIAEjcuhe"
+    API_KEY = "your_api_key_here"
     openai.api_key = API_KEY
 
     def transform_input(self, user_input, adverbs, verbs, nouns, adjectives, non_matching_words):

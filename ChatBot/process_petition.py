@@ -10,7 +10,7 @@ class ProcessPetition:
     def __init__(self, prp, send_message, send_message_and_wait_for_response):
         self.dao = KnowledgeDAO()
         self.gpt = GPTAPI()
-        self.travel_api = TravelAPI("6eb7659adbmshe5fc3c22f1bddbbp19d5eajsnf7dd83dc13fc")
+        self.travel_api = TravelAPI("your_api_key")
         self.prp = prp
         self.send_message = send_message
         self.send_message_and_wait_for_response = send_message_and_wait_for_response

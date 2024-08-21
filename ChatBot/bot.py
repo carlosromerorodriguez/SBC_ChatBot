@@ -243,7 +243,7 @@ async def clear(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 
 def main() -> None:
-    application = Application.builder().token("7435215887:AAEJOiLco8PY2m26PqtysIRhtuNtdhZ--nY").build()
+    application = Application.builder().token("your_token").build()
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("clear", clear))
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
